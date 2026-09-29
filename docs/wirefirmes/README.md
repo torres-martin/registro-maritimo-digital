@@ -70,8 +70,8 @@ Cada dibujo se revisó en equipo con tres preguntas antes de darlo por terminado
 | 3. Revisión AMP | ✅ | ✅ | ✅ | Devolver o rechazar exige escribir observaciones para el solicitante. |
 | 4. Certificado | ✅ | ✅ | ✅ | Incluye QR y código para verificar que es auténtico. |
 
-**Revisado por:** Martin Torres · Neishany Lopez · Ameth Diaz · Yoma
-**Fecha de revisión:** [FECHA]
+**Revisado por:** Martin Torres · Neishany Lopez · Ameth Diaz · Yomayri Martinez
+**Fecha de revisión:** 9/29/2026
 
 ### Evidencias de seguridad
 
