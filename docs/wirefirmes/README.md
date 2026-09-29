@@ -54,8 +54,7 @@ Los dibujos de las 4 pantallas principales y el repositorio en GitHub donde el e
 | 3 | **Revisión AMP** | Bandeja de solicitudes y detalle con verificación de documentos, observaciones y botones para aprobar, devolver o rechazar. |
 | 4 | **Certificado electrónico** | Vista previa del certificado con código QR y código de verificación, descarga en PDF e historial de la solicitud. |
 
-<!-- Reemplazar con los nombres reales de las imágenes exportadas -->
-![Inicio de seccion](docs/wirefirmes/1_·_Inicio_de_sesión.png)
+![1·InicioDeSesión.png](docs/wirefirmes/1·InicioDeSesión.png)
 ![Registro de nave](docs/wireframes/02-registro-nave.png)
 ![Revisión AMP](docs/wireframes/03-revision-amp.png)
 ![Certificado electrónico](docs/wireframes/04-certificado.png)
@@ -89,7 +88,6 @@ Cada dibujo se revisó en equipo con tres preguntas antes de darlo por terminado
 - Repositorio creado en GitHub con los 4 integrantes como colaboradores.
 - Estructura inicial de carpetas (`docs/`, `src/`) y primeras subidas de archivos.
 
-<!-- Agregar la captura real del repositorio -->
 ![Captura del repositorio](docs/sprints/captura-repositorio.png)
 
 ### Métricas
