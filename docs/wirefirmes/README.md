@@ -17,12 +17,12 @@ Proyecto académico basado en el **Caso 5: Registro de Naves** de la Autoridad M
 
 ## Equipo
 
-| Integrante |
-|---|
-| Martin Torres |
-| Neishany Lopez |
-| Ameth Diaz |
-| Yoma |
+| Integrantes | Cedula |
+|---| ---|
+| Martin Torres | 8-1014-2334|
+| Neishany López | 8-998-24 |
+| Ameth Diaz | 8-1012-447 |
+| Yomayri Martinez | 8-1026-1938 |
 
 ## Estructura del repositorio
 
@@ -55,7 +55,7 @@ Los dibujos de las 4 pantallas principales y el repositorio en GitHub donde el e
 | 4 | **Certificado electrónico** | Vista previa del certificado con código QR y código de verificación, descarga en PDF e historial de la solicitud. |
 
 <!-- Reemplazar con los nombres reales de las imágenes exportadas -->
-![Inicio de sesión](docs/wireframes/1 · Inicio de sesión@1x.png)
+![Inicio de seccion](docs/wirefirmes/1_·_Inicio_de_sesión.png)
 ![Registro de nave](docs/wireframes/02-registro-nave.png)
 ![Revisión AMP](docs/wireframes/03-revision-amp.png)
 ![Certificado electrónico](docs/wireframes/04-certificado.png)
