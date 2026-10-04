@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Consulta de naves · Registro Marítimo Digital</title>
+  <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="an" viewBox="0 0 24 24"><circle cx="12" cy="5" r="2.5"/><path d="M12 8v13M5 14a7 7 0 0 0 14 0M8 11H5M19 11h-3"/></symbol>
+  </defs>
+</svg>
+
+<header class="bar">
+  <div class="logo"><svg class="i"><use href="#an"/></svg>Registro Marítimo Digital</div>
+  <nav>
+    <a href="consulta.html" aria-current="page">Consulta de naves</a>
+  </nav>
+  <div class="who"><span id="usuario"></span><br><a href="#" id="salir">Cerrar sesión</a></div>
+</header>
+
+<div class="band">
+  <h1>Consulta de naves</h1>
+</div>
+
+<div class="tc">
+  <div class="pad">
+
+    <section class="resumen">
+      <div class="dato"><span id="n-total">0</span><small>Total</small></div>
+      <div class="dato"><span id="n-revision">0</span><small>En revisión</small></div>
+      <div class="dato"><span id="n-aprobado">0</span><small>Aprobadas</small></div>
+      <div class="dato"><span id="n-rechazado">0</span><small>Rechazadas</small></div>
+    </section>
+
+    <div class="filtros">
+      <input id="buscar" type="search" placeholder="Buscar" aria-label="Buscar por trámite, nave, IMO o propietario">
+      <select id="filtro-estado" aria-label="Filtrar por estado">
+        <option value="">Todos los estados</option>
+        <option>En revisión</option>
+        <option>Aprobado</option>
+        <option>Rechazado</option>
+      </select>
+    </div>
+
+    <div class="tabla-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Trámite</th>
+            <th>Nave</th>
+            <th>IMO</th>
+            <th>Tipo</th>
+            <th>Propietario</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody id="tabla-body"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script src="sesion.js"></script>
+<script src="consulta.js"></script>
+</body>
+</html>

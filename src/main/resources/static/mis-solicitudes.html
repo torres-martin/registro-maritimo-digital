@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Mis solicitudes · Registro Marítimo Digital</title>
+  <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="an" viewBox="0 0 24 24"><circle cx="12" cy="5" r="2.5"/><path d="M12 8v13M5 14a7 7 0 0 0 14 0M8 11H5M19 11h-3"/></symbol>
+  </defs>
+</svg>
+
+<header class="bar">
+  <div class="logo"><svg class="i"><use href="#an"/></svg>Registro Marítimo Digital</div>
+  <nav>
+    <a href="nueva-solicitud.html">Nueva solicitud</a>
+    <a href="mis-solicitudes.html" aria-current="page">Mis solicitudes</a>
+  </nav>
+  <div class="who"><span id="usuario"></span><br><a href="#" id="salir">Cerrar sesión</a></div>
+</header>
+
+<div class="band">
+  <h1>Mis solicitudes</h1>
+</div>
+
+<div class="tc">
+  <div class="pad">
+
+    <section id="vista-lista">
+      <div class="filtros">
+        <input id="buscar" type="search" placeholder="Buscar" aria-label="Buscar por trámite, nave o IMO">
+        <select id="filtro-estado" aria-label="Filtrar por estado">
+          <option value="">Todos los estados</option>
+          <option>En revisión</option>
+          <option>Aprobado</option>
+          <option>Rechazado</option>
+        </select>
+      </div>
+
+      <div class="tabla-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Trámite</th>
+              <th>Nave</th>
+              <th>IMO</th>
+              <th>Documento base</th>
+              <th>Estado</th>
+              <th>Fecha</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="tabla-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="vista-detalle" hidden>
+    <div class="acciones" style="margin-top:0; margin-bottom:12px">
+        <button type="button" class="btn o x" id="volver">Volver a la lista</button>
+        <a class="btn o x" id="ver-doc" target="_blank" rel="noopener" hidden>Ver documento</a>
+        <a class="btn o x" id="ver-cert" target="_blank" rel="noopener" hidden>Ver certificado</a>
+      </div>
+      <h2><span id="det-titulo"></span> <span id="det-estado"></span></h2>
+      <div id="det-obs"></div>
+      <div class="detalle" id="det-cuerpo"></div>
+    </section>
+
+    <div id="aviso" class="aviso" role="alert"></div>
+  </div>
+</div>
+
+<script src="sesion.js"></script>
+<script src="mis-solicitudes.js"></script>
+</body>
+</html>

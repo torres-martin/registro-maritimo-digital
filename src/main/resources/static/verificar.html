@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Verificar trámite · Registro Marítimo Digital</title>
+  <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="an" viewBox="0 0 24 24"><circle cx="12" cy="5" r="2.5"/><path d="M12 8v13M5 14a7 7 0 0 0 14 0M8 11H5M19 11h-3"/></symbol>
+  </defs>
+</svg>
+
+<header class="bar">
+  <div class="logo"><svg class="i"><use href="#an"/></svg>Registro Marítimo Digital</div>
+  <nav>
+    <a href="verificar.html" aria-current="page">Verificar trámite</a>
+    <a href="login.html">Iniciar sesión</a>
+  </nav>
+</header>
+
+<div class="band">
+  <h1>Verificar trámite</h1>
+</div>
+
+<div class="tc">
+  <div class="pad">
+    <form id="form-verificar">
+        <label for="codigo">Código de verificación</label>
+      <div class="filtros" style="margin-bottom:0">
+        <input id="codigo" type="text" maxlength="20" placeholder="XXXX-XXXX-XXXX" autocomplete="off" required>
+        <button type="submit" id="verificar">Verificar</button>
+      </div>
+    </form>
+
+        
+    <div id="resultado" role="status"></div>
+  </div>
+</div>
+
+<script src="verificar.js"></script>
+</body>
+</html>

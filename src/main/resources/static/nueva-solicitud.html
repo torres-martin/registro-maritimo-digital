@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Nueva solicitud · Registro Marítimo Digital</title>
+  <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="an" viewBox="0 0 24 24"><circle cx="12" cy="5" r="2.5"/><path d="M12 8v13M5 14a7 7 0 0 0 14 0M8 11H5M19 11h-3"/></symbol>
+    <symbol id="ck" viewBox="0 0 24 24"><path d="m6 12 4 4 8-9"/></symbol>
+    <symbol id="cl" viewBox="0 0 24 24"><path d="M9 12.5 15 6a3.5 3.5 0 0 1 5 5l-8 8a5 5 0 0 1-7-7l7-7"/></symbol>
+  </defs>
+</svg>
+
+<header class="bar">
+  <div class="logo"><svg class="i"><use href="#an"/></svg>Registro Marítimo Digital</div>
+  <nav>
+    <a href="nueva-solicitud.html" aria-current="page">Nueva solicitud</a>
+    <a href="mis-solicitudes.html">Mis solicitudes</a>
+  </nav>
+  <div class="who"><span id="usuario"></span><br><a href="#" id="salir">Cerrar sesión</a></div>
+</header>
+
+<div class="band">
+  <h1>Inscripción preliminar de título de propiedad</h1>
+  <span class="mu">Formulario F-270 (versión resumida)</span>
+</div>
+
+<div class="tc" id="asistente">
+  <div class="tt" role="tablist" id="pestanas">
+    <button type="button" role="tab" aria-selected="true">1. Documento y partes</button>
+    <button type="button" role="tab" aria-selected="false">2. Nave</button>
+    <button type="button" role="tab" aria-selected="false">3. Documento y envío</button>
+  </div>
+
+  <form id="form-solicitud" novalidate>
+
+    <!-- 1. Documento y partes -->
+    <div class="pn on">
+      <h2>Documento y partes</h2>
+
+      <h3>Documento base</h3>
+      <div class="g2">
+        <div class="campo">
+          <label for="documentoBase">Documento base de la inscripción</label>
+          <select id="documentoBase" data-k="documentoBase" data-req>
+            <option value="">Seleccione</option>
+            <option>Contrato de compraventa</option>
+            <option>Certificado de constructor</option>
+            <option>Certificado de cancelación de registro</option>
+            <option>Venta judicial</option>
+            <option>Venta extrajudicial</option>
+            <option>Contrato de donación</option>
+          </select>
+          <div class="err"></div>
+        </div>
+        <div class="campo">
+          <label for="fechaCelebracion">Fecha de celebración del documento</label>
+          <input id="fechaCelebracion" data-k="fechaCelebracion" data-req type="date">
+          <div class="err"></div>
+        </div>
+        <div class="campo" id="c-precio" hidden>
+          <label for="precioVenta">Precio de venta (opcional)</label>
+          <input id="precioVenta" data-k="precioVenta" type="number" step="any" min="0">
+          <div class="err"></div>
+        </div>
+      </div>
+
+      <h3>Partes</h3>
+      <div class="g2">
+        <div class="campo">
+          <label for="nombreTransmitente">Nombre del transmitente (vendedor)</label>
+          <input id="nombreTransmitente" data-k="nombreTransmitente" data-req maxlength="150">
+          <div class="err"></div>
+        </div>
+        <div class="campo">
+          <label for="propietario">Nombre del comprador o propietario</label>
+          <input id="propietario" data-k="propietario" data-req maxlength="150">
+          <div class="err"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. Nave -->
+    <div class="pn">
+      <h2>Nave</h2>
+      <div class="g">
+        <div class="campo">
+          <label for="nombreNave">Nombre de la nave</label>
+          <input id="nombreNave" data-k="nombreNave" data-req maxlength="100">
+          <div class="err"></div>
+        </div>
+        <div class="campo">
+          <label for="imo">Número IMO</label>
+          <input id="imo" data-k="imo" data-req maxlength="10" placeholder="1234567">
+          <div class="err"></div>
+        </div>
+        <div class="campo">
+          <label for="tipoNave">Tipo de nave</label>
+          <select id="tipoNave" data-k="tipoNave" data-req>
+            <option value="">Seleccione</option>
+            <option>Portacontenedores</option>
+            <option>Granelero</option>
+            <option>Tanquero</option>
+            <option>Pasajeros</option>
+            <option>Carga general</option>
+          </select>
+          <div class="err"></div>
+        </div>
+        <div class="campo">
+          <label for="distintivoLlamada">Distintivo de llamada (opcional)</label>
+          <input id="distintivoLlamada" data-k="distintivoLlamada" maxlength="20">
+          <div class="err"></div>
+        </div>
+        <div class="campo">
+          <label for="patenteNavegacion">Patente de navegación (opcional)</label>
+          <input id="patenteNavegacion" data-k="patenteNavegacion" maxlength="40">
+          <div class="err"></div>
+        </div>
+        <div class="campo">
+          <label for="arqueoBruto">Tonelaje bruto (opcional)</label>
+          <input id="arqueoBruto" data-k="arqueoBruto" type="number" step="any" min="0">
+          <div class="err"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. Documento y envío -->
+    <div class="pn">
+      <h2>Documento y envío</h2>
+      <div class="up" id="fila-pdf" style="margin-top:14px">
+        <span class="cir"><svg class="i"><use id="pdf-icono" href="#cl"/></svg></span>
+        <div>
+          <b>Documentos de la inscripción (PDF, máximo 10 MB)</b>
+          <small id="pdf-estado">Sin archivo seleccionado</small>
+        </div>
+        <button type="button" class="btn o x" id="pdf-boton">Subir</button>
+      </div>
+      <div class="err" id="err-pdf"></div>
+      <input type="file" id="pdf" accept="application/pdf" hidden>
+
+      <div class="g2">
+        <div class="campo">
+          <label for="solicitante">Nombre del solicitante</label>
+          <input id="solicitante" data-k="solicitante" data-req maxlength="150">
+          <div class="err"></div>
+        </div>
+        <div class="campo">
+          <label for="abogado">Abogado a cargo de la inscripción definitiva</label>
+          <input id="abogado" data-k="abogado" data-req maxlength="150">
+          <div class="err"></div>
+        </div>
+      </div>
+
+      <dl class="kv" style="margin-top:20px">
+        <dt>Documento base</dt><dd id="rs-base"></dd>
+        <dt>Nave</dt><dd id="rs-nave"></dd>
+        <dt>IMO</dt><dd id="rs-imo"></dd>
+        <dt>Propietario</dt><dd id="rs-propietario"></dd>
+        <dt>Documento PDF</dt><dd id="rs-pdf"></dd>
+      </dl>
+
+      <div id="resultado" class="aviso" role="alert"></div>
+    </div>
+  </form>
+
+  <div class="ft">
+    <button type="button" class="btn o" id="anterior" hidden>Anterior</button>
+    <button type="button" class="btn" id="siguiente" style="margin-left:auto">Siguiente</button>
+  </div>
+</div>
+
+<div class="tc" id="enviada" hidden>
+  <div class="pad">
+    <h2>Solicitud enviada</h2>
+    <dl class="kv" style="margin-top:14px">
+      <dt>Trámite</dt><dd id="ok-tramite"></dd>
+      <dt>Nave</dt><dd id="ok-nave"></dd>
+      <dt>Estado</dt><dd id="ok-estado"></dd>
+    </dl>
+    <div class="acciones">
+      <a class="btn" href="mis-solicitudes.html">Ver mis solicitudes</a>
+      <a class="btn o" href="nueva-solicitud.html">Nueva solicitud</a>
+    </div>
+  </div>
+</div>
+
+<script src="sesion.js"></script>
+<script src="nueva-solicitud.js"></script>
+</body>
+</html>

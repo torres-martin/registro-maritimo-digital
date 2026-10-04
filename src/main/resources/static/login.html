@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Iniciar sesión · Registro Marítimo Digital</title>
+  <link rel="stylesheet" href="estilos.css">
+</head>
+<body class="login-page">
+
+<div class="spacer-container">
+  <div class="spacer-blue-side">
+    <div class="spacer-brand">
+      <div class="spacer-logo-circle">
+        <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="5" r="2.5"/><path d="M12 8v13M5 14a7 7 0 0 0 14 0M8 11H5M19 11h-3"/></svg>
+      </div>
+      <h2>Registro Marítimo</h2>
+    </div>
+    <div class="spacer-credits">AUTORIDAD MARÍTIMA DE PANAMÁ</div>
+  </div>
+
+  <div class="spacer-form-side">
+    <h1>Iniciar sesión</h1>
+
+    <form id="form-login">
+      <div class="spacer-field">
+        <label for="correo">Correo electrónico</label>
+        <input type="email" id="correo" autocomplete="username" required>
+      </div>
+
+      <div class="spacer-field">
+        <label for="password">Contraseña</label>
+        <input type="password" id="password" autocomplete="current-password" required>
+      </div>
+
+      <div class="spacer-actions">
+        <button type="submit" class="spacer-btn-primary" id="entrar">Ingresar</button>
+        <a href="verificar.html" class="spacer-btn-outline">Verificar trámite</a>
+      </div>
+
+      <div id="error-login" class="aviso" role="alert"></div>
+    </form>
+  </div>
+</div>
+
+<script src="login.js"></script>
+</body>
+</html>

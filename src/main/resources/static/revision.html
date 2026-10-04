@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Revisión · Registro Marítimo Digital</title>
+  <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="an" viewBox="0 0 24 24"><circle cx="12" cy="5" r="2.5"/><path d="M12 8v13M5 14a7 7 0 0 0 14 0M8 11H5M19 11h-3"/></symbol>
+  </defs>
+</svg>
+
+<header class="bar">
+  <div class="logo"><svg class="i"><use href="#an"/></svg>Registro Marítimo Digital</div>
+  <nav>
+    <a href="bandeja.html">Bandeja</a>
+  </nav>
+  <div class="who"><span id="usuario"></span><br><a href="#" id="salir">Cerrar sesión</a></div>
+</header>
+
+<div class="band">
+  <h1>Revisión de solicitud</h1>
+  <span class="mu" id="sub"></span>
+</div>
+
+<div class="tc">
+  <div class="pad">
+    <div class="acciones" style="margin-top:0; margin-bottom:12px">
+      <a class="btn o x" href="bandeja.html">Volver a la bandeja</a>
+      <a class="btn o x" id="ver-doc" target="_blank" rel="noopener" hidden>Abrir documento</a>
+      <a class="btn o x" id="ver-cert" target="_blank" rel="noopener" hidden>Ver certificado</a>
+      <span id="estado" style="align-self:center"></span>
+    </div>
+
+    <div id="obs"></div>
+    <div class="detalle" id="cuerpo"></div>
+
+    <section id="decision" hidden>
+      <h3>Decisión</h3>
+      <div class="g2">
+        <div class="campo">
+          <label for="liquidacion">Número de liquidación</label>
+          <input id="liquidacion" maxlength="40">
+          <div class="err"></div>
+        </div>
+        <div class="campo full">
+          <label for="observacion">Observación</label>
+          <textarea id="observacion" maxlength="1000"></textarea>
+          <div class="err" id="err-observacion"></div>
+        </div>
+      </div>
+      <div class="acciones">
+        <button type="button" class="btn v" id="aprobar">Aprobar</button>
+        <button type="button" class="btn r" id="rechazar">Rechazar</button>
+      </div>
+    </section>
+
+    <div id="aviso" class="aviso" role="alert"></div>
+  </div>
+</div>
+
+<script src="sesion.js"></script>
+<script src="revision.js"></script>
+</body>
+</html>
