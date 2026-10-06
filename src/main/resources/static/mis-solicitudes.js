@@ -26,9 +26,9 @@ function filaMensaje(texto) {
   return tr;
 }
 
-function aviso(texto) {
+function aviso(texto, ok) {
   const caja = $("aviso");
-  caja.className = texto ? "aviso mal" : "aviso";
+  caja.className = texto ? (ok ? "aviso ok" : "aviso mal") : "aviso";
   caja.textContent = texto;
 }
 
@@ -84,6 +84,16 @@ function pintarTabla() {
       tdVer.appendChild(cert);
     }
 
+    // HU-17: una solicitud rechazada se puede corregir y reenviar
+    if (n.estado === "Rechazado") {
+      const corregir = document.createElement("a");
+      corregir.className = "btn o x";
+      corregir.style.marginLeft = "6px";
+      corregir.href = "nueva-solicitud.html?corregir=" + encodeURIComponent(n.id);
+      corregir.textContent = "Corregir y reenviar";
+      tdVer.appendChild(corregir);
+    }
+
     tr.append(tdCodigo, celda(n.nombreNave), celda(n.imo), celda(n.documentoBase),
               tdEstado, celda(n.fechaCreacion), tdVer);
     cuerpo.append(tr);
@@ -130,6 +140,129 @@ function seccion(titulo, filas) {
   return s;
 }
 
+let codigoActual = null;
+
+function fecha(iso) {
+  if (!iso) return "";
+  const [a, m, d] = String(iso).split("-");
+  return d && m && a ? d + "/" + m + "/" + a : iso;
+}
+
+// seguimiento de la solicitud por etapas
+const TRAZO_OK = "m6 12 4 4 8-9";
+const TRAZO_X = "M7 7l10 10M17 7 7 17";
+
+function icono(trazo) {
+  const ns = "http://www.w3.org/2000/svg";
+  const s = document.createElementNS(ns, "svg");
+  s.setAttribute("viewBox", "0 0 24 24");
+  s.setAttribute("width", "16");
+  s.setAttribute("height", "16");
+  s.setAttribute("fill", "none");
+  s.setAttribute("stroke", "currentColor");
+  s.setAttribute("stroke-width", "3");
+  s.setAttribute("stroke-linecap", "round");
+  s.setAttribute("stroke-linejoin", "round");
+  s.setAttribute("aria-hidden", "true");
+  const p = document.createElementNS(ns, "path");
+  p.setAttribute("d", trazo);
+  s.appendChild(p);
+  return s;
+}
+
+function pintarHistorial(d) {
+  const enRevision = d.estado === "En revisión";
+  const aprobado = d.estado === "Aprobado";
+  const rechazado = d.estado === "Rechazado";
+  const fRecibida = fecha(d.fechaCreacion);
+  const fDecision = fecha(d.fechaDecision || (aprobado ? d.fechaEmision : ""));
+
+  // Cada etapa usa solo datos que el sistema guarda
+  const pasos = [
+    { titulo: "Recibida", detalle: "La solicitud y su documento fueron recibidos.",
+      estado: "hecho", chip: fRecibida || "Listo" },
+    { titulo: "Digitalización y control de calidad", detalle: "El PDF se valida (formato y tamaño) al enviarse.",
+      estado: "hecho", chip: fRecibida || "Listo" },
+    { titulo: "En revisión", detalle: "Un funcionario de la AMP aprueba o rechaza la solicitud.",
+      estado: enRevision ? "actual" : "hecho", chip: enRevision ? "En curso" : (fDecision || "Listo") }
+  ];
+
+  if (enRevision) {
+    pasos.push({ titulo: "Inscrita o devuelta",
+      detalle: "Si se aprueba, se emite el certificado. Si se rechaza, se te envían las observaciones.",
+      estado: "", chip: "Pendiente" });
+  } else if (aprobado) {
+    pasos.push({ titulo: "Inscrita", detalle: "La solicitud fue aprobada.",
+      estado: "hecho", chip: fDecision || "Listo" });
+  } else if (rechazado) {
+    pasos.push({ titulo: "Devuelta",
+      detalle: d.observacion ? "Observación: " + d.observacion : "La solicitud fue rechazada.",
+      estado: "mal", chip: fDecision || "Rechazada" });
+  }
+
+  if (d.certificadoFolio && d.revocado) {
+    pasos.push({ titulo: "Certificado revocado",
+      detalle: "El certificado " + d.certificadoFolio + " ya no es válido."
+        + (d.motivoRevocacion ? " Motivo: " + d.motivoRevocacion : ""),
+      estado: "mal", chip: fecha(d.fechaRevocacion) || "Revocado" });
+  } else if (d.certificadoFolio) {
+    pasos.push({ titulo: "Documento entregado",
+      detalle: "El certificado " + d.certificadoFolio + " está disponible para descargar.",
+      estado: "hecho", chip: fecha(d.fechaEmision) || "Listo" });
+  } else if (rechazado) {
+    pasos.push({ titulo: "Documento entregado",
+      detalle: "No se emite certificado para solicitudes rechazadas.",
+      estado: "na", chip: "No aplica" });
+  } else {
+    pasos.push({ titulo: "Documento entregado",
+      detalle: "El certificado electrónico con código QR queda disponible para descargar.",
+      estado: "", chip: "Pendiente" });
+  }
+
+  const cont = $("det-historial");
+  cont.replaceChildren();
+
+  const titulo = document.createElement("h3");
+  titulo.className = "seg-titulo";
+  titulo.textContent = "Estado actual: " + d.estado.toLowerCase();
+  const sub = document.createElement("p");
+  sub.className = "seg-sub";
+  sub.textContent = "Sigue las mismas etapas que el flujo de inscripción de documentos de la AMP.";
+  cont.append(titulo, sub);
+
+  pasos.forEach((p, i) => {
+    const fila = document.createElement("div");
+    fila.className = "seg-paso " + p.estado;
+
+    const num = document.createElement("span");
+    num.className = "seg-num";
+    if (p.estado === "hecho") num.appendChild(icono(TRAZO_OK));
+    else if (p.estado === "mal") num.appendChild(icono(TRAZO_X));
+    else num.textContent = String(i + 1);
+
+    const txt = document.createElement("div");
+    txt.className = "seg-txt";
+    const t = document.createElement("b");
+    t.textContent = p.titulo;
+    const s = document.createElement("small");
+    s.textContent = p.detalle;
+    txt.append(t, s);
+
+    const chip = document.createElement("span");
+    chip.className = "seg-chip";
+    chip.textContent = p.chip;
+
+    fila.append(num, txt, chip);
+    cont.appendChild(fila);
+  });
+
+  const info = document.createElement("div");
+  info.className = "seg-info";
+  info.textContent = "Si el funcionario rechaza la solicitud, recibirás las observaciones y podrás corregirla y reenviarla. "
+    + "Si la aprueba, se emite el certificado electrónico con código QR.";
+  cont.appendChild(info);
+}
+
 function pintarDetalle(d) {
   const x = extras(d);
   const cuerpo = $("det-cuerpo");
@@ -140,6 +273,7 @@ function pintarDetalle(d) {
       ["Trámite", d.tramite], ["Documento base", d.documentoBase], ["Presentación", x.presentacion],
       ["Certificado", d.certificadoFolio], ["Vigente hasta", d.fechaVencimiento],
       ["Estado del certificado", d.estadoCertificado],
+      ["Motivo de revocación", d.motivoRevocacion],
       ["Fecha de creación", d.fechaCreacion], ["Liquidación", d.liquidacion]
     ]),
     seccion("Nave", [
@@ -200,6 +334,15 @@ async function abrir(id) {
     cert.hidden = !d.certificadoFolio;
     cert.href = "/api/naves/" + id + "/certificado";
 
+    const cor = $("corregir");
+    cor.hidden = d.estado !== "Rechazado";
+    cor.href = "nueva-solicitud.html?corregir=" + encodeURIComponent(id);
+
+    // HU-19: el enlace solo se ofrece si el certificado existe y no está revocado
+    codigoActual = d.certificadoFolio && !d.revocado ? d.codigoVerificacion : null;
+    $("copiar-enlace").hidden = !codigoActual;
+
+    pintarHistorial(d);
     pintarDetalle(d);
     $("vista-lista").hidden = true;
     $("vista-detalle").hidden = false;
@@ -216,4 +359,15 @@ $("volver").addEventListener("click", () => {
 $("buscar").addEventListener("input", pintarTabla);
 $("filtro-estado").addEventListener("change", pintarTabla);
 
-cargar();
+$("copiar-enlace").addEventListener("click", async () => {
+  if (!codigoActual) return;
+  const enlace = location.origin + "/verificar.html?codigo=" + encodeURIComponent(codigoActual);
+  try {
+    await navigator.clipboard.writeText(enlace);
+    aviso("Enlace de verificación copiado.", true);
+  } catch {
+    window.prompt("Copie el enlace de verificación:", enlace);
+  }
+});
+
+cargar(); 

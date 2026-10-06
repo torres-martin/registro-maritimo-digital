@@ -57,7 +57,7 @@ public class NaveService {
         this.certificados = certificados;
     }
 
-    // ---------- registro ----------
+    // registro 
 
     @Transactional
     public Nave registrar(Map<String, String> c, MultipartFile documento, String correoArmador) throws IOException {
@@ -92,14 +92,14 @@ public class NaveService {
         nave.setEstado(EstadoTramite.EN_REVISION.getEtiqueta());
         nave.setArmadorCorreo(correoArmador);
         nave.setRutaDocumentoPdf(guardarPdf(documento));
-        
+
         nave.setTramite("TMP-" + UUID.randomUUID().toString().replace("-", "").substring(0, 20));
         nave = repo.save(nave);
         nave.setTramite(String.format("TR-%d-%04d", Year.now().getValue(), nave.getId()));
         return repo.save(nave);
     }
 
-    // ---------- consultas ----------
+    // consultas 
 
     @Transactional(readOnly = true)
     public List<Map<String, Object>> mias(String correo) {
@@ -147,7 +147,7 @@ public class NaveService {
         return archivo;
     }
 
-    // ---------- decisión del funcionario ----------
+    // decisión del funcionario 
 
     @Transactional
     public Map<String, Object> cambiarEstado(Long id, String estadoTxt, String observacion, String liquidacion) {
@@ -173,6 +173,7 @@ public class NaveService {
         nave.setEstado(estado.getEtiqueta());
         nave.setObservacion(obs.isEmpty() ? null : obs);
         nave.setLiquidacion(liq.isEmpty() ? null : liq);
+        nave.setFechaDecision(LocalDate.now());
 
         if (estado == EstadoTramite.APROBADO) emitirCertificado(nave);
 
@@ -195,7 +196,30 @@ public class NaveService {
         return certificados.pdf(nave);
     }
 
-    // ---------- vistas ----------
+    // revocación del certificado
+
+    @Transactional
+    public Map<String, Object> revocar(Long id, String motivoTxt) {
+        Nave nave = repo.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Solicitud no encontrada."));
+        if (nave.getCertificadoFolio() == null)
+            throw new IllegalArgumentException("Esta solicitud no tiene certificado emitido.");
+        if (nave.isRevocado())
+            throw new IllegalArgumentException("El certificado ya fue revocado.");
+
+        String motivo = texto(motivoTxt);
+        if (motivo.isEmpty())
+            throw new IllegalArgumentException("Indique el motivo de la revocación.");
+        if (motivo.length() > 500)
+            throw new IllegalArgumentException("El motivo no puede pasar de 500 caracteres.");
+
+        nave.setRevocado(true);
+        nave.setMotivoRevocacion(motivo);
+        nave.setFechaRevocacion(LocalDate.now());
+        return detalle(repo.save(nave));
+    }
+
+    // vistas 
 
     private static Map<String, Object> lista(Nave n) {
         Map<String, Object> m = new LinkedHashMap<>();
@@ -220,6 +244,8 @@ public class NaveService {
         m.put("tipoNave", n.getTipoNave());
         m.put("propietario", n.getPropietario());
         m.put("estado", n.getEstado());
+        m.put("estadoCertificado", n.getCertificadoFolio() == null ? null : CertificadoService.estado(n));
+        m.put("fechaVencimiento", n.getFechaVencimiento() == null ? null : n.getFechaVencimiento().toString());
         return m;
     }
 
@@ -250,11 +276,16 @@ public class NaveService {
         m.put("fechaEmision", n.getFechaEmision() == null ? null : n.getFechaEmision().toString());
         m.put("fechaVencimiento", n.getFechaVencimiento() == null ? null : n.getFechaVencimiento().toString());
         m.put("estadoCertificado", n.getCertificadoFolio() == null ? null : CertificadoService.estado(n));
+        m.put("fechaDecision", n.getFechaDecision() == null ? null : n.getFechaDecision().toString());
+        m.put("codigoVerificacion", n.getCodigoVerificacion());
+        m.put("revocado", n.isRevocado());
+        m.put("motivoRevocacion", n.getMotivoRevocacion());
+        m.put("fechaRevocacion", n.getFechaRevocacion() == null ? null : n.getFechaRevocacion().toString());
 
         return m;
     }
 
-    // ---------- utilidades privadas ----------
+    //  utilidades privadas 
 
     private Nave buscar(Long id, String correo, boolean funcionario) {
         Nave n = repo.findById(id).orElseThrow(() -> new NoSuchElementException("Solicitud no encontrada."));

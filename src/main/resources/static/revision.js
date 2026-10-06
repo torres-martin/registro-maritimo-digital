@@ -78,6 +78,7 @@ function pintar(d) {
       ["Trámite", d.tramite], ["Documento base", d.documentoBase], ["Presentación", x.presentacion],
       ["Certificado", d.certificadoFolio], ["Vigente hasta", d.fechaVencimiento],
       ["Estado del certificado", d.estadoCertificado],
+      ["Motivo de revocación", d.motivoRevocacion],
       ["Fecha de creación", d.fechaCreacion], ["Liquidación", d.liquidacion]
     ]),
     seccion("Nave", [
@@ -107,6 +108,7 @@ function pintar(d) {
   ].filter(Boolean).forEach((s) => cuerpo.appendChild(s));
 
   $("decision").hidden = d.estado !== "En revisión";
+  $("revocacion").hidden = !(d.certificadoFolio && !d.revocado);
 }
 
 async function cargar() {
@@ -164,5 +166,41 @@ async function decidir(estado) {
 
 $("aprobar").addEventListener("click", () => decidir("Aprobado"));
 $("rechazar").addEventListener("click", () => decidir("Rechazado"));
+
+async function revocar() {
+  aviso("");
+  $("err-motivo").textContent = "";
+
+  const motivo = $("motivo-revocacion").value.trim();
+  if (!motivo) {
+    $("err-motivo").textContent = "Indique el motivo de la revocación.";
+    $("motivo-revocacion").focus();
+    return;
+  }
+  if (!confirm("El certificado dejará de ser válido y no se puede deshacer. ¿Continuar?")) return;
+
+  $("revocar").disabled = true;
+  try {
+    const r = await fetch("/api/naves/" + id + "/revocar", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ motivo })
+    });
+    const json = await r.json().catch(() => ({}));
+    if (r.ok) {
+      $("motivo-revocacion").value = "";
+      pintar(json);
+      aviso("Certificado revocado.", true);
+    } else {
+      aviso(json.mensaje || "No se pudo revocar el certificado.", false);
+    }
+  } catch {
+    aviso("No se pudo conectar con el servidor.", false);
+  } finally {
+    $("revocar").disabled = false;
+  }
+}
+
+$("revocar").addEventListener("click", revocar);
 
 cargar();

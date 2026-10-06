@@ -1,5 +1,8 @@
 const $ = (id) => document.getElementById(id);
-const CLASES = { "En revisión": "en-revision", "Aprobado": "aprobado", "Rechazado": "rechazado" };
+const CLASES = {
+  "En revisión": "en-revision", "Aprobado": "aprobado", "Rechazado": "rechazado",
+  "Vigente": "aprobado", "Vencido": "rechazado", "Revocado": "rechazado"
+};
 let naves = [];
 
 // Todo se escribe con textContent (nunca innerHTML) para evitar XSS
@@ -9,10 +12,16 @@ function celda(texto) {
   return td;
 }
 
+function formatear(iso) {
+  if (!iso) return "";
+  const [a, m, d] = String(iso).split("-");
+  return d && m && a ? d + "/" + m + "/" + a : iso;
+}
+
 function filaMensaje(texto) {
   const tr = document.createElement("tr");
   const td = document.createElement("td");
-  td.colSpan = 6;
+  td.colSpan = 8;
   td.className = "vacio";
   td.textContent = texto;
   tr.appendChild(td);
@@ -60,8 +69,19 @@ function pintarTabla() {
     insignia.textContent = n.estado;
     tdEstado.appendChild(insignia);
 
+    // HU-20: estado y vencimiento del certificado
+    const tdCert = document.createElement("td");
+    if (n.estadoCertificado) {
+      const c = document.createElement("span");
+      c.className = "estado " + (CLASES[n.estadoCertificado] || "");
+      c.textContent = n.estadoCertificado;
+      tdCert.appendChild(c);
+    } else {
+      tdCert.textContent = "—";
+    }
+
     tr.append(tdCodigo, celda(n.nombreNave), celda(n.imo), celda(n.tipoNave),
-              celda(n.propietario), tdEstado);
+              celda(n.propietario), tdEstado, tdCert, celda(formatear(n.fechaVencimiento)));
     cuerpo.append(tr);
   });
 }
@@ -80,4 +100,5 @@ async function cargar() {
 
 $("buscar").addEventListener("input", pintarTabla);
 $("filtro-estado").addEventListener("change", pintarTabla);
+
 cargar();

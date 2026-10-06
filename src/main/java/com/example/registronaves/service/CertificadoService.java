@@ -32,6 +32,8 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.security.SecureRandom;
+import java.util.ArrayList;
+import java.util.List;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
@@ -65,112 +67,129 @@ public class CertificadoService {
         return sb.toString();
     }
 
-    public static String estado(Nave n) {
+        public static String estado(Nave n) {
         if (n.getFechaVencimiento() == null) return "Sin certificado";
+        if (n.isRevocado()) return "Revocado";
         return LocalDate.now().isAfter(n.getFechaVencimiento()) ? "Vencido" : "Vigente";
     }
-
+    
     public byte[] pdf(Nave n) {
         try {
             ByteArrayOutputStream salida = new ByteArrayOutputStream();
-            // Documento horizontal (A4.rotate()) con márgenes optimizados
-            Document doc = new Document(PageSize.A4.rotate(), 36, 36, 30, 30);
+            Document doc = new Document(PageSize.A4.rotate(), 40, 40, 34, 40);
             PdfWriter.getInstance(doc, salida).setPageEvent(new Marco());
             doc.open();
 
-            // ---- Encabezado ----
-            PdfPTable enc = new PdfPTable(new float[] {70f, 30f});
+            // Encabezado: instituciones a la izquierda, folio y estado a la derecha 
+            PdfPTable enc = new PdfPTable(new float[] {68f, 32f});
             enc.setWidthPercentage(100);
             PdfPCell izq = sinBorde();
             izq.addElement(new Paragraph("REPÚBLICA DE PANAMÁ", fuente(FontFactory.HELVETICA_BOLD, 8.5f, GRIS)));
-            izq.addElement(new Paragraph("AUTORIDAD MARÍTIMA DE PANAMÁ", fuente(FontFactory.HELVETICA_BOLD, 15, AZUL)));
+            izq.addElement(new Paragraph("AUTORIDAD MARÍTIMA DE PANAMÁ", fuente(FontFactory.HELVETICA_BOLD, 16, AZUL)));
             izq.addElement(new Paragraph("Dirección General de Registro Público de Propiedad de Naves",
                     fuente(FontFactory.HELVETICA, 9.5f, GRIS)));
             izq.addElement(new Paragraph("Panama Maritime Authority · General Directorate of Public Registry of Ownership of Vessels",
                     fuente(FontFactory.HELVETICA_OBLIQUE, 7.5f, GRIS)));
             enc.addCell(izq);
-            
             PdfPCell der = sinBorde();
+            String estado = estado(n);
             Paragraph etiqueta = new Paragraph("Documento electrónico · Electronic document", fuente(FontFactory.HELVETICA, 7.5f, GRIS));
             etiqueta.setAlignment(Element.ALIGN_RIGHT);
-            Paragraph folio = new Paragraph("N.º " + n.getCertificadoFolio(), fuente(FontFactory.COURIER_BOLD, 13, AZUL));
+            Paragraph folio = new Paragraph("N.º " + n.getCertificadoFolio(), fuente(FontFactory.COURIER_BOLD, 14, AZUL));
             folio.setAlignment(Element.ALIGN_RIGHT);
+            Paragraph est = new Paragraph(estado.toUpperCase(),
+                    fuente(FontFactory.HELVETICA_BOLD, 12, "Vigente".equals(estado) ? VERDE : ROJO));
+            est.setAlignment(Element.ALIGN_RIGHT);
             der.addElement(etiqueta);
             der.addElement(folio);
+            der.addElement(est);
             enc.addCell(der);
             doc.add(enc);
 
-            // ---- Título y estado ----
+            //  Título 
             centrado(doc, "CERTIFICADO DE INSCRIPCIÓN PRELIMINAR DE TÍTULO DE PROPIEDAD DE NAVE",
-                    fuente(FontFactory.HELVETICA_BOLD, 14, AZUL), 12, 2);
+                    fuente(FontFactory.HELVETICA_BOLD, 15, AZUL), 12, 1);
             centrado(doc, "Certificate of preliminary registration of vessel ownership title",
-                    fuente(FontFactory.HELVETICA_OBLIQUE, 8.5f, GRIS), 0, 5);
-            
-            String estado = estado(n);
-            centrado(doc, estado.toUpperCase(),
-                    fuente(FontFactory.HELVETICA_BOLD, 12, "Vigente".equals(estado) ? VERDE : ROJO), 0, 5);
+                    fuente(FontFactory.HELVETICA_OBLIQUE, 9, GRIS), 0, 8);
 
-            Paragraph intro = new Paragraph("La Dirección General de Registro Público de Propiedad de Naves de la Autoridad "
-                    + "Marítima de Panamá certifica que recibió y calificó la solicitud de inscripción preliminar del título "
-                    + "de propiedad de la nave que se describe a continuación.", fuente(FontFactory.HELVETICA, 9f, Color.BLACK));
-            intro.setAlignment(Element.ALIGN_JUSTIFIED);
-            intro.setSpacingAfter(5);
-            doc.add(intro);
-
-            // ---- Datos ----
-            PdfPTable datos = new PdfPTable(2);
+            // Datos en cuatro columnas (dos campos por fila) 
+            PdfPTable datos = new PdfPTable(new float[] {19f, 31f, 19f, 31f});
             datos.setWidthPercentage(100);
-            datos.setWidths(new float[] {30f, 70f});
-            
+
             seccion(datos, "DATOS DE LA NAVE · VESSEL INFORMATION");
-            fila(datos, "Nombre de la nave", "Vessel name", n.getNombreNave());
-            fila(datos, "Número IMO", "IMO number", n.getImo());
-            fila(datos, "Tipo de nave", "Vessel type", n.getTipoNave());
+            List<String[]> nave = new ArrayList<>();
+            nave.add(new String[] {"Nombre de la nave", "Vessel name", n.getNombreNave()});
+            nave.add(new String[] {"Número IMO", "IMO number", n.getImo()});
+            nave.add(new String[] {"Tipo de nave", "Vessel type", n.getTipoNave()});
             if (n.getArqueoBruto() != null)
-                fila(datos, "Tonelaje bruto", "Gross tonnage", String.format(java.util.Locale.US, "%,.2f GT", n.getArqueoBruto()));
-            if (lleno(n.getDistintivoLlamada())) fila(datos, "Distintivo de llamada", "Call sign", n.getDistintivoLlamada());
-            if (lleno(n.getPatenteNavegacion())) fila(datos, "Patente de navegación", "Navigation registry", n.getPatenteNavegacion());
-            
+                nave.add(new String[] {"Tonelaje bruto", "Gross tonnage",
+                        String.format(java.util.Locale.US, "%,.2f GT", n.getArqueoBruto())});
+            if (lleno(n.getDistintivoLlamada()))
+                nave.add(new String[] {"Distintivo de llamada", "Call sign", n.getDistintivoLlamada()});
+            if (lleno(n.getPatenteNavegacion()))
+                nave.add(new String[] {"Patente de navegación", "Navigation registry", n.getPatenteNavegacion()});
+            campos(datos, nave);
+
             seccion(datos, "PARTES · PARTIES");
-            fila(datos, "Transmitente del dominio", "Transferor", n.getNombreTransmitente());
-            fila(datos, "Comprador o propietario", "Buyer or owner", n.getPropietario());
-            
+            List<String[]> partes = new ArrayList<>();
+            partes.add(new String[] {"Transmitente del dominio", "Transferor", n.getNombreTransmitente()});
+            partes.add(new String[] {"Comprador o propietario", "Buyer or owner", n.getPropietario()});
+            campos(datos, partes);
+
             seccion(datos, "DOCUMENTO Y TRÁMITE · DOCUMENT AND PROCEDURE");
-            fila(datos, "Documento base", "Base document", n.getDocumentoBase());
-            if (lleno(n.getFechaCelebracion())) fila(datos, "Fecha de celebración del documento", "Date of the document", n.getFechaCelebracion());
-            if (lleno(n.getTipoLegalizacion())) fila(datos, "Tipo de legalización", "Type of legalization", n.getTipoLegalizacion());
-            fila(datos, "Trámite N.º", "Procedure no.", n.getTramite());
-            if (lleno(n.getLiquidacion())) fila(datos, "Liquidación N.º", "Liquidation no.", n.getLiquidacion());
-            fila(datos, "Derechos de registro y calificación (preliminar)", "Registration and review fees", "B/. 20.00");
-            fila(datos, "Abogado a cargo de la inscripción definitiva", "Attorney in charge of definitive registration", n.getAbogado());
-            fila(datos, "Fecha de emisión", "Date of issue", n.getFechaEmision().format(FECHA));
-            fila(datos, "Vigente hasta", "Valid until", n.getFechaVencimiento().format(FECHA));
+            List<String[]> tramite = new ArrayList<>();
+            tramite.add(new String[] {"Documento base", "Base document", n.getDocumentoBase()});
+            if (lleno(n.getFechaCelebracion()))
+                tramite.add(new String[] {"Fecha del documento", "Date of the document", n.getFechaCelebracion()});
+            if (lleno(n.getTipoLegalizacion()))
+                tramite.add(new String[] {"Tipo de legalización", "Type of legalization", n.getTipoLegalizacion()});
+            tramite.add(new String[] {"Trámite N.º", "Procedure no.", n.getTramite()});
+            if (lleno(n.getLiquidacion()))
+                tramite.add(new String[] {"Liquidación N.º", "Liquidation no.", n.getLiquidacion()});
+            tramite.add(new String[] {"Derechos de registro y calificación", "Registration and review fees", "B/. 20.00"});
+            tramite.add(new String[] {"Abogado de la inscripción definitiva", "Attorney, definitive registration", n.getAbogado()});
+            tramite.add(new String[] {"Fecha de emisión", "Date of issue", n.getFechaEmision().format(FECHA)});
+            tramite.add(new String[] {"Vigente hasta", "Valid until", n.getFechaVencimiento().format(FECHA)});
+            campos(datos, tramite);
             doc.add(datos);
 
+            // Pie: texto a la izquierda, QR y código a la derecha 
+            PdfPTable pie = new PdfPTable(new float[] {72f, 28f});
+            pie.setWidthPercentage(100);
+            pie.setSpacingBefore(8);
+            PdfPCell texto = sinBorde();
+            texto.setPaddingRight(14);
             Paragraph nota = new Paragraph("Esta inscripción es preliminar y tiene una vigencia de seis (6) meses. Antes de que "
                     + "venza, la escritura pública que contiene el título de propiedad debe presentarse ante la Dirección General "
                     + "de Registro Público de Propiedad de Naves para solicitar la inscripción definitiva.",
-                    fuente(FontFactory.HELVETICA, 8f, GRIS));
+                    fuente(FontFactory.HELVETICA, 8.5f, GRIS));
             nota.setAlignment(Element.ALIGN_JUSTIFIED);
-            nota.setSpacingBefore(5);
-            doc.add(nota);
+            texto.addElement(nota);
+            Paragraph firma = new Paragraph("Documento firmado electrónicamente por la Autoridad Marítima de Panamá",
+                    fuente(FontFactory.HELVETICA_BOLD, 9, Color.BLACK));
+            firma.setSpacingBefore(6);
+            texto.addElement(firma);
+            texto.addElement(new Paragraph("Para confirmar que este certificado es auténtico, escanee el código QR o ingrese el "
+                    + "código de verificación en " + baseUrl + "/verificar.html",
+                    fuente(FontFactory.HELVETICA, 8.5f, GRIS)));
+            texto.addElement(new Paragraph("Fundamento: Ley 55 de 6 de agosto de 2008 y Decreto Ejecutivo 259 de 31 de marzo de 2011.",
+                    fuente(FontFactory.HELVETICA_OBLIQUE, 7.5f, GRIS)));
+            pie.addCell(texto);
 
-            // ---- QR centrado al pie + verificación ----
-            String url = baseUrl + "/verificar.html?codigo=" + n.getCodigoVerificacion();
-            Image qr = Image.getInstance(qrPng(url));
-            qr.scaleToFit(80, 80);
+            PdfPCell cqr = sinBorde();
+            cqr.setHorizontalAlignment(Element.ALIGN_CENTER);
+            Image qr = Image.getInstance(qrPng(baseUrl + "/verificar.html?codigo=" + n.getCodigoVerificacion()));
+            qr.scaleToFit(84, 84);
             qr.setAlignment(Image.ALIGN_CENTER);
-            qr.setSpacingBefore(6);
-            doc.add(qr);
-            
-            centrado(doc, "Documento firmado electrónicamente por la Autoridad Marítima de Panamá",
-                    fuente(FontFactory.HELVETICA_BOLD, 9f, Color.BLACK), 2, 2);
-            centrado(doc, "Código de verificación: " + n.getCodigoVerificacion(),
-                    fuente(FontFactory.COURIER_BOLD, 10.5f, AZUL), 0, 2);
-            centrado(doc, "Para confirmar que este certificado es auténtico, escanee el código QR o ingrese el código en "
-                    + baseUrl + "/verificar.html", fuente(FontFactory.HELVETICA, 8f, GRIS), 0, 2);
-            centrado(doc, "Fundamento: Ley 55 de 6 de agosto de 2008 y Decreto Ejecutivo 259 de 31 de marzo de 2011.",
-                    fuente(FontFactory.HELVETICA_OBLIQUE, 7f, GRIS), 2, 0);
+            cqr.addElement(qr);
+            Paragraph cod = new Paragraph(n.getCodigoVerificacion(), fuente(FontFactory.COURIER_BOLD, 11, AZUL));
+            cod.setAlignment(Element.ALIGN_CENTER);
+            cqr.addElement(cod);
+            Paragraph codEt = new Paragraph("Código de verificación", fuente(FontFactory.HELVETICA, 7.5f, GRIS));
+            codEt.setAlignment(Element.ALIGN_CENTER);
+            cqr.addElement(codEt);
+            pie.addCell(cqr);
+            doc.add(pie);
 
             doc.close();
             return salida.toByteArray();
@@ -179,7 +198,7 @@ public class CertificadoService {
         }
     }
 
-    /** Marco azul y marca de agua adaptados a formato horizontal. */
+    /** Marco azul y marca de agua en cada página. */
     private static class Marco extends PdfPageEventHelper {
         @Override
         public void onEndPage(PdfWriter w, Document d) {
@@ -190,16 +209,15 @@ public class CertificadoService {
             c.setLineWidth(1.2f);
             c.rectangle(20, 20, r.getWidth() - 40, r.getHeight() - 40);
             c.stroke();
-            
             PdfGState g = new PdfGState();
-            g.setFillOpacity(0.05f);
+            g.setFillOpacity(0.06f);
             c.setGState(g);
             c.setColorFill(AZUL);
             try {
                 BaseFont bf = BaseFont.createFont(BaseFont.HELVETICA_BOLD, BaseFont.WINANSI, false);
                 c.beginText();
-                c.setFontAndSize(bf, 44);
-                c.showTextAligned(Element.ALIGN_CENTER, "AUTORIDAD MARÍTIMA DE PANAMÁ", r.getWidth() / 2, r.getHeight() / 2, 22);
+                c.setFontAndSize(bf, 58);
+                c.showTextAligned(Element.ALIGN_CENTER, "AUTORIDAD MARÍTIMA DE PANAMÁ", r.getWidth() / 2, r.getHeight() / 2 - 20, 18);
                 c.endText();
             } catch (Exception e) {
                 // si falla la fuente, el certificado se emite sin marca de agua
@@ -208,7 +226,7 @@ public class CertificadoService {
         }
     }
 
-    // ---------- utilidades ----------
+    // utilidades 
 
     private static Font fuente(String nombre, float tamano, Color color) {
         return FontFactory.getFont(nombre, tamano, Font.NORMAL, color);
@@ -232,28 +250,46 @@ public class CertificadoService {
     }
 
     private static void seccion(PdfPTable tabla, String titulo) {
-        PdfPCell c = new PdfPCell(new Phrase(titulo, fuente(FontFactory.HELVETICA_BOLD, 8f, Color.WHITE)));
-        c.setColspan(2);
+        PdfPCell c = new PdfPCell(new Phrase(titulo, fuente(FontFactory.HELVETICA_BOLD, 8.5f, Color.WHITE)));
+        c.setColspan(4);
         c.setBackgroundColor(AZUL);
         c.setBorder(Rectangle.NO_BORDER);
         c.setPadding(4);
         tabla.addCell(c);
     }
 
-    private static void fila(PdfPTable tabla, String esp, String eng, String valor) {
-        Phrase etiqueta = new Phrase();
-        etiqueta.add(new com.lowagie.text.Chunk(esp + "\n", fuente(FontFactory.HELVETICA, 8.5f, GRIS)));
-        etiqueta.add(new com.lowagie.text.Chunk(eng, fuente(FontFactory.HELVETICA_OBLIQUE, 6.5f, GRIS)));
-        PdfPCell a = new PdfPCell(etiqueta);
-        PdfPCell b = new PdfPCell(new Phrase(valor == null || valor.isBlank() ? "—" : valor,
-                fuente(FontFactory.HELVETICA_BOLD, 9.5f, Color.BLACK)));
-        for (PdfPCell c : new PdfPCell[] {a, b}) {
-            c.setBorder(Rectangle.BOTTOM);
-            c.setBorderColor(new Color(0xD5, 0xDB, 0xE1));
-            c.setPaddingTop(3);
-            c.setPaddingBottom(3);
-            tabla.addCell(c);
+    /** Dibuja los campos de dos en dos; si sobra uno, ocupa el ancho restante. */
+    private static void campos(PdfPTable tabla, List<String[]> lista) {
+        for (int i = 0; i < lista.size(); i += 2) {
+            celdaEtiqueta(tabla, lista.get(i));
+            celdaValor(tabla, lista.get(i)[2], i + 1 < lista.size() ? 1 : 3);
+            if (i + 1 < lista.size()) {
+                celdaEtiqueta(tabla, lista.get(i + 1));
+                celdaValor(tabla, lista.get(i + 1)[2], 1);
+            }
         }
+    }
+
+    private static void celdaEtiqueta(PdfPTable tabla, String[] campo) {
+        Phrase etiqueta = new Phrase();
+        etiqueta.add(new com.lowagie.text.Chunk(campo[0] + "\n", fuente(FontFactory.HELVETICA, 8.5f, GRIS)));
+        etiqueta.add(new com.lowagie.text.Chunk(campo[1], fuente(FontFactory.HELVETICA_OBLIQUE, 6.5f, GRIS)));
+        tabla.addCell(estiloCelda(new PdfPCell(etiqueta)));
+    }
+
+    private static void celdaValor(PdfPTable tabla, String valor, int columnas) {
+        PdfPCell c = new PdfPCell(new Phrase(valor == null || valor.isBlank() ? "—" : valor,
+                fuente(FontFactory.HELVETICA_BOLD, 10, Color.BLACK)));
+        c.setColspan(columnas);
+        tabla.addCell(estiloCelda(c));
+    }
+
+    private static PdfPCell estiloCelda(PdfPCell c) {
+        c.setBorder(Rectangle.BOTTOM);
+        c.setBorderColor(new Color(0xD5, 0xDB, 0xE1));
+        c.setPaddingTop(3);
+        c.setPaddingBottom(3);
+        return c;
     }
 
     private byte[] qrPng(String contenido) throws WriterException, IOException {

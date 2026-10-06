@@ -48,8 +48,6 @@ function validarControl(el) {
     msg = "Este campo es obligatorio.";
   } else if (v && el.id === "imo" && !/^\d{7}$/.test(v.toUpperCase().replace(/\s/g, "").replace(/^IMO/, ""))) {
     msg = "El IMO debe tener 7 dígitos (ejemplo: 1234567).";
-  } else if (v && el.id === "imo" && !imoValido(v)) {
-    msg = "El dígito de control del IMO no coincide. Revise el número en el certificado de arqueo.";
   } else if (v && el.type === "number" && !(Number(v) > 0)) {
     msg = "Debe ser un número mayor que 0.";
   } else if (v && el.id === "fechaCelebracion" && el.max && v > el.max) {
@@ -202,5 +200,53 @@ async function enviar() {
   }
 }
 
+// ---------- corrección de una solicitud rechazada ----------
+
+async function precargar() {
+  const id = new URLSearchParams(location.search).get("corregir");
+  if (!id || !/^\d+$/.test(id)) return;
+
+  const caja = $("correccion");
+  const texto = (etiqueta, contenido) => {
+    const p = document.createElement("div");
+    if (etiqueta) {
+      const t = document.createElement("strong");
+      t.textContent = etiqueta;
+      p.append(t, " ");
+    }
+    p.append(contenido);
+    return p;
+  };
+
+  try {
+    const r = await fetch("/api/naves/" + id);
+    if (r.status === 401) {
+      location.href = "/login.html";
+      return;
+    }
+    if (!r.ok) throw new Error();
+    const d = await r.json();
+    if (d.estado !== "Rechazado") return;
+
+    // Las claves de los campos (data-k) coinciden con las del detalle
+    document.querySelectorAll("#form-solicitud [data-k]").forEach((el) => {
+      const v = d[el.dataset.k];
+      if (v !== null && v !== undefined) el.value = v;
+    });
+    condiciones();
+
+    caja.replaceChildren(
+      texto("Corrigiendo la solicitud " + d.tramite, ""),
+      texto("Observación del funcionario:", d.observacion || "—"),
+      texto("", "Revise los datos y vuelva a adjuntar el PDF antes de enviar.")
+    );
+    caja.hidden = false;
+  } catch {
+    caja.replaceChildren(texto("", "No se pudo cargar la solicitud a corregir."));
+    caja.hidden = false;
+  }
+}
+
 condiciones();
 ir(0);
+precargar();

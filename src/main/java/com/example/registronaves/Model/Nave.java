@@ -119,6 +119,19 @@ public class Nave {
     @Column(name = "fecha_vencimiento")
     private LocalDate fechaVencimiento;
 
+    @Column(name = "fecha_decision")
+    private LocalDate fechaDecision;
+
+    // Boolean (no boolean): las filas anteriores quedan con NULL cuando se crea la columna
+    @Column(name = "revocado")
+    private Boolean revocado = false;
+
+    @Column(name = "motivo_revocacion", length = 500)
+    private String motivoRevocacion;
+
+    @Column(name = "fecha_revocacion")
+    private LocalDate fechaRevocacion;
+
     public Nave() {}
 
     public Long getId() { return id; }
@@ -217,7 +230,7 @@ public class Nave {
     public LocalDate getFechaCreacion() { return fechaCreacion; }
     public void setFechaCreacion(LocalDate fechaCreacion) { this.fechaCreacion = fechaCreacion; }
 
-        public String getCertificadoFolio() { return certificadoFolio; }
+    public String getCertificadoFolio() { return certificadoFolio; }
     public void setCertificadoFolio(String certificadoFolio) { this.certificadoFolio = certificadoFolio; }
 
     public String getCodigoVerificacion() { return codigoVerificacion; }
@@ -228,4 +241,16 @@ public class Nave {
 
     public LocalDate getFechaVencimiento() { return fechaVencimiento; }
     public void setFechaVencimiento(LocalDate fechaVencimiento) { this.fechaVencimiento = fechaVencimiento; }
+
+    public LocalDate getFechaDecision() { return fechaDecision; }
+    public void setFechaDecision(LocalDate fechaDecision) { this.fechaDecision = fechaDecision; }
+
+    public boolean isRevocado() { return Boolean.TRUE.equals(revocado); }
+    public void setRevocado(boolean revocado) { this.revocado = revocado; }
+
+    public String getMotivoRevocacion() { return motivoRevocacion; }
+    public void setMotivoRevocacion(String motivoRevocacion) { this.motivoRevocacion = motivoRevocacion; }
+
+    public LocalDate getFechaRevocacion() { return fechaRevocacion; }
+    public void setFechaRevocacion(LocalDate fechaRevocacion) { this.fechaRevocacion = fechaRevocacion; }
 }

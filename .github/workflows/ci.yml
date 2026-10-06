@@ -1,0 +1,67 @@
+name: CI - Registro Marítimo Digital
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+
+jobs:
+  pruebas:
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+          MYSQL_DATABASE: amp_registro_db
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+
+    steps:
+      - name: Descargar el código
+        uses: actions/checkout@v4
+
+      - name: Instalar Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+          cache: maven
+
+      - name: Dar permiso de ejecución a Maven Wrapper
+        run: chmod +x mvnw
+
+      - name: Compilar
+        run: ./mvnw -B -DskipTests package
+
+      - name: Arrancar el sistema
+        run: |
+          nohup java -jar target/registronaves-0.0.1-SNAPSHOT.jar > app.log 2>&1 &
+          for i in $(seq 1 40); do
+            curl -sf http://localhost:8080/login.html > /dev/null && exit 0
+            sleep 3
+          done
+          echo "El sistema no arrancó"; cat app.log; exit 1
+
+      - name: Pruebas de interfaz (Selenium)
+        run: ./mvnw -B test -Dtest=Sprint1SeleniumTest
+
+      - name: Guardar capturas de evidencia
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: evidencias-sprint1
+          path: evidencias/
+
+      - name: Guardar registro del sistema
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-log
+          path: app.log

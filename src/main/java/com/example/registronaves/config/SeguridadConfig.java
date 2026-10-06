@@ -39,8 +39,8 @@ public class SeguridadConfig {
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(a -> a
                 // Públicas
-                .requestMatchers("/login.html", "/login.js", "/estilos.css", "/verificar.html", "/verificar.js",
-                        "/favicon.ico", "/error").permitAll()
+                .requestMatchers("/login.html", "/login.js", "/estilos.css", "/img/**", "/verificar.html", "/verificar.js",
+        "/favicon.ico", "/error").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/publico/**").permitAll()
                 // Pantallas por rol
@@ -54,6 +54,7 @@ public class SeguridadConfig {
                 .requestMatchers(HttpMethod.GET, "/api/naves/todas").hasRole("FUNCIONARIO")
                 .requestMatchers(HttpMethod.GET, "/api/naves/consulta").hasRole("ASEGURADORA")
                 .requestMatchers(HttpMethod.PUT, "/api/naves/*/estado").hasRole("FUNCIONARIO")
+                .requestMatchers(HttpMethod.PUT, "/api/naves/*/revocar").hasRole("FUNCIONARIO")
                 .requestMatchers(HttpMethod.GET, "/api/naves/*", "/api/naves/*/documento", "/api/naves/*/certificado").hasAnyRole("ARMADOR", "FUNCIONARIO")
                 .anyRequest().authenticated())
             .exceptionHandling(e -> e

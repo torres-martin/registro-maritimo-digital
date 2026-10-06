@@ -1,5 +1,5 @@
 const $ = (id) => document.getElementById(id);
-const CLASES = { "Vigente": "aprobado", "Vencido": "rechazado" };
+const CLASES = { "Vigente": "aprobado", "Vencido": "rechazado", "Revocado": "rechazado" };
 
 function mensaje(texto) {
   const caja = document.createElement("div");

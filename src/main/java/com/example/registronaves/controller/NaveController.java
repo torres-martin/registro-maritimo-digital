@@ -24,6 +24,8 @@ public class NaveController {
 
     public record Decision(String estado, String observacion, String liquidacion) {}
 
+    public record Revocacion(String motivo) {}
+
     private final NaveService servicio;
 
     public NaveController(NaveService servicio) {
@@ -61,6 +63,11 @@ public class NaveController {
     @PutMapping("/naves/{id}/estado")
     public Map<String, Object> decidir(@PathVariable("id") Long id, @RequestBody Decision d) {
         return servicio.cambiarEstado(id, d.estado(), d.observacion(), d.liquidacion());
+    }
+
+    @PutMapping("/naves/{id}/revocar")
+    public Map<String, Object> revocar(@PathVariable("id") Long id, @RequestBody Revocacion r) {
+        return servicio.revocar(id, r.motivo());
     }
 
     // Aseguradora

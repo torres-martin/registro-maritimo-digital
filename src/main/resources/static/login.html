@@ -8,40 +8,43 @@
 </head>
 <body class="login-page">
 
-<div class="spacer-container">
-  <div class="spacer-blue-side">
-    <div class="spacer-brand">
-      <div class="spacer-logo-circle">
-        <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="5" r="2.5"/><path d="M12 8v13M5 14a7 7 0 0 0 14 0M8 11H5M19 11h-3"/></svg>
-      </div>
-      <h2>Registro Marítimo</h2>
-    </div>
-    <div class="spacer-credits">AUTORIDAD MARÍTIMA DE PANAMÁ</div>
-  </div>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <clipPath id="blob" clipPathUnits="objectBoundingBox">
+    <path d="M.64 0H0V1H.7C.6.86.94.74.8.56.66.4.9.3.72.18.62.1.7.04.64 0Z"/>
+  </clipPath>
+</svg>
 
-  <div class="spacer-form-side">
+<main class="login-card">
+  <div class="login-foto" role="img" aria-label="Buque portacontenedores visto desde arriba"></div>
+  <svg class="login-linea" viewBox="0 0 1 1" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M.64 0C.7.04.62.1.72.18.9.3.66.4.8.56.94.74.6.86.7 1" fill="none" stroke="#76AABF" stroke-width="1.5" stroke-dasharray="5 5" vector-effect="non-scaling-stroke"/>
+  </svg>
+
+  <section class="login-form">
+    <div class="login-marca">
+  <img class="login-logo" src="img/logo-amp.png" alt="Autoridad Marítima de Panamá">
+  <div><b>Registro Marítimo</b><small>Autoridad Marítima de Panamá</small></div>
+</div>
+
     <h1>Iniciar sesión</h1>
+    <p class="login-sub">Accede con tu cuenta institucional.</p>
 
     <form id="form-login">
-      <div class="spacer-field">
-        <label for="correo">Correo electrónico</label>
-        <input type="email" id="correo" autocomplete="username" required>
-      </div>
+      <label for="correo">Correo electrónico</label>
+      <input type="email" id="correo" autocomplete="username" required>
 
-      <div class="spacer-field">
-        <label for="password">Contraseña</label>
-        <input type="password" id="password" autocomplete="current-password" required>
-      </div>
+      <label for="password">Contraseña</label>
+      <input type="password" id="password" autocomplete="current-password" required>
 
-      <div class="spacer-actions">
-        <button type="submit" class="spacer-btn-primary" id="entrar">Ingresar</button>
-        <a href="verificar.html" class="spacer-btn-outline">Verificar trámite</a>
+      <div class="login-acciones">
+        <button type="submit" class="login-btn principal" id="entrar">Ingresar</button>
+        <a href="verificar.html" class="login-btn secundario">Verificar trámite</a>
       </div>
 
       <div id="error-login" class="aviso" role="alert"></div>
     </form>
-  </div>
-</div>
+  </section>
+</main>
 
 <script src="login.js"></script>
 </body>
