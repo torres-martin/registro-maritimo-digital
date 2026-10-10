@@ -1,7 +1,7 @@
 const $ = (id) => document.getElementById(id);
 const CLASES = {
   "En revisión": "en-revision", "Aprobado": "aprobado", "Rechazado": "rechazado",
-  "Vigente": "aprobado", "Vencido": "rechazado", "Revocado": "rechazado"
+  "Vigente": "aprobado", "Vencido": "vencido", "Revocado": "revocado"
 };
 let naves = [];
 
