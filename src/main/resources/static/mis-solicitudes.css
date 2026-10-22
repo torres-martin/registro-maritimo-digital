@@ -17,9 +17,9 @@
   position: relative;
   z-index: 1;
   width: 100%;
-  max-width: 1440px;
-  margin: auto;
-  padding: 36px 32px 64px;
+  max-width: none;
+  margin: 0;
+  padding: 36px var(--lado) 64px;
 }
 
 .hero-etiqueta,
@@ -77,8 +77,7 @@
 .solicitudes-resumen,
 .solicitudes-panel,
 .solicitudes-pie {
-  width: calc(100% - 64px);
-  max-width: 1376px;
+  width: min(1376px, calc(100% - 2 * clamp(16px, 3vw, 40px)));
   margin-left: auto;
   margin-right: auto;
 }
@@ -477,7 +476,7 @@
   }
 
   .hero-contenido {
-    padding: 30px 22px 62px;
+    padding: 30px var(--lado) 62px;
   }
 
   .hero-contenido p {
@@ -487,12 +486,6 @@
 
   .hero-imagen {
     background-position: center, 60% center;
-  }
-
-  .solicitudes-resumen,
-  .solicitudes-panel,
-  .solicitudes-pie {
-    width: calc(100% - 28px);
   }
 
   .solicitudes-resumen {

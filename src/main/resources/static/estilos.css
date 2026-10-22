@@ -279,7 +279,7 @@ button.cuenta-salir:active {
 
 @media (max-width: 700px) {
   .bar {
-    padding: 16px;
+    padding: 16px var(--lado);
     gap: 12px;
   }
 
