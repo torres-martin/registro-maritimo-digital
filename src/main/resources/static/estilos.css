@@ -155,17 +155,14 @@ h3 {
   padding: 12px 0;
   color: var(--a);
   font-size: 12px;
-  font-weight: 500;
+  font-weight: 600;
   text-decoration: none;
   border-radius: 0;
   border-bottom: 2px solid transparent;
-  transition:
-    border-color var(--mov),
-    color var(--mov);
+  transition: border-color var(--mov), color var(--mov);
 }
 
-.bar nav a[aria-current] {
-  font-weight: 700;
+.bar nav a[aria-current="page"] {
   border-bottom-color: var(--a);
 }
 
