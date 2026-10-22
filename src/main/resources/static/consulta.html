@@ -15,11 +15,47 @@
 </svg>
 
 <header class="bar">
-  <div class="logo"><svg class="i"><use href="#an"/></svg>Registro Marítimo Digital</div>
+  <a
+    class="logo marca-registro"
+    href="bandeja.html"
+    aria-label="Registro Marítimo Digital"
+  >
+    <img
+      class="marca-logo"
+      src="img/logo-amp.png"
+      alt="Autoridad Marítima de Panamá"
+    >
+
+    <span class="marca-texto">
+      <strong>Registro Marítimo</strong>
+      <span>Digital</span>
+    </span>
+  </a>
   <nav>
     <a href="consulta.html" aria-current="page">Consulta de naves</a>
   </nav>
-  <div class="who"><span id="usuario"></span><br><a href="#" id="salir">Cerrar sesión</a></div>
+  <div class="cabecera-cuenta">
+  <div class="cuenta-usuario">
+    <span
+      class="cuenta-avatar"
+      id="usuario-iniciales"
+      aria-hidden="true"
+    >—</span>
+
+    <div class="cuenta-datos">
+      <span id="usuario">Cargando…</span>
+      <span id="usuario-rol"></span>
+    </div>
+  </div>
+
+  <button type="button" class="cuenta-salir" id="salir">
+    <svg class="i" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M9 4H4v16h5M9 12h12m-4-4 4 4-4 4"/>
+    </svg>
+    Cerrar sesión
+  </button>
+</div>
+
 </header>
 
 <div class="band">

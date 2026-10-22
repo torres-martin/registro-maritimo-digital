@@ -73,20 +73,29 @@ function pintarTabla() {
     insignia.className = "estado " + (CLASES[n.estado] || "en-revision");
     insignia.textContent = n.estado || "En calificación";
     tdEstado.appendChild(insignia);
+    
+const tdAccion = document.createElement("td");
+tdAccion.className = "acciones-tabla";
 
-    const tdAccion = document.createElement("td");
-    const enlace = document.createElement("a");
-    enlace.className = "btn o x";
+const enlace = document.createElement("a");
+enlace.className = "btn o x";
+enlace.href = "revision.html?id=" + encodeURIComponent(n.id);
+enlace.textContent = n.estado === "En revisión" ? "Revisar" : "Ver";
 
-    if (n.estado === "Aprobado") {
-      enlace.href = "/api/naves/" + encodeURIComponent(n.id) + "/certificado";
-      enlace.target = "_blank";
-      enlace.textContent = "Certificado PDF";
-    } else {
-      enlace.href = "revision.html?id=" + encodeURIComponent(n.id);
-      enlace.textContent = "Revisar";
-    }
-    tdAccion.appendChild(enlace);
+tdAccion.appendChild(enlace);
+
+if (n.estado === "Aprobado") {
+  const certificado = document.createElement("a");
+
+  certificado.className = "btn o x";
+  certificado.href =
+    "/api/naves/" + encodeURIComponent(n.id) + "/certificado";
+  certificado.target = "_blank";
+  certificado.rel = "noopener";
+  certificado.textContent = "Certificado";
+
+  tdAccion.appendChild(certificado);
+}
 
     tr.append(
       tdCodigo,

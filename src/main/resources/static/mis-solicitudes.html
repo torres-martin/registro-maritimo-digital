@@ -5,40 +5,196 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Mis solicitudes · Registro Marítimo Digital</title>
   <link rel="stylesheet" href="estilos.css">
+  <link rel="stylesheet" href="mis-solicitudes.css">
 </head>
-<body>
+
+<body class="solicitudes-page">
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
-    <symbol id="an" viewBox="0 0 24 24"><circle cx="12" cy="5" r="2.5"/><path d="M12 8v13M5 14a7 7 0 0 0 14 0M8 11H5M19 11h-3"/></symbol>
+    <symbol id="an" viewBox="0 0 24 24">
+      <circle cx="12" cy="5" r="2.5"/>
+      <path d="M12 8v13M5 14a7 7 0 0 0 14 0M8 11H5M19 11h-3"/>
+    </symbol>
   </defs>
 </svg>
 
 <header class="bar">
-  <div class="logo"><svg class="i"><use href="#an"/></svg>Registro Marítimo Digital</div>
-  <nav>
-    <a href="nueva-solicitud.html">Nueva solicitud</a>
-    <a href="mis-solicitudes.html" aria-current="page">Mis solicitudes</a>
+  <a
+    class="logo marca-registro"
+    href="bandeja.html"
+    aria-label="Registro Marítimo Digital"
+  >
+    <img
+      class="marca-logo"
+      src="img/logo-amp.png"
+      alt="Autoridad Marítima de Panamá"
+    >
+
+    <span class="marca-texto">
+      <strong>Registro Marítimo</strong>
+      <span>Digital</span>
+    </span>
+  </a>
+
+  <nav aria-label="Navegación principal">
+    <a href="mis-solicitudes.html" aria-current="page">
+      Mis solicitudes
+    </a>
+    <a href="nueva-solicitud.html">
+      Nueva solicitud
+    </a>
   </nav>
-  <div class="who"><span id="usuario"></span><br><a href="#" id="salir">Cerrar sesión</a></div>
+
+  <div class="cabecera-cuenta">
+    <div class="cuenta-usuario">
+      <span
+        class="cuenta-avatar"
+        id="usuario-iniciales"
+        aria-hidden="true"
+      >—</span>
+
+      <div class="cuenta-datos">
+        <span id="usuario">Cargando…</span>
+        <span id="usuario-rol"></span>
+      </div>
+    </div>
+
+    <button type="button" class="cuenta-salir" id="salir">
+      <svg class="i" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M9 4H4v16h5M9 12h12m-4-4 4 4-4 4"/>
+      </svg>
+      Cerrar sesión
+    </button>
+  </div>
 </header>
 
-<div class="band">
-  <h1>Mis solicitudes</h1>
-</div>
+<main class="solicitudes-main">
 
-<div class="tc">
-  <div class="pad">
+  <section class="solicitudes-hero" aria-labelledby="titulo-pagina">
+    <div class="hero-contenido">
+      <span class="hero-etiqueta">
+        <svg class="i" aria-hidden="true"><use href="#an"/></svg>
+        Portal del armador
+      </span>
 
-    <section id="vista-lista">
-      <div class="filtros">
-        <input id="buscar" type="search" placeholder="Buscar" aria-label="Buscar por trámite, nave o IMO">
-        <select id="filtro-estado" aria-label="Filtrar por estado">
-          <option value="">Todos los estados</option>
-          <option>En revisión</option>
-          <option>Aprobado</option>
-          <option>Rechazado</option>
-        </select>
+      <h1 id="titulo-pagina">Tu flota, siempre<br>a la vista.</h1>
+
+      <p>
+        Consulta tus solicitudes, sigue cada etapa del trámite y accede
+        a tus documentos desde un solo lugar.
+      </p>
+
+      <a href="nueva-solicitud.html" class="btn hero-boton">
+        <span aria-hidden="true">＋</span>
+        Nueva solicitud
+      </a>
+    </div>
+
+    <div class="hero-imagen" aria-hidden="true"></div>
+
+    <div class="hero-pie">
+      <span class="hero-punto"></span>
+      Registro Marítimo Digital
+      <span>Solicitudes y certificados</span>
+    </div>
+  </section>
+
+  <section class="solicitudes-resumen" aria-label="Resumen de tus solicitudes">
+
+    <article class="resumen-tarjeta">
+      <div>
+        <span class="resumen-etiqueta">Total de solicitudes</span>
+        <strong id="resumen-total">—</strong>
+        <span class="resumen-ayuda">Todos tus trámites</span>
+      </div>
+      <span class="resumen-icono" aria-hidden="true">
+        <svg class="i" viewBox="0 0 24 24">
+          <path d="M6 3h9l4 4v14H5V3zM14 3v5h5M8 12h8M8 16h6"/>
+        </svg>
+      </span>
+    </article>
+
+    <article class="resumen-tarjeta resumen-revision">
+      <div>
+        <span class="resumen-etiqueta">En revisión</span>
+        <strong id="resumen-revision">—</strong>
+        <span class="resumen-ayuda">Pendientes de decisión</span>
+      </div>
+      <span class="resumen-icono" aria-hidden="true">
+        <svg class="i" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="9"/>
+          <path d="M12 7v5l3 2"/>
+        </svg>
+      </span>
+    </article>
+
+    <article class="resumen-tarjeta resumen-aprobado">
+      <div>
+        <span class="resumen-etiqueta">Aprobadas</span>
+        <strong id="resumen-aprobado">—</strong>
+        <span class="resumen-ayuda">Solicitudes inscritas</span>
+      </div>
+      <span class="resumen-icono" aria-hidden="true">
+        <svg class="i" viewBox="0 0 24 24">
+          <path d="m5 12 4 4L19 6"/>
+        </svg>
+      </span>
+    </article>
+
+    <article class="resumen-tarjeta resumen-rechazado">
+      <div>
+        <span class="resumen-etiqueta">Rechazadas</span>
+        <strong id="resumen-rechazado">—</strong>
+        <span class="resumen-ayuda">Revisa las observaciones</span>
+      </div>
+      <span class="resumen-icono" aria-hidden="true">
+        <svg class="i" viewBox="0 0 24 24">
+          <path d="M8 7H4V3M4 7a8 8 0 1 1-1 9"/>
+        </svg>
+      </span>
+    </article>
+
+  </section>
+
+  <div class="solicitudes-panel">
+
+    <section id="vista-lista" aria-labelledby="titulo-lista">
+      <div class="panel-encabezado">
+        <div>
+          <span class="panel-etiqueta">GESTIÓN DE TRÁMITES</span>
+          <h2 id="titulo-lista">Mis solicitudes</h2>
+          <p>El estado de cada nave, sin perder el rumbo.</p>
+        </div>
+
+        <span
+          class="lista-cantidad"
+          id="lista-cantidad"
+          role="status"
+          aria-live="polite"
+        >Cargando solicitudes…</span>
+      </div>
+
+      <div class="filtros solicitudes-filtros">
+        <div class="campo-busqueda">
+          <label for="buscar">Buscar solicitud</label>
+          <input
+            id="buscar"
+            type="search"
+            placeholder="Trámite, nombre de la nave o IMO"
+            aria-label="Buscar por trámite, nave o IMO"
+          >
+        </div>
+
+        <div class="campo-estado">
+          <label for="filtro-estado">Estado del trámite</label>
+          <select id="filtro-estado">
+            <option value="">Todos los estados</option>
+            <option>En revisión</option>
+            <option>Aprobado</option>
+            <option>Rechazado</option>
+          </select>
+        </div>
       </div>
 
       <div class="tabla-wrap">
@@ -51,23 +207,47 @@
               <th>Documento base</th>
               <th>Estado</th>
               <th>Fecha</th>
-              <th></th>
+              <th>Acciones</th>
             </tr>
           </thead>
           <tbody id="tabla-body"></tbody>
         </table>
       </div>
+
+      <p class="tabla-ayuda">
+        Desliza la tabla para ver los estados y las acciones.
+      </p>
     </section>
 
     <section id="vista-detalle" hidden>
-    <div class="acciones" style="margin-top:0; margin-bottom:12px">
-        <button type="button" class="btn o x" id="volver">Volver a la lista</button>
-        <a class="btn o x" id="ver-doc" target="_blank" rel="noopener" hidden>Ver documento</a>
-        <a class="btn o x" id="ver-cert" target="_blank" rel="noopener" hidden>Ver certificado</a>
-        <a class="btn x" id="corregir" hidden>Corregir y reenviar</a>
-        <button type="button" class="btn o x" id="copiar-enlace" hidden>Copiar enlace de verificación</button>
+      <div class="acciones detalle-acciones">
+        <button type="button" class="btn o x" id="volver">
+          Volver a la lista
+        </button>
+
+        <a class="btn o x" id="ver-doc" target="_blank" rel="noopener" hidden>
+          Ver documento
+        </a>
+
+        <a class="btn o x" id="ver-cert" target="_blank" rel="noopener" hidden>
+          Ver certificado
+        </a>
+
+        <a class="btn x" id="corregir" hidden>
+          Corregir y reenviar
+        </a>
+
+        <button type="button" class="btn o x" id="copiar-enlace" hidden>
+          Copiar enlace de verificación
+        </button>
       </div>
-      <h2><span id="det-titulo"></span> <span id="det-estado"></span></h2>
+
+      <div class="detalle-encabezado">
+        <span class="panel-etiqueta">DETALLE DEL TRÁMITE</span>
+        <h2 id="det-titulo"></h2>
+        <div id="det-estado"></div>
+      </div>
+
       <div id="det-obs"></div>
       <section class="seg" id="det-historial"></section>
       <div class="detalle" id="det-cuerpo"></div>
@@ -75,7 +255,14 @@
 
     <div id="aviso" class="aviso" role="alert"></div>
   </div>
-</div>
+
+  <footer class="solicitudes-pie">
+    <svg class="i" aria-hidden="true"><use href="#an"/></svg>
+    Registro Marítimo Digital
+    <span>Tu documentación, a buen puerto.</span>
+  </footer>
+
+</main>
 
 <script src="sesion.js"></script>
 <script src="mis-solicitudes.js"></script>

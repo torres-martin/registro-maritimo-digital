@@ -25,6 +25,9 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.UUID;
 import java.util.regex.Pattern;
+import com.example.registronaves.exception.DatosInvalidosException;
+import com.lowagie.text.pdf.PdfReader;
+
 
 @Service
 public class NaveService {
@@ -73,13 +76,13 @@ public class NaveService {
         nave.setNombreNave(requerido(c, "nombreNave", 100, "El nombre de la nave"));
         String imo = normalizarImo(texto(c, "imo"));
         if (!IMO_COMPLETO.matcher(imo).matches())
-            throw new IllegalArgumentException("El IMO debe tener 7 dígitos (ejemplo: 1234567 o IMO1234567).");
+            throw new DatosInvalidosException("El IMO debe tener 7 dígitos (ejemplo: 1234567 o IMO1234567).");
         if (repo.existsByImoAndEstadoIn(imo, List.of("En revisión", "Aprobado")))
             throw new IllegalArgumentException("Ya existe una solicitud en revisión o aprobada para el IMO " + imo + ".");
 
         // VALIDACIÓN DE DÍGITO DE CONTROL DESACTIVADA PARA PRUEBAS:
         // if (!imoValido(imo.substring(3)))
-        //     throw new IllegalArgumentException("El número IMO no es válido: el dígito de control no coincide. Revise el certificado de arqueo.");
+        //     throw new DatosInvalidosException("El número IMO no es válido: el dígito de control no coincide. Revise el certificado de arqueo.");
 
         nave.setImo(imo);
         nave.setTipoNave(opcion(c, "tipoNave", TIPOS, "un tipo de nave"));
@@ -153,22 +156,22 @@ public class NaveService {
     public Map<String, Object> cambiarEstado(Long id, String estadoTxt, String observacion, String liquidacion) {
         EstadoTramite estado = EstadoTramite.desdeEtiqueta(estadoTxt);
         if (estado == EstadoTramite.EN_REVISION)
-            throw new IllegalArgumentException("La decisión debe ser Aprobado o Rechazado.");
+           throw new DatosInvalidosException("La decisión debe ser Aprobado o Rechazado.");
 
         Nave nave = repo.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Solicitud no encontrada."));
         if (!EstadoTramite.EN_REVISION.getEtiqueta().equals(nave.getEstado()))
-            throw new IllegalArgumentException("Esta solicitud ya fue resuelta.");
+            throw new DatosInvalidosException("Esta solicitud ya fue resuelta.");
 
         String obs = observacion == null ? "" : observacion.trim();
         if (estado == EstadoTramite.RECHAZADO && obs.isEmpty())
-            throw new IllegalArgumentException("Indique la observación del rechazo.");
+            throw new DatosInvalidosException("Indique la observación del rechazo.");
         if (obs.length() > 1000)
-            throw new IllegalArgumentException("La observación no puede pasar de 1000 caracteres.");
+            throw new DatosInvalidosException("La observación no puede pasar de 1000 caracteres.");
 
         String liq = liquidacion == null ? "" : liquidacion.trim();
         if (liq.length() > 40)
-            throw new IllegalArgumentException("El número de liquidación no puede pasar de 40 caracteres.");
+            throw new DatosInvalidosException("El número de liquidación no puede pasar de 40 caracteres.");
 
         nave.setEstado(estado.getEtiqueta());
         nave.setObservacion(obs.isEmpty() ? null : obs);
@@ -203,15 +206,15 @@ public class NaveService {
         Nave nave = repo.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Solicitud no encontrada."));
         if (nave.getCertificadoFolio() == null)
-            throw new IllegalArgumentException("Esta solicitud no tiene certificado emitido.");
+            throw new DatosInvalidosException("Esta solicitud no tiene certificado emitido.");
         if (nave.isRevocado())
-            throw new IllegalArgumentException("El certificado ya fue revocado.");
+            throw new DatosInvalidosException("El certificado ya fue revocado.");
 
         String motivo = texto(motivoTxt);
         if (motivo.isEmpty())
-            throw new IllegalArgumentException("Indique el motivo de la revocación.");
+            throw new DatosInvalidosException("Indique el motivo de la revocación.");
         if (motivo.length() > 500)
-            throw new IllegalArgumentException("El motivo no puede pasar de 500 caracteres.");
+            throw new DatosInvalidosException("El motivo no puede pasar de 500 caracteres.");
 
         nave.setRevocado(true);
         nave.setMotivoRevocacion(motivo);
@@ -295,24 +298,82 @@ public class NaveService {
     }
 
     private String guardarPdf(MultipartFile doc) throws IOException {
-        if (doc == null || doc.isEmpty()) throw new IllegalArgumentException("Adjunte el documento en PDF.");
-        if (doc.getSize() > MAX_PDF_BYTES)
-            throw new IllegalArgumentException("El PDF no puede pasar de 10 MB.");
-
-        byte[] cabecera;
-        try (InputStream in = doc.getInputStream()) {
-            cabecera = in.readNBytes(4);
-        }
-        if (!"%PDF".equals(new String(cabecera, StandardCharsets.US_ASCII)))
-            throw new IllegalArgumentException("El archivo adjunto debe ser un PDF válido.");
-
-        Files.createDirectories(CARPETA_UPLOADS);
-        Path destino = CARPETA_UPLOADS.resolve(UUID.randomUUID() + ".pdf");
-        try (InputStream in = doc.getInputStream()) {
-            Files.copy(in, destino);
-        }
-        return destino.toString();
+    if (doc == null || doc.isEmpty()) {
+        throw new DatosInvalidosException("Adjunte el documento en PDF.");
     }
+
+    if (doc.getSize() > MAX_PDF_BYTES) {
+        throw new DatosInvalidosException("El PDF no puede pasar de 10 MB.");
+    }
+
+    byte[] contenido = doc.getBytes();
+    validarPdf(contenido);
+
+    Files.createDirectories(CARPETA_UPLOADS);
+
+    Path destino = CARPETA_UPLOADS.resolve(UUID.randomUUID() + ".pdf");
+    Files.write(destino, contenido);
+
+    return destino.toString();
+}
+
+// Comprueba la cabecera, el cierre y la estructura del PDF antes de guardarlo. // 
+  static void validarPdf(byte[] contenido) {
+    String inicio = new String(
+            contenido,
+            0,
+            Math.min(5, contenido.length),
+            StandardCharsets.US_ASCII
+    );
+
+    int desde = Math.max(0, contenido.length - 1024);
+
+    String finalPdf = new String(
+            contenido,
+            desde,
+            contenido.length - desde,
+            StandardCharsets.US_ASCII
+    );
+
+    if (!inicio.equals("%PDF-")
+            || !finalPdf.stripTrailing().endsWith("%%EOF")) {
+        throw new DatosInvalidosException(
+                "El archivo adjunto debe ser un PDF válido y completo."
+        );
+    }
+
+    PdfReader lector = null;
+
+    try {
+        lector = new PdfReader(contenido);
+
+        if (lector.isEncrypted()
+                || lector.isRebuilt()
+                || lector.getNumberOfPages() < 1) {
+            throw new DatosInvalidosException(
+                    "El PDF debe ser válido y no estar protegido con contraseña."
+            );
+        }
+
+        for (int pagina = 1; pagina <= lector.getNumberOfPages(); pagina++) {
+            if (lector.getPageN(pagina) == null) {
+                throw new DatosInvalidosException(
+                        "El archivo adjunto debe ser un PDF válido y completo."
+                );
+            }
+
+            lector.getPageContent(pagina);
+        }
+    } catch (IOException | RuntimeException e) {
+        throw new DatosInvalidosException(
+                "El PDF no se pudo leer. Adjunte un PDF válido, completo y sin contraseña."
+        );
+    } finally {
+        if (lector != null) {
+            lector.close();
+        }
+    }
+}
 
     private static boolean imoValido(String siete) {
         int suma = 0;
@@ -336,20 +397,20 @@ public class NaveService {
 
     private static String requerido(Map<String, String> c, String clave, int max, String etiqueta) {
         String v = texto(c, clave);
-        if (v.isEmpty()) throw new IllegalArgumentException(etiqueta + " es obligatorio.");
-        if (v.length() > max) throw new IllegalArgumentException(etiqueta + " no puede pasar de " + max + " caracteres.");
+        if (v.isEmpty()) throw new DatosInvalidosException(etiqueta + " es obligatorio.");
+        if (v.length() > max) throw new DatosInvalidosException(etiqueta + " no puede pasar de " + max + " caracteres.");
         return v;
     }
 
     private static String opcional(Map<String, String> c, String clave, int max, String etiqueta) {
         String v = texto(c, clave);
-        if (v.length() > max) throw new IllegalArgumentException(etiqueta + " no puede pasar de " + max + " caracteres.");
+        if (v.length() > max) throw new DatosInvalidosException(etiqueta + " no puede pasar de " + max + " caracteres.");
         return v.isEmpty() ? null : v;
     }
 
     private static String opcion(Map<String, String> c, String clave, Set<String> validos, String etiqueta) {
         String v = texto(c, clave);
-        if (!validos.contains(v)) throw new IllegalArgumentException("Seleccione " + etiqueta + " válido.");
+        if (!validos.contains(v)) throw new DatosInvalidosException("Seleccione " + etiqueta + " válido.");
         return v;
     }
 
@@ -361,18 +422,18 @@ public class NaveService {
             if (d <= 0 || Double.isNaN(d) || Double.isInfinite(d)) throw new NumberFormatException();
             return d;
         } catch (NumberFormatException e) {
-            throw new IllegalArgumentException(etiqueta + " debe ser un número mayor que 0.");
+            throw new DatosInvalidosException(etiqueta + " debe ser un número mayor que 0.");
         }
     }
 
     private static String fecha(Map<String, String> c, String clave, String etiqueta) {
         String v = texto(c, clave);
-        if (v.isEmpty()) throw new IllegalArgumentException(etiqueta + " es obligatoria.");
+        if (v.isEmpty()) throw new DatosInvalidosException(etiqueta + " es obligatoria.");
         try {
             if (LocalDate.parse(v).isAfter(LocalDate.now()))
-                throw new IllegalArgumentException(etiqueta + " no puede ser una fecha futura.");
+                throw new DatosInvalidosException(etiqueta + " no puede ser una fecha futura.");
         } catch (DateTimeParseException e) {
-            throw new IllegalArgumentException(etiqueta + " no tiene un formato válido.");
+            throw new DatosInvalidosException(etiqueta + " no tiene un formato válido.");
         }
         return v;
     }

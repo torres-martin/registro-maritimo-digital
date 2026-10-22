@@ -6,7 +6,8 @@
   <title>Nueva solicitud · Registro Marítimo Digital</title>
   <link rel="stylesheet" href="estilos.css">
 </head>
-<body>
+
+<body class="formulario-page">
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
@@ -17,34 +18,133 @@
 </svg>
 
 <header class="bar">
-  <div class="logo"><svg class="i"><use href="#an"/></svg>Registro Marítimo Digital</div>
+  <a
+    class="logo marca-registro"
+    href="bandeja.html"
+    aria-label="Registro Marítimo Digital"
+  >
+    <img
+      class="marca-logo"
+      src="img/logo-amp.png"
+      alt="Autoridad Marítima de Panamá"
+    >
+
+    <span class="marca-texto">
+      <strong>Registro Marítimo</strong>
+      <span>Digital</span>
+    </span>
+  </a>
   <nav>
     <a href="nueva-solicitud.html" aria-current="page">Nueva solicitud</a>
     <a href="mis-solicitudes.html">Mis solicitudes</a>
   </nav>
-  <div class="who"><span id="usuario"></span><br><a href="#" id="salir">Cerrar sesión</a></div>
+  <div class="cabecera-cuenta">
+  <div class="cuenta-usuario">
+    <span
+      class="cuenta-avatar"
+      id="usuario-iniciales"
+      aria-hidden="true"
+    >—</span>
+
+    <div class="cuenta-datos">
+      <span id="usuario">Cargando…</span>
+      <span id="usuario-rol"></span>
+    </div>
+  </div>
+
+  <button type="button" class="cuenta-salir" id="salir">
+    <svg class="i" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M9 4H4v16h5M9 12h12m-4-4 4 4-4 4"/>
+    </svg>
+    Cerrar sesión
+  </button>
+</div>
 </header>
 
-<div class="band">
-  <h1>Inscripción preliminar de título de propiedad</h1>
-  <span class="mu">Formulario F-270 (versión resumida)</span>
+<div class="band formulario-band">
+  <div class="formulario-band-contenido">
+    <span class="formulario-etiqueta">PORTAL DEL ARMADOR</span>
+
+    <h1>Nueva solicitud de registro</h1>
+
+    <p>
+      Completa los datos de la inscripción preliminar y adjunta
+      el documento de tu nave.
+    </p>
+
+    <span class="formulario-referencia">
+      Formulario F-270 · Versión resumida
+    </span>
+  </div>
 </div>
 
 <div class="tc" id="asistente">
   <div id="correccion" class="obs" style="margin:14px 18px 0" hidden></div>
-  <div class="tt" role="tablist" id="pestanas">
-    <button type="button" role="tab" aria-selected="true">1. Documento y partes</button>
-    <button type="button" role="tab" aria-selected="false">2. Nave</button>
-    <button type="button" role="tab" aria-selected="false">3. Documento y envío</button>
-  </div>
+  <div
+  class="tt"
+  role="tablist"
+  id="pestanas"
+  aria-label="Pasos de la solicitud"
+>
+  <button
+    type="button"
+    role="tab"
+    id="paso-tab-1"
+    aria-controls="paso-panel-1"
+    aria-selected="true"
+  >
+    <span class="paso-numero" aria-hidden="true">1</span>
+    <span class="paso-texto">
+      <strong>Documento y partes</strong>
+      <small>Datos de la inscripción</small>
+    </span>
+  </button>
+
+  <button
+    type="button"
+    role="tab"
+    id="paso-tab-2"
+    aria-controls="paso-panel-2"
+    aria-selected="false"
+    tabindex="-1"
+  >
+    <span class="paso-numero" aria-hidden="true">2</span>
+    <span class="paso-texto">
+      <strong>Nave</strong>
+      <small>Identificación y características</small>
+    </span>
+  </button>
+
+  <button
+    type="button"
+    role="tab"
+    id="paso-tab-3"
+    aria-controls="paso-panel-3"
+    aria-selected="false"
+    tabindex="-1"
+  >
+    <span class="paso-numero" aria-hidden="true">3</span>
+    <span class="paso-texto">
+      <strong>Documento y envío</strong>
+      <small>Adjunto y confirmación</small>
+    </span>
+  </button>
+</div>
 
   <form id="form-solicitud" novalidate>
 
     <!-- 1. Documento y partes -->
-    <div class="pn on">
-      <h2>Documento y partes</h2>
+    <div
+    class="pn on"
+    role="tabpanel"
+    id="paso-panel-1"
+    aria-labelledby="paso-tab-1"
+>
 
-      <h3>Documento base</h3>
+      <h2>Documento y partes</h2>
+      <p class="formulario-intro">
+        Selecciona el documento base e identifica a las partes
+        que intervienen en la inscripción.</p>
       <div class="g2">
         <div class="campo">
           <label for="documentoBase">Documento base de la inscripción</label>
@@ -87,8 +187,18 @@
     </div>
 
     <!-- 2. Nave -->
-    <div class="pn">
-      <h2>Nave</h2>
+    <div
+    class="pn"
+    role="tabpanel"
+    id="paso-panel-2"
+    aria-labelledby="paso-tab-2"
+    aria-hidden="true"
+    >
+
+      <h2>Datos de la nave</h2>
+      <p class="formulario-intro">
+        Identifica la nave y completa sus características.
+        Los campos opcionales están indicados. </p>
       <div class="g">
         <div class="campo">
           <label for="nombreNave">Nombre de la nave</label>
@@ -131,8 +241,17 @@
     </div>
 
     <!-- 3. Documento y envío -->
-    <div class="pn">
+    <div
+    class="pn"
+    role="tabpanel"
+    id="paso-panel-3"
+    aria-labelledby="paso-tab-3"
+    aria-hidden="true"
+    >
       <h2>Documento y envío</h2>
+      <p class="formulario-intro">
+         Adjunta el PDF y comprueba el resumen antes de enviar tu solicitud.
+      </p>
       <div class="up" id="fila-pdf" style="margin-top:14px">
         <span class="cir"><svg class="i"><use id="pdf-icono" href="#cl"/></svg></span>
         <div>
@@ -157,27 +276,59 @@
         </div>
       </div>
 
-      <dl class="kv" style="margin-top:20px">
-        <dt>Documento base</dt><dd id="rs-base"></dd>
-        <dt>Nave</dt><dd id="rs-nave"></dd>
-        <dt>IMO</dt><dd id="rs-imo"></dd>
-        <dt>Propietario</dt><dd id="rs-propietario"></dd>
-        <dt>Documento PDF</dt><dd id="rs-pdf"></dd>
-      </dl>
+      <section class="formulario-resumen" aria-labelledby="titulo-resumen">
+  <h3 id="titulo-resumen">Resumen de la solicitud</h3>
+
+  <dl class="kv">
+    <dt>Documento base</dt>
+    <dd id="rs-base"></dd>
+
+    <dt>Nave</dt>
+    <dd id="rs-nave"></dd>
+
+    <dt>IMO</dt>
+    <dd id="rs-imo"></dd>
+
+    <dt>Propietario</dt>
+    <dd id="rs-propietario"></dd>
+
+    <dt>Documento PDF</dt>
+    <dd id="rs-pdf"></dd>
+  </dl>
+</section>
 
       <div id="resultado" class="aviso" role="alert"></div>
     </div>
   </form>
 
-  <div class="ft">
-    <button type="button" class="btn o" id="anterior" hidden>Anterior</button>
-    <button type="button" class="btn" id="siguiente" style="margin-left:auto">Siguiente</button>
-  </div>
+<div class="ft">
+  <span
+    class="formulario-posicion"
+    id="estado-paso"
+    role="status"
+    aria-live="polite"
+  >Paso 1 de 3</span>
+
+  <button type="button" class="btn o" id="anterior" hidden>
+    Anterior
+  </button>
+
+  <button
+    type="button"
+    class="btn"
+    id="siguiente"
+    style="margin-left:auto"
+  >
+    Siguiente
+  </button>
 </div>
 
 <div class="tc" id="enviada" hidden>
   <div class="pad">
+    <span class="formulario-exito" aria-hidden="true">✓</span>
     <h2>Solicitud enviada</h2>
+    <p class="formulario-intro">
+       Tu solicitud fue recibida. Puedes consultar su estado desde Mis solicitudes.</p>
     <dl class="kv" style="margin-top:14px">
       <dt>Trámite</dt><dd id="ok-tramite"></dd>
       <dt>Nave</dt><dd id="ok-nave"></dd>

@@ -165,10 +165,10 @@ public class CertificadoService {
                     fuente(FontFactory.HELVETICA, 8.5f, GRIS));
             nota.setAlignment(Element.ALIGN_JUSTIFIED);
             texto.addElement(nota);
-            Paragraph firma = new Paragraph("Documento firmado electrónicamente por la Autoridad Marítima de Panamá",
-                    fuente(FontFactory.HELVETICA_BOLD, 9, Color.BLACK));
-            firma.setSpacingBefore(6);
-            texto.addElement(firma);
+           Paragraph firma = new Paragraph("Prototipo académico: documento de demostración, sin firma digital ni validez oficial.",
+           fuente(FontFactory.HELVETICA_BOLD, 9, Color.BLACK));
+           firma.setSpacingBefore(6);
+           texto.addElement(firma);
             texto.addElement(new Paragraph("Para confirmar que este certificado es auténtico, escanee el código QR o ingrese el "
                     + "código de verificación en " + baseUrl + "/verificar.html",
                     fuente(FontFactory.HELVETICA, 8.5f, GRIS)));

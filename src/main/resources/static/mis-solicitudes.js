@@ -34,21 +34,48 @@ function aviso(texto, ok) {
 
 // ---------- lista ----------
 
+function pintarResumen() {
+  $("resumen-total").textContent = naves.length;
+
+  $("resumen-revision").textContent =
+    naves.filter((n) => n.estado === "En revisión").length;
+
+  $("resumen-aprobado").textContent =
+    naves.filter((n) => n.estado === "Aprobado").length;
+
+  $("resumen-rechazado").textContent =
+    naves.filter((n) => n.estado === "Rechazado").length;
+}
+
 function pintarTabla() {
   const texto = $("buscar").value.trim().toLowerCase();
   const estado = $("filtro-estado").value;
   const cuerpo = $("tabla-body");
 
   const visibles = naves.filter((n) => {
-    const coincide = [n.tramite, n.nombreNave, n.imo].join(" ").toLowerCase().includes(texto);
+    const coincide = [n.tramite, n.nombreNave, n.imo]
+      .join(" ")
+      .toLowerCase()
+      .includes(texto);
+
     return coincide && (!estado || n.estado === estado);
   });
 
+  $("lista-cantidad").textContent =
+    visibles.length +
+    (visibles.length === 1 ? " solicitud" : " solicitudes");
+
   cuerpo.replaceChildren();
+
   if (visibles.length === 0) {
-    cuerpo.append(filaMensaje(naves.length === 0
-      ? "Aún no has enviado solicitudes."
-      : "Ninguna solicitud coincide con la búsqueda."));
+    cuerpo.append(
+      filaMensaje(
+        naves.length === 0
+          ? "Aún no has enviado solicitudes."
+          : "Ninguna solicitud coincide con la búsqueda."
+      )
+    );
+
     return;
   }
 
@@ -57,6 +84,7 @@ function pintarTabla() {
 
     const tdCodigo = document.createElement("td");
     const codigo = document.createElement("span");
+
     codigo.className = "codigo";
     codigo.textContent = n.tramite;
     tdCodigo.appendChild(codigo);
@@ -65,6 +93,8 @@ function pintarTabla() {
     tdEstado.appendChild(insignia(n.estado));
 
     const tdVer = document.createElement("td");
+    tdVer.className = "solicitud-acciones";
+
     const ver = document.createElement("button");
     ver.type = "button";
     ver.className = "btn o x";
@@ -72,30 +102,44 @@ function pintarTabla() {
     ver.addEventListener("click", () => abrir(n.id));
     tdVer.appendChild(ver);
 
-    // Si la solicitud fue aprobada, se puede descargar el certificado
+    // Las solicitudes aprobadas permiten abrir el certificado.
     if (n.estado === "Aprobado") {
       const cert = document.createElement("a");
+
       cert.className = "btn o x";
       cert.style.marginLeft = "6px";
-      cert.href = "/api/naves/" + encodeURIComponent(n.id) + "/certificado";
+      cert.href =
+        "/api/naves/" + encodeURIComponent(n.id) + "/certificado";
       cert.target = "_blank";
       cert.rel = "noopener";
       cert.textContent = "Certificado";
+
       tdVer.appendChild(cert);
     }
 
-    // HU-17: una solicitud rechazada se puede corregir y reenviar
+    // Las solicitudes rechazadas permiten precargar el formulario de reenvío.
     if (n.estado === "Rechazado") {
       const corregir = document.createElement("a");
+
       corregir.className = "btn o x";
       corregir.style.marginLeft = "6px";
-      corregir.href = "nueva-solicitud.html?corregir=" + encodeURIComponent(n.id);
+      corregir.href =
+        "nueva-solicitud.html?corregir=" + encodeURIComponent(n.id);
       corregir.textContent = "Corregir y reenviar";
+
       tdVer.appendChild(corregir);
     }
 
-    tr.append(tdCodigo, celda(n.nombreNave), celda(n.imo), celda(n.documentoBase),
-              tdEstado, celda(n.fechaCreacion), tdVer);
+    tr.append(
+      tdCodigo,
+      celda(n.nombreNave),
+      celda(n.imo),
+      celda(n.documentoBase),
+      tdEstado,
+      celda(n.fechaCreacion),
+      tdVer
+    );
+
     cuerpo.append(tr);
   });
 }
@@ -103,11 +147,23 @@ function pintarTabla() {
 async function cargar() {
   try {
     const r = await fetch("/api/naves/mias");
-    if (!r.ok) throw new Error();
+
+    if (!r.ok) {
+      throw new Error();
+    }
+
     naves = await r.json();
+
+    pintarResumen();
     pintarTabla();
   } catch {
-    $("tabla-body").replaceChildren(filaMensaje("No se pudo cargar la lista."));
+    $("lista-cantidad").textContent = "Lista no disponible";
+
+    $("tabla-body").replaceChildren(
+      filaMensaje(
+        "No se pudo cargar la lista. Recarga la página para intentarlo de nuevo."
+      )
+    );
   }
 }
 

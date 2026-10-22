@@ -15,57 +15,178 @@
 </svg>
 
 <header class="bar">
-  <div class="logo"><svg class="i"><use href="#an"/></svg>Registro Marítimo Digital</div>
-  <nav>
-    <a href="bandeja.html" aria-current="page">Bandeja</a>
-  </nav>
-  <div class="who"><span id="usuario"></span><br><a href="#" id="salir">Cerrar sesión</a></div>
+  <a
+    class="logo marca-registro"
+    href="bandeja.html"
+    aria-label="Registro Marítimo Digital"
+  >
+    <img
+      class="marca-logo"
+      src="img/logo-amp.png"
+      alt="Autoridad Marítima de Panamá"
+    >
+
+    <span class="marca-texto">
+      <strong>Registro Marítimo</strong>
+      <span>Digital</span>
+    </span>
+  </a>
+  <div class="cabecera-cuenta">
+  <div class="cuenta-usuario">
+    <span
+      class="cuenta-avatar"
+      id="usuario-iniciales"
+      aria-hidden="true"
+    >—</span>
+
+    <div class="cuenta-datos">
+      <span id="usuario">Cargando…</span>
+      <span id="usuario-rol"></span>
+    </div>
+  </div>
+
+  <button type="button" class="cuenta-salir" id="salir">
+    <svg class="i" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M9 4H4v16h5M9 12h12m-4-4 4 4-4 4"/>
+    </svg>
+    Cerrar sesión
+  </button>
+</div>
 </header>
 
-<div class="band">
-  <h1>Bandeja de solicitudes</h1>
-</div>
+<main class="portal-main">
+  <section class="portal-hero" aria-labelledby="titulo-bandeja">
+    <div class="portal-hero-contenido">
+      <span class="portal-etiqueta">PORTAL DEL FUNCIONARIO</span>
 
-<div class="tc">
-  <div class="pad">
+      <h1 id="titulo-bandeja">Gestión de solicitudes</h1>
 
-    <section class="resumen">
-      <div class="dato"><span id="n-total">0</span><small>Total</small></div>
-      <div class="dato"><span id="n-revision">0</span><small>En revisión</small></div>
-      <div class="dato"><span id="n-aprobado">0</span><small>Aprobadas</small></div>
-      <div class="dato"><span id="n-rechazado">0</span><small>Rechazadas</small></div>
-    </section>
+      <p>
+        Revisa cada solicitud, consulta sus documentos y da seguimiento
+        al registro de las naves.
+      </p>
 
-    <div class="filtros">
-      <input id="buscar" type="search" placeholder="Buscar" aria-label="Buscar por trámite, nave, IMO o propietario">
-      <select id="filtro-estado" aria-label="Filtrar por estado">
-        <option value="">Todos los estados</option>
-        <option>En revisión</option>
-        <option>Aprobado</option>
-        <option>Rechazado</option>
-      </select>
+      <a href="#solicitudes-recibidas" class="btn portal-boton">
+        Revisar solicitudes
+        <span aria-hidden="true">↓</span>
+      </a>
+    </div>
+  </section>
+
+  <section class="portal-resumen" aria-label="Resumen de solicitudes">
+
+    <article class="portal-tarjeta">
+      <svg class="i" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M6 3h9l4 4v14H5V3zM14 3v5h5M8 12h8M8 16h6"/>
+      </svg>
+      <div>
+        <strong id="n-total">—</strong>
+        <span>Total de solicitudes</span>
+      </div>
+    </article>
+
+    <article class="portal-tarjeta portal-revision">
+      <svg class="i" viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="12" cy="12" r="9"/>
+        <path d="M12 7v5l3 2"/>
+      </svg>
+      <div>
+        <strong id="n-revision">—</strong>
+        <span>En revisión</span>
+      </div>
+    </article>
+
+    <article class="portal-tarjeta portal-aprobado">
+      <svg class="i" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="m5 12 4 4L19 6"/>
+      </svg>
+      <div>
+        <strong id="n-aprobado">—</strong>
+        <span>Aprobadas</span>
+      </div>
+    </article>
+
+    <article class="portal-tarjeta portal-rechazado">
+      <svg class="i" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M8 7H4V3M4 7a8 8 0 1 1-1 9"/>
+      </svg>
+      <div>
+        <strong id="n-rechazado">—</strong>
+        <span>Rechazadas</span>
+      </div>
+    </article>
+
+  </section>
+
+  <section
+    class="portal-panel"
+    id="solicitudes-recibidas"
+    aria-labelledby="titulo-solicitudes"
+  >
+    <div class="portal-panel-encabezado">
+      <span class="portal-panel-etiqueta">GESTIÓN DE TRÁMITES</span>
+      <h2 id="titulo-solicitudes">Solicitudes recibidas</h2>
+      <p>
+        Consulta los datos de cada nave y abre su expediente
+        para continuar la revisión.
+      </p>
     </div>
 
-    <div class="tabla-wrap">
+    <div class="filtros portal-filtros">
+      <div class="portal-busqueda">
+        <label for="buscar">Buscar solicitud</label>
+        <input
+          id="buscar"
+          type="search"
+          placeholder="Trámite, nave, IMO o propietario"
+        >
+      </div>
+
+      <div class="portal-filtro-estado">
+        <label for="filtro-estado">Estado del trámite</label>
+        <select id="filtro-estado">
+          <option value="">Todos los estados</option>
+          <option>En revisión</option>
+          <option>Aprobado</option>
+          <option>Rechazado</option>
+        </select>
+      </div>
+    </div>
+
+    <div
+      class="tabla-wrap"
+      role="region"
+      aria-label="Solicitudes recibidas, tabla desplazable"
+      tabindex="0"
+    >
       <table>
         <thead>
           <tr>
-            <th>Trámite</th>
-            <th>Nave</th>
-            <th>IMO</th>
-            <th>Documento base</th>
-            <th>Propietario</th>
-            <th>Estado</th>
-            <th>Fecha</th>
-            <th></th>
+            <th scope="col">Trámite</th>
+            <th scope="col">Nave</th>
+            <th scope="col">IMO</th>
+            <th scope="col">Documento base</th>
+            <th scope="col">Propietario</th>
+            <th scope="col">Estado</th>
+            <th scope="col">Fecha</th>
+            <th scope="col">Acciones</th>
           </tr>
         </thead>
         <tbody id="tabla-body"></tbody>
       </table>
     </div>
-  </div>
-</div>
 
+    <p class="portal-tabla-ayuda">
+      Desliza la tabla para consultar todas las columnas y acciones.
+    </p>
+  </section>
+
+  <footer class="portal-pie">
+    <span>Registro Marítimo Digital</span>
+    <span>Portal del funcionario</span>
+  </footer>
+
+</main>
 <script src="sesion.js"></script>
 <script src="bandeja.js"></script>
 </body>

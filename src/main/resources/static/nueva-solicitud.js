@@ -90,15 +90,58 @@ function resumen() {
 
 function ir(i) {
   actual = Math.max(0, Math.min(pasos.length - 1, i));
-  pasos.forEach((p, j) => p.classList.toggle("on", j === actual));
-  pestanas.forEach((b, j) => b.setAttribute("aria-selected", j === actual));
+
+  pasos.forEach((p, j) => {
+    p.classList.toggle("on", j === actual);
+    p.setAttribute("aria-hidden", j !== actual);
+  });
+
+  pestanas.forEach((b, j) => {
+    b.setAttribute("aria-selected", j === actual);
+    b.tabIndex = j === actual ? 0 : -1;
+  });
+
+  $("estado-paso").textContent =
+    "Paso " + (actual + 1) + " de " + pasos.length;
+
   $("anterior").hidden = actual === 0;
-  $("siguiente").textContent = actual === pasos.length - 1 ? "Enviar solicitud" : "Siguiente";
-  if (actual === pasos.length - 1) resumen();
+
+  $("siguiente").textContent =
+    actual === pasos.length - 1
+      ? "Enviar solicitud"
+      : "Siguiente";
+
+  if (actual === pasos.length - 1) {
+    resumen();
+  }
+
   window.scrollTo(0, 0);
 }
 
-pestanas.forEach((b, j) => b.addEventListener("click", () => ir(j)));
+pestanas.forEach((b, j) => {
+  b.addEventListener("click", () => ir(j));
+
+  // Permite recorrer las pestañas con las flechas del teclado.
+  b.addEventListener("keydown", (e) => {
+    let destino;
+
+    if (e.key === "ArrowRight") {
+      destino = (j + 1) % pasos.length;
+    } else if (e.key === "ArrowLeft") {
+      destino = (j + pasos.length - 1) % pasos.length;
+    } else if (e.key === "Home") {
+      destino = 0;
+    } else if (e.key === "End") {
+      destino = pasos.length - 1;
+    } else {
+      return;
+    }
+
+    e.preventDefault();
+    ir(destino);
+    pestanas[destino].focus();
+  });
+});
 $("anterior").addEventListener("click", () => ir(actual - 1));
 $("siguiente").addEventListener("click", () => {
   if (actual === pasos.length - 1) {
