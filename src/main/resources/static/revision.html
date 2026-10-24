@@ -6,7 +6,7 @@
   <title>Revisión · Registro Marítimo Digital</title>
   <link rel="stylesheet" href="estilos.css">
 </head>
-<body>
+<body class="interior-page revision-page">
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
@@ -17,7 +17,7 @@
 <header class="bar">
   <a
     class="logo marca-registro"
-    href="revision.html"
+    href="bandeja.html"
     aria-label="Registro Marítimo Digital"
   >
     <img
@@ -57,58 +57,97 @@
 </div>
 </header>
 
-<div class="band">
-  <h1>Revisión de solicitud</h1>
-  <span class="mu" id="sub"></span>
-</div>
+<main class="interior-main">
+  <section class="band formulario-band" aria-labelledby="titulo-revision">
+    <div class="formulario-band-contenido">
+      <span class="formulario-etiqueta">PORTAL DEL FUNCIONARIO</span>
+      <h1 id="titulo-revision">Revisión de solicitud</h1>
+      <p>Consulta el expediente y sus documentos para registrar la decisión.</p>
+      <span class="formulario-referencia" id="sub"></span>
+    </div>
+  </section>
 
-<div class="tc">
-  <div class="pad">
-    <div class="acciones" style="margin-top:0; margin-bottom:12px">
-      <a class="btn o x" href="bandeja.html">Volver a la bandeja</a>
-      <a class="btn o x" id="ver-doc" target="_blank" rel="noopener" hidden>Abrir documento</a>
-      <a class="btn o x" id="ver-cert" target="_blank" rel="noopener" hidden>Ver certificado</a>
-      <span id="estado" style="align-self:center"></span>
+  <section class="tc interior-panel" aria-labelledby="titulo-expediente">
+    <div class="interior-encabezado">
+      <span class="portal-panel-etiqueta">EXPEDIENTE DE LA NAVE</span>
+      <h2 id="titulo-expediente">Datos y documentos</h2>
+      <p class="interior-ayuda">
+        Revisa la información presentada y el documento adjunto.
+      </p>
+    </div>
+
+    <div class="interior-acciones">
+      <a class="btn o x" href="bandeja.html">← Volver a la bandeja</a>
+      <a class="btn o x" id="ver-doc" target="_blank" rel="noopener" hidden>
+        Abrir documento
+      </a>
+      <a class="btn o x" id="ver-cert" target="_blank" rel="noopener" hidden>
+        Ver certificado
+      </a>
+      <span id="estado"></span>
     </div>
 
     <div id="obs"></div>
     <div class="detalle" id="cuerpo"></div>
 
-    <section id="decision" hidden>
-      <h3>Decisión</h3>
+    <section id="decision" aria-labelledby="titulo-decision" hidden>
+      <h3 id="titulo-decision">Evaluación de la solicitud</h3>
+      <p class="interior-ayuda">
+        Registra la liquidación y las observaciones de la revisión.
+        Para rechazar, indica el motivo.
+      </p>
+
       <div class="g2">
         <div class="campo">
           <label for="liquidacion">Número de liquidación</label>
           <input id="liquidacion" maxlength="40">
           <div class="err"></div>
         </div>
+
         <div class="campo full">
           <label for="observacion">Observación</label>
-          <textarea id="observacion" maxlength="1000"></textarea>
+          <textarea
+            id="observacion"
+            maxlength="1000"
+            aria-describedby="err-observacion"
+          ></textarea>
           <div class="err" id="err-observacion"></div>
         </div>
       </div>
+
       <div class="acciones">
         <button type="button" class="btn v" id="aprobar">Aprobar</button>
         <button type="button" class="btn r" id="rechazar">Rechazar</button>
       </div>
     </section>
 
-    <section id="revocacion" hidden>
-      <h3>Revocar certificado</h3>
+    <section id="revocacion" aria-labelledby="titulo-revocacion" hidden>
+      <h3 id="titulo-revocacion">Revocación del certificado</h3>
+      <p class="interior-ayuda">
+        Indica el motivo antes de revocar el certificado.
+        Esta acción no se puede deshacer.
+      </p>
+
       <div class="campo full">
         <label for="motivo-revocacion">Motivo de la revocación</label>
-        <textarea id="motivo-revocacion" maxlength="500"></textarea>
+        <textarea
+          id="motivo-revocacion"
+          maxlength="500"
+          aria-describedby="err-motivo"
+        ></textarea>
         <div class="err" id="err-motivo"></div>
       </div>
+
       <div class="acciones">
-        <button type="button" class="btn r" id="revocar">Revocar certificado</button>
+        <button type="button" class="btn r" id="revocar">
+          Revocar certificado
+        </button>
       </div>
     </section>
 
     <div id="aviso" class="aviso" role="alert"></div>
-  </div>
-</div>
+  </section>
+</main>
 
 <script src="sesion.js"></script>
 <script src="revision.js"></script>

@@ -6,7 +6,7 @@
   <title>Verificar trámite · Registro Marítimo Digital</title>
   <link rel="stylesheet" href="estilos.css">
 </head>
-<body>
+<body class="interior-page verificacion-page">
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
@@ -31,30 +31,60 @@
       <span>Digital</span>
     </span>
   </a>
-  <nav>
-    <a href="verificar.html" aria-current="page">Verificar trámite</a>
-    <a href="login.html">Iniciar sesión</a>
-  </nav>
+<a class="acceso-publico" href="login.html">Iniciar sesión</a>
 </header>
 
-<div class="band">
-  <h1>Verificar trámite</h1>
-</div>
+<main class="interior-main">
+  <section class="band formulario-band" aria-labelledby="titulo-verificacion">
+    <div class="formulario-band-contenido">
+      <span class="formulario-etiqueta">CONSULTA PÚBLICA</span>
+      <h1 id="titulo-verificacion">Verifica un certificado</h1>
 
-<div class="tc">
-  <div class="pad">
+      <p>
+        Consulta su estado y vigencia con el código de verificación
+        o el enlace del QR.
+      </p>
+    </div>
+  </section>
+
+  <section class="tc interior-panel" aria-labelledby="titulo-consulta">
+    <div class="interior-encabezado">
+      <span class="portal-panel-etiqueta">VERIFICACIÓN DEL REGISTRO</span>
+      <h2 id="titulo-consulta">Consulta del certificado</h2>
+
+      <p class="interior-ayuda" id="codigo-ayuda">
+        Escribe el código que aparece en el certificado.
+        No necesitas iniciar sesión.
+      </p>
+    </div>
+
     <form id="form-verificar">
-        <label for="codigo">Código de verificación</label>
-      <div class="filtros" style="margin-bottom:0">
-        <input id="codigo" type="text" maxlength="20" placeholder="XXXX-XXXX-XXXX" autocomplete="off" required>
+      <label for="codigo">Código de verificación</label>
+
+      <div class="verificacion-entrada">
+        <input
+          id="codigo"
+          type="text"
+          maxlength="20"
+          placeholder="XXXX-XXXX-XXXX"
+          autocomplete="off"
+          autocapitalize="characters"
+          spellcheck="false"
+          aria-describedby="codigo-ayuda"
+          required
+        >
         <button type="submit" id="verificar">Verificar</button>
       </div>
     </form>
 
-        
-    <div id="resultado" role="status"></div>
-  </div>
-</div>
+    <div
+      id="resultado"
+      role="status"
+      aria-live="polite"
+      aria-atomic="true"
+    ></div>
+  </section>
+</main>
 
 <script src="verificar.js"></script>
 </body>
