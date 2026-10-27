@@ -219,38 +219,115 @@
       </p>
     </section>
 
-    <section id="vista-detalle" hidden>
-      <div class="acciones detalle-acciones">
-        <button type="button" class="btn o x" id="volver">
-          Volver a la lista
-        </button>
+    <section id="vista-detalle" aria-labelledby="det-titulo" hidden>
+      <div class="detalle-portada" id="det-portada">
+        <button type="button" class="btn o x detalle-volver" id="volver">← Mis solicitudes</button>
+        <div class="detalle-principal">
+          <span class="detalle-icono" id="det-icono" aria-hidden="true"></span>
 
-        <a class="btn o x" id="ver-doc" target="_blank" rel="noopener" hidden>
-          Ver documento
-        </a>
+          <div class="detalle-identidad">
+            <h2 id="det-titulo" tabindex="-1"></h2>
+            <p class="detalle-folio" id="det-folio" hidden></p>
+            <p class="certificado-vigencia" id="det-vigencia" hidden></p>
+          </div>
+        </div>
 
-        <a class="btn o x" id="ver-cert" target="_blank" rel="noopener" hidden>
-          Ver certificado
-        </a>
-
-        <a class="btn x" id="corregir" hidden>
-          Corregir y reenviar
-        </a>
-
-        <button type="button" class="btn o x" id="copiar-enlace" hidden>
-          Copiar enlace de verificación
-        </button>
-      </div>
-
-      <div class="detalle-encabezado">
-        <span class="panel-etiqueta">DETALLE DEL TRÁMITE</span>
-        <h2 id="det-titulo"></h2>
-        <div id="det-estado"></div>
+        <div class="detalle-controles">
+          <a class="btn x detalle-primaria" id="ver-cert" target="_blank" rel="noopener" hidden>
+            Ver certificado <span class="detalle-flecha" aria-hidden="true">→</span>
+          </a>
+          <a class="btn x detalle-primaria" id="corregir" hidden>
+            Corregir y reenviar
+          </a>
+          <button type="button" class="btn o x detalle-copiar" id="copiar-enlace" hidden>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m10 13 4-4M8 16l-1 1a4 4 0 0 1-6-6l5-5a4 4 0 0 1 6 0M16 8l1-1a4 4 0 0 1 6 6l-5 5a4 4 0 0 1-6 0"/></svg>
+            <span>Copiar enlace</span>
+          </button>
+        </div>
+        <div class="detalle-contexto" id="det-referencia">
+          <p class="detalle-dato"><span>Nave:</span> <strong id="det-nave"></strong></p>
+          <p class="detalle-dato"><span>Trámite:</span> <strong id="det-tramite"></strong></p>
+          <div id="det-estado"></div>
+        </div>
       </div>
 
       <div id="det-obs"></div>
-      <section class="seg" id="det-historial"></section>
-      <div class="detalle" id="det-cuerpo"></div>
+      <section class="recorrido" id="det-historial" aria-labelledby="recorrido-titulo"></section>
+      <div id="det-cuerpo">
+        <section class="consulta-expediente" id="consulta-expediente" data-ficha-abierta="false" aria-labelledby="consulta-titulo">
+          <article class="consulta-principal">
+            <h3 class="consulta-titulo" id="consulta-titulo">Datos de la solicitud</h3>
+
+            <header class="consulta-identidad">
+              <svg class="consulta-nave-icono" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M3 15 12 11l9 4-3 6H6zM7 13V6h10v7M10 6V3h4v3M2 22l4-1 6 1 6-1 4 1"/>
+              </svg>
+              <div>
+                <h4 class="consulta-nave" id="consulta-nave"></h4>
+                <p class="consulta-meta">
+                  <span>IMO <strong id="consulta-imo"></strong></span>
+                  <span class="consulta-tipo" id="consulta-tipo"></span>
+                </p>
+              </div>
+            </header>
+
+            <button type="button" class="consulta-toggle" id="consulta-toggle" aria-expanded="false" aria-controls="consulta-ficha">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h9l5 5v13H5zM14 3v5h5M8 12h8M8 16h6"/></svg>
+              <span id="consulta-toggle-texto">Ver ficha completa</span>
+              <span class="consulta-chevron" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m6 15 6-6 6 6"/></svg></span>
+            </button>
+
+            <div class="consulta-documento">
+              <span class="consulta-etiqueta">Documento base</span>
+              <h4 class="consulta-base" id="consulta-base"></h4>
+            </div>
+
+            <dl class="consulta-meta-documento">
+              <div class="consulta-dato">
+                <dt>Fecha del documento</dt>
+                <dd id="consulta-fecha"></dd>
+              </div>
+              <div class="consulta-dato" id="consulta-precio-bloque" hidden>
+                <dt>Precio de venta</dt>
+                <dd id="consulta-precio"></dd>
+              </div>
+            </dl>
+
+            <dl class="consulta-partes">
+              <div class="consulta-dato">
+                <dt>Transmitente</dt>
+                <dd id="consulta-transmitente"></dd>
+              </div>
+              <div class="consulta-dato">
+                <dt>Propietario</dt>
+                <dd id="consulta-propietario"></dd>
+              </div>
+            </dl>
+
+            <section class="consulta-adjunto" aria-labelledby="consulta-adjunto-titulo">
+              <h4 id="consulta-adjunto-titulo">Documento adjunto</h4>
+              <div class="consulta-archivo">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h9l5 5v13H5zM14 3v5h5M8 12h8M8 16h6"/></svg>
+                <span class="consulta-archivo-texto" id="consulta-documento-texto"></span>
+                <a class="btn o x consulta-ver-doc" id="ver-doc" target="_blank" rel="noopener" hidden>Ver documento</a>
+              </div>
+            </section>
+          </article>
+
+          <aside class="consulta-ficha" id="consulta-ficha" aria-labelledby="consulta-ficha-titulo" tabindex="0" hidden>
+            <header class="consulta-ficha-cabecera">
+              <div>
+                <h4 id="consulta-ficha-titulo">Ficha completa</h4>
+                <p>Información complementaria</p>
+              </div>
+              <button type="button" class="consulta-cerrar" id="consulta-cerrar" aria-label="Cerrar ficha completa">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>
+              </button>
+            </header>
+            <div id="consulta-grupos"></div>
+          </aside>
+        </section>
+      </div>
     </section>
 
     <div id="aviso" class="aviso" role="alert"></div>
