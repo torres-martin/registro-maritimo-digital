@@ -1,4 +1,4 @@
-/* Portada del armador. */
+/* 1. Base y utilidades */
 .solicitudes-main {
   max-width: none;
   padding: 0;
@@ -71,7 +71,7 @@
   mask-image: linear-gradient(90deg, transparent 0, #000 45%);
 }
 
-/* Conteos y área de consulta. */
+/* 2. Hero y resumen */
 .solicitudes-resumen,
 .solicitudes-panel,
 .solicitudes-pie {
@@ -204,7 +204,7 @@
   border-radius: 20px;
 }
 
-/* Búsqueda y tabla. */
+/* 3. Filtros y tabla */
 .solicitudes-page .solicitudes-filtros {
   display: flex;
   gap: 16px;
@@ -353,7 +353,7 @@
   display: none;
 }
 
-/* Detalle de la solicitud. */
+/* 4. Detalle de la solicitud */
 .solicitudes-page.mostrando-detalle .solicitudes-hero { display: none; }
 .solicitudes-page.mostrando-detalle .solicitudes-panel { margin-top: 24px; padding: 0; border: 0; background: transparent; box-shadow: none; }
 .solicitudes-page #vista-detalle { min-width: 0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
@@ -658,7 +658,7 @@
   }
 }
 
-/* Consulta del expediente: resumen y ficha completa de solo lectura. */
+/* 5. Consulta del expediente */
 .solicitudes-page .consulta-expediente {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(280px, 32%);
@@ -676,7 +676,8 @@
 .solicitudes-page .consulta-expediente h4,
 .solicitudes-page .consulta-expediente h5,
 .solicitudes-page .consulta-expediente dt,
-.solicitudes-page .consulta-expediente dd { margin: 0; font-family: inherit; }
+.solicitudes-page .consulta-expediente dd { margin: 0; 
+  font-family: inherit; }
 .solicitudes-page .consulta-expediente svg { flex: none; width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
 .solicitudes-page .consulta-expediente .consulta-titulo { margin: 0 0 18px; padding: 0; border: 0; color: #53677e; font-size: 14px; font-weight: 600; line-height: 1.4; }
 .solicitudes-page .consulta-expediente .consulta-identidad { display: grid; grid-template-columns: 32px minmax(0, 1fr); align-items: center; gap: 16px; }
@@ -782,5 +783,269 @@
   .solicitudes-page .consulta-expediente .consulta-ficha {
     max-height: none;
     overflow: visible;
+  }
+}
+
+/* 6. Avisos de vencimiento */
+.solicitudes-page .vencimientos {
+  min-width: 0;
+  margin: 0 0 22px;
+  border: 1px solid #dce5ed;
+  border-radius: 8px;
+  background: #f6f9fc;
+}
+
+.solicitudes-page .vencimientos .vencimientos-cabecera {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 70px;
+  padding: 12px 16px;
+}
+
+.solicitudes-page .vencimientos .vencimientos-icono {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  color: #315b80;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.solicitudes-page .vencimientos .vencimientos-textos {
+  flex: 1;
+  min-width: 0;
+}
+
+.solicitudes-page .vencimientos h3 {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  color: #24496d;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.4;
+  text-wrap: wrap;
+  overflow-wrap: anywhere;
+}
+
+.solicitudes-page .vencimientos .vencimientos-cantidad {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 21px;
+  min-height: 20px;
+  padding: 1px 6px;
+  border-radius: 10px;
+  background: #e1ebf4;
+  color: #31577c;
+  font-size: 11px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.4;
+}
+
+.solicitudes-page .vencimientos #vencimientos-resumen {
+  margin: 3px 0 0;
+  color: #60768a;
+  font-size: 12px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.solicitudes-page .vencimientos .vencimientos-toggle,
+.solicitudes-page .vencimientos .btn.o.x.vencimiento-ver {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  flex: none;
+  min-width: 0;
+  min-height: 36px;
+  max-width: 100%;
+  padding: 7px 11px;
+  border: 1px solid #b8c9d9;
+  border-radius: 5px;
+  background: #fff;
+  color: #2b5176;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.5;
+  text-align: center;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.solicitudes-page .vencimientos .vencimientos-toggle {
+  border-color: transparent;
+  background: transparent;
+}
+
+.solicitudes-page .vencimientos .vencimientos-toggle:hover:not(:disabled),
+.solicitudes-page .vencimientos .btn.o.x.vencimiento-ver:hover:not(:disabled) {
+  background: #eaf1f7;
+  filter: none;
+}
+
+.solicitudes-page .vencimientos button:focus-visible {
+  outline: 3px solid #507ea8;
+  outline-offset: 3px;
+}
+
+.solicitudes-page .vencimientos .vencimientos-toggle svg {
+  flex: none;
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.solicitudes-page .vencimientos .vencimientos-toggle[aria-expanded="true"] svg {
+  transform: rotate(180deg);
+}
+
+.solicitudes-page .vencimientos .vencimientos-lista {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid #dce5ed;
+  background: #fff;
+  border-radius: 0 0 8px 8px;
+}
+
+.solicitudes-page .vencimientos .vencimiento {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(112px, .4fr) auto auto;
+  align-items: center;
+  gap: 16px;
+  min-width: 0;
+  padding: 13px 16px;
+}
+
+.solicitudes-page .vencimientos .vencimiento + .vencimiento {
+  border-top: 1px solid #e5ebf1;
+}
+
+.solicitudes-page .vencimientos .vencimiento-identidad,
+.solicitudes-page .vencimientos .vencimiento-fecha {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.solicitudes-page .vencimientos .vencimiento-identidad strong {
+  display: block;
+  color: #284766;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.solicitudes-page .vencimientos .vencimiento-identidad span {
+  display: block;
+  margin-top: 3px;
+  color: #687c8e;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.solicitudes-page .vencimientos .vencimiento-fecha > span {
+  display: block;
+  color: #687c8e;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.solicitudes-page .vencimientos .vencimiento-fecha time {
+  display: block;
+  margin-top: 2px;
+  color: #3b556d;
+  font-size: 12px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.5;
+}
+
+.solicitudes-page .vencimientos .vencimiento-plazo {
+  justify-self: start;
+  max-width: 100%;
+  padding: 4px 8px;
+  border: 1px solid #dce6ee;
+  border-radius: 4px;
+  background: #edf3f8;
+  color: #45627e;
+  font-size: 11px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.solicitudes-page .vencimientos .vencimiento-plazo[data-urgencia="hoy"],
+.solicitudes-page .vencimientos .vencimiento-plazo[data-urgencia="proximo"] {
+  border-color: #edd4b6;
+  background: #fff3e4;
+  color: #925514;
+}
+
+@media (max-width: 700px) {
+  .solicitudes-page .vencimientos .vencimientos-cabecera {
+    flex-wrap: wrap;
+    gap: 8px 10px;
+    padding: 12px;
+  }
+
+  .solicitudes-page .vencimientos .vencimientos-textos {
+    flex-basis: calc(100% - 34px);
+  }
+
+  .solicitudes-page .vencimientos .vencimientos-toggle {
+    margin-left: 34px;
+  }
+
+  .solicitudes-page .vencimientos .vencimiento {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 10px 14px;
+    padding: 13px 12px;
+  }
+
+  .solicitudes-page .vencimientos .vencimiento-identidad,
+  .solicitudes-page .vencimientos .vencimiento-ver {
+    grid-column: 1 / -1;
+  }
+
+  .solicitudes-page .vencimientos .vencimiento-plazo {
+    justify-self: end;
+  }
+
+  .solicitudes-page .vencimientos .vencimiento-ver {
+    justify-self: start;
+  }
+}
+
+@media (max-width: 480px) {
+  .solicitudes-page .vencimientos .vencimiento {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .solicitudes-page .vencimientos .vencimiento-plazo {
+    justify-self: start;
+  }
+}
+
+@media print {
+  .solicitudes-page .vencimientos {
+    display: none !important;
   }
 }

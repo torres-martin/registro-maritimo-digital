@@ -54,6 +54,11 @@ public class NaveController {
         return servicio.mias(auth.getName());
     }
 
+    @GetMapping("/naves/mias/vencimientos")
+    public List<Map<String, Object>> vencimientosMios(Authentication auth) {
+        return servicio.vencimientosMios(auth.getName());
+    }
+
     // Funcionario
     @GetMapping("/naves/todas")
     public List<Map<String, Object>> todas() {
@@ -104,5 +109,54 @@ public class NaveController {
     @GetMapping("/publico/verificar/{codigo}")
     public Map<String, Object> verificar(@PathVariable("codigo") String codigo) {
         return servicio.verificar(codigo);
+    }
+
+    // Borradores del armador
+
+    @GetMapping("/borradores")
+    public List<Map<String, Object>> listarBorradores(Authentication auth) {
+        return servicio.listarBorradores(auth.getName());
+    }
+
+    @GetMapping("/borradores/{id}")
+    public Map<String, Object> detalleBorrador(@PathVariable("id") String id, Authentication auth) {
+        return servicio.detalleBorrador(id, auth.getName());
+    }
+
+    @PutMapping(value = "/borradores/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public Map<String, Object> guardarBorrador(@PathVariable("id") String id,
+                                       @RequestParam("datos") String datos,
+                                       @RequestParam("paso") int paso,
+                                       @RequestParam("version") long version,
+                                       @RequestParam(value = "origenSolicitudId", required = false) Long origenSolicitudId,
+                                       @RequestParam(value = "quitarDocumento", defaultValue = "false") boolean quitarDocumento,
+                                       @RequestParam(value = "documento", required = false) MultipartFile documento,
+                                       Authentication auth) throws IOException {
+        return servicio.guardarBorrador(id, datos, paso, version, origenSolicitudId, quitarDocumento, documento, auth.getName());
+    }
+
+    @GetMapping("/borradores/{id}/documento")
+    public ResponseEntity<byte[]> documentoBorrador(@PathVariable("id") String id, Authentication auth) {
+        return ResponseEntity.ok().contentType(MediaType.APPLICATION_PDF)
+                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"documento-borrador.pdf\"")
+                .header(HttpHeaders.CACHE_CONTROL, "no-store")
+                .body(servicio.documentoBorrador(id, auth.getName()));
+    }
+
+    @DeleteMapping("/borradores/{id}")
+    public ResponseEntity<Void> eliminarBorrador(@PathVariable("id") String id,
+                                        @RequestParam("version") long version, Authentication auth) {
+        servicio.eliminarBorrador(id, version, auth.getName());
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping(value = "/borradores/{id}/enviar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Map<String, Object>> enviarBorrador(@PathVariable("id") String id,
+                                                     @RequestParam Map<String, String> campos,
+                                                     @RequestParam("version") long version,
+                                                     @RequestParam(value = "documento", required = false) MultipartFile documento,
+                                                     Authentication auth) throws IOException {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(servicio.enviarBorrador(id, campos, version, documento, auth.getName()));
     }
 }

@@ -1,6 +1,8 @@
 package com.example.registronaves.config;
 
 import com.example.registronaves.exception.DatosInvalidosException;
+import org.springframework.dao.OptimisticLockingFailureException;
+import org.springframework.dao.PessimisticLockingFailureException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -51,6 +53,13 @@ public class ManejadorErrores {
                 HttpStatus.BAD_REQUEST,
                 "Los datos enviados no son válidos."
         );
+    }
+
+    @ExceptionHandler({OptimisticLockingFailureException.class,
+            PessimisticLockingFailureException.class})
+    public ResponseEntity<Map<String, String>> conflictoConcurrente(RuntimeException e) {
+        return error(HttpStatus.CONFLICT,
+                "El borrador cambió en otra sesión. Recárgalo antes de continuar.");
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
@@ -143,6 +152,8 @@ public class ManejadorErrores {
             String mensaje = switch (respuesta.getStatusCode().value()) {
                 case 404 ->
                         "El recurso solicitado no existe.";
+                case 409 ->
+                        "El borrador cambió en otra sesión. Recárgalo antes de continuar.";
                 case 405 ->
                         "Esta acción no está disponible para el recurso solicitado.";
                 case 415 ->

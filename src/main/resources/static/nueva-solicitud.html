@@ -145,6 +145,20 @@
   </button>
 </div>
 
+  <div class="borrador-barra">
+    <div class="borrador-textos">
+      <p id="borrador-estado" role="status" aria-live="polite">Borrador sin guardar</p>
+      <small class="borrador-ayuda">Aún no enviada</small>
+    </div>
+    <div class="borrador-acciones">
+      <button type="button" class="btn o x" id="guardar-borrador">Guardar borrador</button>
+      <button type="button" class="btn o x" id="guardar-copia" hidden>Guardar copia</button>
+      <a class="btn o x" id="borrador-login" href="/login.html" target="_blank" rel="noopener noreferrer" hidden>Iniciar sesión</a>
+      <button type="button" class="btn o x" id="borrador-reintentar" hidden>Reintentar</button>
+    </div>
+  </div>
+  <p class="borrador-error" id="borrador-error" role="alert" hidden></p>
+
   <form id="form-solicitud" novalidate>
 
     <!-- 1. Documento y partes -->

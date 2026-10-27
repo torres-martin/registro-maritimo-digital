@@ -168,6 +168,40 @@
         >Cargando solicitudes…</span>
       </div>
 
+      <section class="borradores-panel" id="borradores" data-estado="cargando" aria-labelledby="borradores-titulo" hidden>
+        <div class="borradores-cabecera">
+          <div class="borradores-textos">
+            <h3 id="borradores-titulo" tabindex="-1">Borradores guardados <span id="borradores-cantidad" hidden></span></h3>
+            <p id="borradores-estado" role="status" aria-live="polite">Consultando tus borradores…</p>
+          </div>
+          <button type="button" class="borradores-toggle" id="borradores-toggle" aria-expanded="false" aria-controls="borradores-lista" hidden><span id="borradores-toggle-texto">Ver borradores</span></button>
+          <button type="button" class="borradores-toggle" id="borradores-reintentar" hidden>Reintentar</button>
+        </div>
+        <ul class="borradores-lista" id="borradores-lista" hidden></ul>
+      </section>
+
+      <section class="vencimientos" id="vencimientos" data-estado="cargando" aria-labelledby="vencimientos-titulo">
+        <div class="vencimientos-cabecera">
+          <svg class="i vencimientos-icono" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 5h16v16H4zM8 2v6M16 2v6M4 10h16M8 14h3M8 17h6"/>
+          </svg>
+          <div class="vencimientos-textos">
+            <h3 id="vencimientos-titulo" tabindex="-1">
+              Próximos vencimientos
+              <span class="vencimientos-cantidad" id="vencimientos-cantidad" hidden></span>
+            </h3>
+            <p id="vencimientos-resumen" role="status" aria-live="polite">Consultando tus certificados…</p>
+          </div>
+          <button type="button" class="vencimientos-toggle" id="vencimientos-toggle"
+            aria-expanded="false" aria-controls="vencimientos-lista" hidden>
+            <span id="vencimientos-toggle-texto">Ver avisos</span>
+            <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+          <button type="button" class="vencimientos-toggle" id="vencimientos-reintentar" hidden>Reintentar</button>
+        </div>
+        <ul class="vencimientos-lista" id="vencimientos-lista" hidden></ul>
+      </section>
+
       <div class="filtros solicitudes-filtros">
         <div class="campo-busqueda">
           <label for="buscar">Buscar solicitud</label>

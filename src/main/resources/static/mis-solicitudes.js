@@ -1,6 +1,8 @@
 const $ = (id) => document.getElementById(id);
 const CLASES = { "En revisión": "en-revision", "Aprobado": "aprobado", "Rechazado": "rechazado" };
 let naves = [];
+let vencimientos = [];
+let cargandoVencimientos = false;
 
 // Todo se escribe con textContent (nunca innerHTML) para evitar XSS
 function celda(texto) {
@@ -164,6 +166,101 @@ async function cargar() {
         "No se pudo cargar la lista. Recarga la página para intentarlo de nuevo."
       )
     );
+  }
+}
+
+// ---------- avisos de vencimiento ----------
+
+function mostrarVencimientos(abiertos) {
+  const lista = $("vencimientos-lista");
+  if (!abiertos && lista.contains(document.activeElement)) {
+    $("vencimientos-toggle").focus();
+  }
+  lista.hidden = !abiertos;
+  $("vencimientos-toggle").setAttribute("aria-expanded", String(abiertos));
+  $("vencimientos-toggle-texto").textContent = abiertos ? "Ocultar avisos" : "Ver avisos";
+}
+
+function pintarVencimientos() {
+  const lista = $("vencimientos-lista");
+  lista.replaceChildren();
+  $("vencimientos").dataset.estado = vencimientos.length ? "listo" : "vacio";
+  $("vencimientos-cantidad").textContent = vencimientos.length;
+  $("vencimientos-cantidad").hidden = false;
+  $("vencimientos-toggle").hidden = !vencimientos.length;
+  $("vencimientos-resumen").textContent = vencimientos.length
+    ? (vencimientos.length === 1 ? "1 certificado vence" : vencimientos.length + " certificados vencen") + " en los próximos 30 días."
+    : "No tienes certificados que venzan en los próximos 30 días.";
+
+  vencimientos.forEach((n) => {
+    const fila = nodo("li", "vencimiento");
+    const identidad = nodo("div", "vencimiento-identidad");
+    identidad.append(
+      nodo("strong", "", valorConsulta(n.nombreNave)),
+      nodo("span", "", valorConsulta(n.certificadoFolio) + " · " + valorConsulta(n.tramite))
+    );
+    const vencimiento = nodo("div", "vencimiento-fecha");
+    const dia = document.createElement("time");
+    dia.dateTime = n.fechaVencimiento;
+    dia.textContent = fecha(n.fechaVencimiento);
+    vencimiento.append(nodo("span", "", "Vigente hasta"), dia);
+
+    const dias = n.diasRestantes;
+    const plazo = nodo("span", "vencimiento-plazo",
+      dias === 0 ? "Vence hoy" : dias === 1 ? "En 1 día" : "En " + dias + " días");
+    plazo.dataset.urgencia = dias === 0 ? "hoy" : dias <= 7 ? "proximo" : "normal";
+
+    const ver = nodo("button", "btn o x vencimiento-ver", "Ver expediente");
+    ver.type = "button";
+    ver.dataset.solicitud = String(n.id);
+    ver.setAttribute("aria-label", "Ver expediente de " + valorConsulta(n.nombreNave));
+    ver.addEventListener("click", () => abrir(n.id));
+    fila.append(identidad, vencimiento, plazo, ver);
+    lista.append(fila);
+  });
+  if (!vencimientos.length) mostrarVencimientos(false);
+}
+
+async function cargarVencimientos() {
+  if (cargandoVencimientos) return;
+  const devolverFoco = document.activeElement === $("vencimientos-reintentar");
+  if (devolverFoco) $("vencimientos-titulo").focus({ preventScroll: true });
+  cargandoVencimientos = true;
+  $("vencimientos").dataset.estado = "cargando";
+  $("vencimientos").setAttribute("aria-busy", "true");
+  $("vencimientos-cantidad").hidden = true;
+  $("vencimientos-toggle").hidden = true;
+  $("vencimientos-reintentar").hidden = true;
+  $("vencimientos-resumen").textContent = "Consultando tus certificados…";
+  mostrarVencimientos(false);
+  try {
+    const r = await fetch("/api/naves/mias/vencimientos");
+    if (r.status === 401) {
+      location.href = "/login.html";
+      return;
+    }
+    if (!r.ok) throw new Error();
+    const datos = await r.json();
+    if (!Array.isArray(datos) || datos.some((n) =>
+      !n || !/^\d+$/.test(String(n.id)) || !hayDato(n.certificadoFolio)
+      || !fecha(n.fechaVencimiento) || !Number.isInteger(n.diasRestantes)
+      || n.diasRestantes < 0 || n.diasRestantes > 30)) {
+      throw new Error();
+    }
+    vencimientos = datos;
+    pintarVencimientos();
+    if (devolverFoco) {
+      (vencimientos.length ? $("vencimientos-toggle") : $("vencimientos-titulo")).focus({ preventScroll: true });
+    }
+  } catch {
+    $("vencimientos").dataset.estado = "error";
+    $("vencimientos-lista").replaceChildren();
+    $("vencimientos-resumen").textContent = "No se pudieron consultar los próximos vencimientos. Puedes reintentar.";
+    $("vencimientos-reintentar").hidden = false;
+    if (devolverFoco) $("vencimientos-reintentar").focus({ preventScroll: true });
+  } finally {
+    cargandoVencimientos = false;
+    $("vencimientos").setAttribute("aria-busy", "false");
   }
 }
 
@@ -485,7 +582,7 @@ async function abrir(id) {
 
     pintarHistorial(d);
     pintarDetalle(d);
-    botonOrigen = origen?.matches("#tabla-body button") ? origen : null;
+    botonOrigen = origen?.matches("#tabla-body button, .vencimiento-ver") ? origen : null;
     mostrarVistaDetalle(true);
     window.scrollTo(0, 0);
   } catch {
@@ -507,6 +604,14 @@ $("volver").addEventListener("click", () => {
 });
 $("buscar").addEventListener("input", pintarTabla);
 $("filtro-estado").addEventListener("change", pintarTabla);
+$("vencimientos-toggle").addEventListener("click", () => mostrarVencimientos($("vencimientos-lista").hidden));
+$("vencimientos-reintentar").addEventListener("click", cargarVencimientos);
+$("vencimientos-lista").addEventListener("keydown", (evento) => {
+  if (evento.key === "Escape") {
+    evento.preventDefault();
+    mostrarVencimientos(false);
+  }
+});
 
 $("copiar-enlace").addEventListener("click", async () => {
   if (!codigoActual) return;
@@ -520,3 +625,133 @@ $("copiar-enlace").addEventListener("click", async () => {
 });
 
 cargar();
+cargarVencimientos();
+
+;(function () {
+  const $b = (id) => document.getElementById(id);
+  const panel = $b("borradores");
+  if (!panel) return;
+  let borradores = [];
+  let cargando = false;
+  const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+  const formatoFecha = new Intl.DateTimeFormat("es-PA", { dateStyle: "medium", timeStyle: "short" });
+
+  function nodo(etiqueta, clase, texto) {
+    const n = document.createElement(etiqueta);
+    if (clase) n.className = clase;
+    if (texto !== undefined) n.textContent = texto;
+    return n;
+  }
+
+  function desplegar(abierto) {
+    const lista = $b("borradores-lista");
+    if (!abierto && lista.contains(document.activeElement)) $b("borradores-toggle").focus();
+    lista.hidden = !abierto;
+    $b("borradores-toggle").setAttribute("aria-expanded", String(abierto));
+    $b("borradores-toggle-texto").textContent = abierto ? "Ocultar borradores" : "Ver borradores";
+  }
+
+  function pintar() {
+    const lista = $b("borradores-lista");
+    lista.replaceChildren();
+    panel.hidden = !borradores.length;
+    panel.dataset.estado = borradores.length ? "listo" : "vacio";
+    $b("borradores-cantidad").textContent = borradores.length;
+    $b("borradores-cantidad").hidden = false;
+    $b("borradores-toggle").hidden = !borradores.length;
+    $b("borradores-estado").textContent = borradores.length === 1
+      ? "Tienes 1 solicitud guardada sin enviar."
+      : "Tienes " + borradores.length + " solicitudes guardadas sin enviar.";
+
+    borradores.forEach((b) => {
+      const fila = nodo("li", "borrador-fila");
+      const identidad = nodo("div", "borrador-identidad");
+      identidad.append(
+        nodo("strong", "", String(b.nombreNave || "").trim() || "Solicitud sin nombre"),
+        nodo("span", "borrador-meta", "Paso " + b.paso + " de 3 · " + (b.tieneDocumento ? "Con PDF" : "Sin PDF"))
+      );
+      const fecha = nodo("time", "borrador-fecha", formatoFecha.format(new Date(b.actualizado)));
+      fecha.dateTime = b.actualizado;
+      fecha.setAttribute("aria-label", "Último guardado: " + fecha.textContent);
+      const acciones = nodo("div", "borrador-fila-acciones");
+      const continuar = nodo("a", "btn o x borrador-continuar", "Continuar");
+      continuar.href = "nueva-solicitud.html?borrador=" + encodeURIComponent(b.id);
+      continuar.dataset.borrador = b.id;
+      continuar.setAttribute("aria-label", "Continuar borrador de " + (String(b.nombreNave || "").trim() || "solicitud sin nombre"));
+      const eliminar = nodo("button", "btn o x borrador-eliminar", "Eliminar");
+      eliminar.type = "button";
+      eliminar.setAttribute("aria-label", "Eliminar borrador de " + (String(b.nombreNave || "").trim() || "solicitud sin nombre"));
+      eliminar.addEventListener("click", () => borrar(b, fila));
+      acciones.append(continuar, eliminar);
+      fila.append(identidad, fecha, acciones);
+      lista.append(fila);
+    });
+    if (!borradores.length) desplegar(false);
+  }
+
+  async function cargar() {
+    if (cargando) return;
+    cargando = true;
+    const devolverFoco = document.activeElement === $b("borradores-reintentar");
+    if (devolverFoco) $b("borradores-titulo").focus();
+    panel.dataset.estado = "cargando";
+    panel.setAttribute("aria-busy", "true");
+    $b("borradores-reintentar").hidden = true;
+    $b("borradores-toggle").hidden = true;
+    $b("borradores-cantidad").hidden = true;
+    $b("borradores-estado").textContent = "Consultando tus borradores…";
+    desplegar(false);
+    try {
+      const r = await fetch("/api/borradores");
+      if (r.status === 401) { location.href = "/login.html"; return; }
+      if (!r.ok) throw new Error();
+      const datos = await r.json();
+      if (!Array.isArray(datos) || datos.some((b) => !b || !uuid.test(b.id)
+        || !Number.isInteger(b.version) || b.version < 0 || !Number.isInteger(b.paso)
+        || b.paso < 1 || b.paso > 3 || !Number.isFinite(Date.parse(b.actualizado)))) throw new Error();
+      borradores = datos;
+      pintar();
+      if (devolverFoco) (borradores.length ? $b("borradores-toggle") : $b("buscar")).focus();
+    } catch {
+      panel.hidden = false;
+      panel.dataset.estado = "error";
+      $b("borradores-estado").textContent = "No se pudieron consultar tus borradores. Puedes reintentar.";
+      $b("borradores-reintentar").hidden = false;
+      if (devolverFoco) $b("borradores-reintentar").focus();
+    } finally {
+      cargando = false;
+      panel.setAttribute("aria-busy", "false");
+    }
+  }
+
+  async function borrar(borrador, fila) {
+    if (fila.inert || !confirm("¿Eliminar este borrador y su PDF adjunto?")) return;
+    const indice = borradores.findIndex((b) => b.id === borrador.id);
+    fila.inert = true;
+    try {
+      const r = await fetch("/api/borradores/" + encodeURIComponent(borrador.id) + "?version=" + borrador.version, { method: "DELETE" });
+      if (r.status === 401) { location.href = "/login.html"; return; }
+      if (!r.ok) {
+        const error = await r.json().catch(() => ({}));
+        $b("borradores-estado").textContent = error.mensaje || "No se pudo eliminar el borrador.";
+        return;
+      }
+      borradores = borradores.filter((b) => b.id !== borrador.id);
+      pintar();
+      $b("borradores-estado").textContent = "Borrador eliminado.";
+      const siguiente = $b("borradores-lista").querySelectorAll(".borrador-continuar");
+      (siguiente[Math.min(indice, siguiente.length - 1)] || $b("buscar")).focus();
+    } catch {
+      $b("borradores-estado").textContent = "No se pudo conectar con el servidor. El borrador sigue en la lista.";
+    } finally {
+      fila.inert = false;
+    }
+  }
+
+  $b("borradores-toggle").addEventListener("click", () => desplegar($b("borradores-lista").hidden));
+  $b("borradores-reintentar").addEventListener("click", cargar);
+  $b("borradores-lista").addEventListener("keydown", (e) => {
+    if (e.key === "Escape") { e.preventDefault(); desplegar(false); }
+  });
+  cargar();
+})();

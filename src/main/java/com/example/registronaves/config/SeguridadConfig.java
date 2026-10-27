@@ -51,6 +51,8 @@ public class SeguridadConfig {
                 // API por rol (las rutas fijas van antes que /api/naves/*)
                 .requestMatchers(HttpMethod.POST, "/api/naves").hasRole("ARMADOR")
                 .requestMatchers(HttpMethod.GET, "/api/naves/mias").hasRole("ARMADOR")
+                .requestMatchers(HttpMethod.GET, "/api/naves/mias/vencimientos").hasRole("ARMADOR")
+                .requestMatchers("/api/borradores", "/api/borradores/**").hasRole("ARMADOR")
                 .requestMatchers(HttpMethod.GET, "/api/naves/todas").hasRole("FUNCIONARIO")
                 .requestMatchers(HttpMethod.GET, "/api/naves/consulta").hasRole("ASEGURADORA")
                 .requestMatchers(HttpMethod.PUT, "/api/naves/*/estado").hasRole("FUNCIONARIO")
