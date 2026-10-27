@@ -870,3 +870,161 @@ html[data-tema="oscuro"] .login-card { box-shadow: 0 20px 50px rgba(0, 0, 0, .5)
     margin: 0;
   }
 }
+
+/* Resumen L2: vista principal y ficha complementaria. */
+.formulario-page .resumen-profesional {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 32%);
+  align-items: stretch;
+  min-width: 0;
+  margin-top: 24px;
+  padding: 0;
+  border: 1px solid #dce3eb;
+  border-radius: 6px;
+  background: #fff;
+  overflow: hidden;
+}
+.formulario-page .resumen-profesional[data-ficha-abierta="false"],
+.formulario-page .resumen-profesional[data-vacio="true"] { grid-template-columns: minmax(0, 1fr); }
+.formulario-page .resumen-profesional .rp-principal { min-width: 0; padding: 22px; }
+.formulario-page .resumen-profesional h3,
+.formulario-page .resumen-profesional h4,
+.formulario-page .resumen-profesional h5,
+.formulario-page .resumen-profesional dt,
+.formulario-page .resumen-profesional dd { margin: 0; font-family: inherit; }
+.formulario-page .resumen-profesional #titulo-resumen {
+  margin: 0 0 16px;
+  padding: 0;
+  border: 0;
+  color: #53657b;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+.formulario-page .resumen-profesional svg.i { flex: none; width: 17px; height: 17px; }
+.formulario-page .resumen-profesional button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-width: 0;
+  min-height: 40px;
+  padding: 8px 11px;
+  border: 1px solid #b8c6d5;
+  border-radius: 4px;
+  background: #fff;
+  color: #193c61;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.4;
+  text-align: center;
+  white-space: normal;
+}
+.formulario-page .resumen-profesional button:hover:not(:disabled) { background: #edf2f7; filter: none; }
+.formulario-page .resumen-profesional button:focus-visible { outline: 3px solid #a15f00; outline-offset: 3px; }
+.formulario-page .resumen-profesional .rp-identidad {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 16px;
+}
+.formulario-page .resumen-profesional .rp-nave-icono { width: 32px; height: 32px; color: #183d65; }
+.formulario-page .resumen-profesional .rp-identidad-texto { min-width: 0; padding-left: 16px; border-left: 1px solid #dce3eb; }
+.formulario-page .resumen-profesional #rs-nave {
+  color: #142f4e;
+  font-size: clamp(26px, 2.4vw, 32px);
+  font-weight: 650;
+  line-height: 1.2;
+  letter-spacing: -.025em;
+  overflow-wrap: anywhere;
+}
+.formulario-page .resumen-profesional .rp-identidad-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 9px 14px;
+  margin: 9px 0 0;
+  color: #65768b;
+  font-size: 12px;
+}
+.formulario-page .resumen-profesional #rs-imo { margin-left: 6px; color: #29435f; font-size: 13px; font-weight: 600; letter-spacing: .08em; }
+.formulario-page .resumen-profesional .rp-tipo { padding: 3px 8px; border-radius: 3px; background: #edf0f4; color: #5a6b80; font-size: 12px; line-height: 1.5; }
+.formulario-page .resumen-profesional .rp-toggle { margin-top: 12px; padding: 6px 0; border-color: transparent; background: transparent; font-size: 13px; }
+.formulario-page .resumen-profesional .rp-toggle:hover:not(:disabled) { background: transparent; text-decoration: underline; text-underline-offset: 4px; }
+.formulario-page .resumen-profesional .rp-chevron { width: 14px; height: 14px; transform: rotate(180deg); transition: transform var(--mov); }
+.formulario-page .resumen-profesional .rp-toggle[aria-expanded="true"] .rp-chevron { transform: rotate(0); }
+.formulario-page .resumen-profesional .rp-documento { margin-top: 12px; padding-top: 16px; border-top: 1px solid #dce3eb; }
+.formulario-page .resumen-profesional .rp-documento-base { padding-left: 13px; border-left: 4px solid #173f6b; }
+.formulario-page .resumen-profesional .rp-documento-base > span { display: block; margin-bottom: 5px; color: #63748a; font-size: 13px; }
+.formulario-page .resumen-profesional #rs-base { color: #1c3755; font-size: 20px; font-weight: 600; line-height: 1.35; overflow-wrap: anywhere; }
+.formulario-page .resumen-profesional .rp-meta,
+.formulario-page .resumen-profesional .rp-partes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin: 16px 0 0; }
+.formulario-page .resumen-profesional .rp-dato { min-width: 0; }
+.formulario-page .resumen-profesional .rp-dato dt { display: flex; align-items: center; gap: 8px; color: #63748a; font-size: 13px; line-height: 1.5; }
+.formulario-page .resumen-profesional .rp-dato dd { margin: 5px 0 0 25px; color: #263e58; font-size: 14px; font-weight: 500; line-height: 1.5; overflow-wrap: anywhere; }
+.formulario-page .resumen-profesional .rp-meta .rp-dato + .rp-dato { padding-left: 16px; border-left: 1px solid #dce3eb; }
+.formulario-page .resumen-profesional .rp-partes { padding-top: 14px; border-top: 1px solid #dce3eb; }
+.formulario-page .resumen-profesional .rp-editar-documento { margin-top: 12px; padding: 6px 0; border-color: transparent; background: transparent; }
+.formulario-page .resumen-profesional .rp-adjunto { margin-top: 16px; padding-top: 14px; border-top: 1px solid #dce3eb; }
+.formulario-page .resumen-profesional .rp-adjunto > h4 { margin-bottom: 8px; color: #233b56; font-size: 14px; font-weight: 500; }
+.formulario-page .resumen-profesional .rp-archivo { display: flex; align-items: center; gap: 12px; min-width: 0; padding: 12px; border: 1px solid #e0e6ed; border-radius: 5px; }
+.formulario-page .resumen-profesional .rp-pdf-icono { width: 25px; height: 30px; color: #5d728a; }
+.formulario-page .resumen-profesional .rp-archivo-info { flex: 1; min-width: 0; }
+.formulario-page .resumen-profesional #rs-pdf { display: block; color: #31465f; font-size: 13px; font-weight: 500; line-height: 1.5; overflow-wrap: anywhere; }
+.formulario-page .resumen-profesional #rs-pdf-meta { margin: 3px 0 0; color: #6b7c90; font-size: 12px; line-height: 1.5; }
+.formulario-page .resumen-profesional .rp-archivo-acciones { display: flex; flex: none; flex-wrap: wrap; gap: 8px; }
+.formulario-page .resumen-profesional .rp-archivo-acciones button { padding-right: 10px; padding-left: 10px; font-size: 13px; }
+.formulario-page .resumen-profesional .rp-archivo-acciones .rp-cambiar { border-color: transparent; background: transparent; }
+.formulario-page .resumen-profesional .rp-ficha { min-width: 0; padding: 22px; border-left: 1px solid #dce3eb; background: #f4f6f8; box-shadow: -4px 0 12px #17375208; }
+.formulario-page .resumen-profesional .rp-ficha-cabecera { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; margin-bottom: 20px; }
+.formulario-page .resumen-profesional #resumen-ficha-titulo { color: #1b334e; font-size: 20px; font-weight: 650; line-height: 1.35; letter-spacing: -.015em; }
+.formulario-page .resumen-profesional .rp-ficha-cabecera p { margin: 5px 0 0; color: #6b7b8f; font-size: 13px; line-height: 1.5; }
+.formulario-page .resumen-profesional .rp-cerrar { flex: none; width: 40px; padding: 8px; border-color: transparent; background: transparent; color: #596d84; }
+.formulario-page .resumen-profesional .rp-ficha-grupo + .rp-ficha-grupo { margin-top: 20px; padding-top: 16px; border-top: 1px solid #dce3eb; }
+.formulario-page .resumen-profesional .rp-grupo-cabecera { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid #dce3eb; }
+.formulario-page .resumen-profesional .rp-grupo-cabecera h5 { display: flex; align-items: center; gap: 7px; min-width: 0; color: #233e5b; font-size: 14px; font-weight: 600; line-height: 1.4; }
+.formulario-page .resumen-profesional .rp-grupo-cabecera button { flex: none; padding-right: 7px; padding-left: 7px; border-color: transparent; background: transparent; font-size: 13px; }
+.formulario-page .resumen-profesional .rp-datos-simple { display: grid; gap: 14px; margin: 0; }
+.formulario-page .resumen-profesional .rp-datos-simple > div { display: grid; grid-template-columns: minmax(90px, .85fr) minmax(0, 1.15fr); align-items: start; gap: 10px; min-width: 0; }
+.formulario-page .resumen-profesional .rp-datos-simple dt { color: #697a8e; font-size: 13px; line-height: 1.5; }
+.formulario-page .resumen-profesional .rp-datos-simple dd { color: #2d425b; font-size: 14px; font-weight: 500; line-height: 1.5; overflow-wrap: anywhere; }
+.formulario-page .resumen-profesional .rp-vacio { grid-column: 1 / -1; min-width: 0; padding: 22px; }
+.formulario-page .resumen-profesional .rp-vacio > svg { width: 23px; height: 23px; color: #365574; }
+.formulario-page .resumen-profesional #rp-vacio-titulo { margin: 10px 0 0; color: #29445f; font-size: 18px; font-weight: 600; line-height: 1.4; }
+.formulario-page .resumen-profesional .rp-vacio p { max-width: 560px; margin: 8px 0 16px; color: #63748a; font-size: 14px; line-height: 1.55; }
+.formulario-page .ft .formulario-posicion { margin-right: 0; }
+.formulario-page .ft #anterior { margin-right: auto; }
+.formulario-page .ft button { font-size: 13px; }
+@media (max-width: 850px) {
+  .formulario-page .resumen-profesional { grid-template-columns: minmax(0, 1fr); }
+  .formulario-page .resumen-profesional .rp-ficha { border-top: 1px solid #dce3eb; border-left: 0; box-shadow: none; }
+}
+@media (max-width: 560px) {
+  .formulario-page .resumen-profesional .rp-principal,
+  .formulario-page .resumen-profesional .rp-ficha,
+  .formulario-page .resumen-profesional .rp-vacio { padding: 18px; }
+  .formulario-page .resumen-profesional .rp-identidad { grid-template-columns: 28px minmax(0, 1fr); gap: 10px; }
+  .formulario-page .resumen-profesional .rp-nave-icono { width: 28px; height: 28px; }
+  .formulario-page .resumen-profesional .rp-identidad-texto { padding-left: 12px; }
+  .formulario-page .resumen-profesional #rs-nave { font-size: 27px; }
+  .formulario-page .resumen-profesional .rp-identidad > .rp-editar { grid-column: 2; justify-self: start; }
+  .formulario-page .resumen-profesional .rp-identidad-meta { gap: 8px; }
+  .formulario-page .resumen-profesional .rp-meta,
+  .formulario-page .resumen-profesional .rp-partes { grid-template-columns: minmax(0, 1fr); gap: 15px; }
+  .formulario-page .resumen-profesional .rp-meta .rp-dato + .rp-dato { padding-left: 0; border-left: 0; }
+  .formulario-page .resumen-profesional #rs-base { font-size: 18px; }
+  .formulario-page .resumen-profesional .rp-archivo { flex-wrap: wrap; }
+  .formulario-page .resumen-profesional .rp-archivo-acciones { flex: 1 1 100%; }
+  .formulario-page .resumen-profesional .rp-archivo-acciones button { flex: 1; }
+  .formulario-page .resumen-profesional .rp-ficha-cabecera { margin-bottom: 20px; }
+}
+@media print {
+  .formulario-page .resumen-profesional,
+  .formulario-page .resumen-profesional[data-ficha-abierta="false"] { display: block; overflow: visible; border-color: #999; }
+  .formulario-page .resumen-profesional:not([data-vacio="true"]) .rp-ficha,
+  .formulario-page .resumen-profesional:not([data-vacio="true"]) .rp-ficha[hidden] { display: block !important; border-top: 1px solid #999; border-left: 0; background: #fff; box-shadow: none; }
+  .formulario-page .resumen-profesional .rp-principal,
+  .formulario-page .resumen-profesional .rp-ficha { padding: 16px; }
+  .formulario-page .resumen-profesional .rp-adjunto,
+  .formulario-page .resumen-profesional .rp-ficha-grupo { break-inside: avoid; }
+}

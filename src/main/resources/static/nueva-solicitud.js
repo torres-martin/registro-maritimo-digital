@@ -6,6 +6,9 @@ const pasos = Array.from(document.querySelectorAll(".pn"));
 const pestanas = Array.from(document.querySelectorAll("#pestanas button"));
 let actual = 0;
 let archivo = null;
+let vistaPdfUrl = null;
+const formatoNumero = new Intl.NumberFormat("es-ES", { maximumFractionDigits: 3 });
+const formatoPrecio = new Intl.NumberFormat("es-ES", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
 // La fecha de celebración no puede ser futura
 (function () {
@@ -80,12 +83,64 @@ function validarPaso(i) {
 // ---------- navegación ----------
 
 function resumen() {
-  const v = (id) => $(id).value.trim() || "—";
-  $("rs-base").textContent = v("documentoBase");
-  $("rs-nave").textContent = v("nombreNave");
-  $("rs-imo").textContent = v("imo");
-  $("rs-propietario").textContent = v("propietario");
-  $("rs-pdf").textContent = archivo ? archivo.name : "—";
+  const valor = (id) => $(id).value.trim();
+  const mostrar = (destino, origen) => {
+    $(destino).textContent = valor(origen) || "No indicado";
+  };
+
+  mostrar("rs-base", "documentoBase");
+  mostrar("rs-transmitente", "nombreTransmitente");
+  mostrar("rs-propietario", "propietario");
+  $("rs-nave").textContent = valor("nombreNave") || "Nombre de la nave";
+  $("rs-imo").textContent = valor("imo").toUpperCase().replace(/\s/g, "").replace(/^IMO/, "") || "No indicado";
+  mostrar("rs-tipo", "tipoNave");
+  mostrar("rs-distintivo", "distintivoLlamada");
+  mostrar("rs-patente", "patenteNavegacion");
+  const arqueo = valor("arqueoBruto");
+  $("rs-arqueo").textContent = arqueo && Number.isFinite(Number(arqueo))
+    ? formatoNumero.format(Number(arqueo)) : "No indicado";
+
+  mostrar("rs-solicitante", "solicitante");
+  mostrar("rs-abogado", "abogado");
+  const fecha = /^(\d{4})-(\d{2})-(\d{2})$/.exec(valor("fechaCelebracion"));
+  $("rs-fecha").textContent = fecha ? fecha[3] + "/" + fecha[2] + "/" + fecha[1] : "No indicada";
+  $("rs-precio-bloque").hidden = valor("documentoBase") !== "Contrato de compraventa";
+  const precio = valor("precioVenta");
+  $("rs-precio").textContent = precio && Number.isFinite(Number(precio))
+    ? formatoPrecio.format(Number(precio)) : "No indicado";
+
+  $("rs-pdf").textContent = archivo ? archivo.name : "Sin archivo adjunto";
+  if (archivo) {
+    const megabytes = archivo.size / (1024 * 1024);
+    const tamano = megabytes >= 1
+      ? new Intl.NumberFormat("es-ES", { maximumFractionDigits: 2 }).format(megabytes) + " MB"
+      : Math.max(1, Math.ceil(archivo.size / 1024)) + " KB";
+    $("rs-pdf-meta").textContent = "PDF · " + tamano;
+  } else {
+    $("rs-pdf-meta").textContent = "Adjunta un PDF de hasta 10 MB";
+  }
+  $("rs-ver-pdf").disabled = !vistaPdfUrl;
+  $("rs-pdf-accion").textContent = archivo ? "Cambiar" : "Adjuntar";
+  actualizarEstadoResumen();
+}
+
+// El estado vacío solo sustituye la lectura, sin ocultar los controles originales.
+function actualizarEstadoResumen() {
+  const contenedor = document.querySelector(".resumen-profesional");
+  const contenido = $("resumen-contenido");
+  const hayDatos = Boolean(archivo) || Array.from(document.querySelectorAll("#form-solicitud [data-k]"))
+    .some((campo) => visible(campo) && campo.value.trim());
+  const devolverFoco = !hayDatos && (contenido.contains(document.activeElement) || $("resumen-ficha").contains(document.activeElement));
+
+  $("resumen-vacio").hidden = hayDatos;
+  contenido.hidden = !hayDatos;
+  contenedor.dataset.vacio = String(!hayDatos);
+  contenedor.setAttribute("aria-labelledby", hayDatos ? "titulo-resumen" : "rp-vacio-titulo");
+
+  if (!hayDatos) {
+    mostrarFicha(false);
+    if (devolverFoco) $("resumen-completar").focus({ preventScroll: true });
+  }
 }
 
 function ir(i) {
@@ -151,6 +206,50 @@ $("siguiente").addEventListener("click", () => {
   }
 });
 $("form-solicitud").addEventListener("submit", (e) => e.preventDefault());
+$("form-solicitud").addEventListener("input", resumen);
+$("form-solicitud").addEventListener("change", resumen);
+
+// La ficha es un panel de lectura; ocultarla no elimina los valores del formulario.
+function mostrarFicha(abierta, enfocarControl = false) {
+  const ficha = $("resumen-ficha");
+  const control = $("resumen-ficha-toggle");
+  const devolverFoco = enfocarControl || (!abierta && ficha.contains(document.activeElement));
+  const mostrar = abierta && !$("resumen-contenido").hidden;
+
+  ficha.hidden = !mostrar;
+  document.querySelector(".resumen-profesional").dataset.fichaAbierta = String(mostrar);
+  control.setAttribute("aria-expanded", String(mostrar));
+  $("resumen-ficha-toggle-texto").textContent = mostrar ? "Ocultar ficha" : "Ver ficha completa";
+
+  if (devolverFoco) {
+    const destino = $("resumen-contenido").hidden ? $("resumen-completar") : control;
+    destino.focus({ preventScroll: true });
+  }
+}
+
+$("resumen-ficha-toggle").addEventListener("click", () => mostrarFicha($("resumen-ficha").hidden));
+$("resumen-ficha-cerrar").addEventListener("click", () => mostrarFicha(false, true));
+$("resumen-ficha").addEventListener("keydown", (evento) => {
+  if (evento.key === "Escape") {
+    evento.preventDefault();
+    mostrarFicha(false, true);
+  }
+});
+
+// La edición vuelve al campo original sin reiniciar el formulario ni el adjunto.
+document.querySelectorAll("[data-editar-paso]").forEach((boton) => {
+  boton.addEventListener("click", () => {
+    ir(Number(boton.dataset.editarPaso));
+    const campo = $(boton.dataset.editarCampo);
+    campo.focus({ preventScroll: true });
+    campo.scrollIntoView({ block: "center", behavior: "instant" });
+  });
+});
+
+$("rs-cambiar-pdf").addEventListener("click", () => $("pdf").click());
+$("rs-ver-pdf").addEventListener("click", () => {
+  if (vistaPdfUrl) window.open(vistaPdfUrl, "_blank", "noopener,noreferrer");
+});
 
 // ---------- documento PDF ----------
 
@@ -161,13 +260,21 @@ function pintarPdf() {
   const boton = $("pdf-boton");
   boton.textContent = archivo ? "Quitar" : "Subir";
   boton.className = archivo ? "btn r x" : "btn o x";
+  resumen();
+}
+
+// Cada archivo mantiene una sola URL temporal hasta sustituirlo o quitarlo.
+function actualizarVistaPdf() {
+  if (vistaPdfUrl) URL.revokeObjectURL(vistaPdfUrl);
+  vistaPdfUrl = archivo ? URL.createObjectURL(archivo) : null;
+  pintarPdf();
 }
 
 $("pdf-boton").addEventListener("click", () => {
   if (archivo) {
     archivo = null;
     $("pdf").value = "";
-    pintarPdf();
+    actualizarVistaPdf();
   } else {
     $("pdf").click();
   }
@@ -188,7 +295,7 @@ $("pdf").addEventListener("change", () => {
     return;
   }
   archivo = f;
-  pintarPdf();
+  actualizarVistaPdf();
 });
 
 // ---------- envío ----------
@@ -277,6 +384,7 @@ async function precargar() {
       if (v !== null && v !== undefined) el.value = v;
     });
     condiciones();
+    resumen();
 
     caja.replaceChildren(
       texto("Corrigiendo la solicitud " + d.tramite, ""),
@@ -291,5 +399,6 @@ async function precargar() {
 }
 
 condiciones();
+resumen();
 ir(0);
 precargar();
