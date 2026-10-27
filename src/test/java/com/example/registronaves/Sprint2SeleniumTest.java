@@ -127,7 +127,15 @@ class Sprint2SeleniumTest {
 
     private static Path pdfValido() throws IOException {
         Path f = Files.createTempFile("solicitud", ".pdf");
-        Files.writeString(f, "%PDF-1.4\n%Documento de prueba\n%%EOF\n");
+        try (var out = Files.newOutputStream(f)) {
+            var doc = new com.lowagie.text.Document();
+            com.lowagie.text.pdf.PdfWriter.getInstance(doc, out);
+            doc.open();
+            doc.add(new com.lowagie.text.Paragraph("Documento de prueba"));
+            doc.close();
+        } catch (Exception e) {
+            throw new IOException("No se pudo crear el PDF de prueba", e);
+        }
         return f;
     }
 
