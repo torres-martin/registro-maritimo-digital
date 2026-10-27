@@ -153,8 +153,9 @@ button.cuenta-salir:active { background: var(--t); }
 
 /* ---------- 4.1. Portales de gestión ---------- */
 .portal-main { padding: 0; }
-.portal-hero { color: #fff; background: linear-gradient(90deg,rgba(4,35,67,.95),rgba(4,35,67,.68) 45%,rgba(4,35,67,.08)),url("img/barco.jpg") center 45% / cover no-repeat; }
-.portal-hero-contenido { max-width: 1440px; margin: auto; padding: 30px 32px 64px; }
+.portal-hero { position: relative; overflow: hidden; color: #fff; background: #0d2b5c; }
+.portal-hero::after, .formulario-band::after { content: ""; position: absolute; top: 0; right: 0; bottom: 0; width: min(50%, 840px); background: url("img/banner.jpg") center 48% / cover no-repeat; -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 45%); mask-image: linear-gradient(90deg, transparent 0, #000 45%); }
+.portal-hero-contenido { position: relative; z-index: 1; max-width: 1440px; margin: auto; padding: 30px 32px 64px; }
 .portal-etiqueta { display: block; color: #c4d9eb; font-size: 10px; letter-spacing: .15em; margin-bottom: 12px; }
 .portal-hero h1 { font-family: system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; font-size: clamp(30px,3.4vw,44px); font-weight: 600; line-height: 1.15; letter-spacing: -.035em; margin: 0 0 14px; }
 .portal-hero p { max-width: 540px; color: #e0eaf5; font-size: 14px; line-height: 1.75; margin: 0 0 20px; }
@@ -220,7 +221,6 @@ button.cuenta-salir:active { background: var(--t); }
 
 /* ---------- 4.2. Formulario de registro ---------- */
 .formulario-band { position: relative; overflow: hidden; padding-top: 28px; padding-bottom: 84px; background: #0d2b5c; }
-.formulario-band::after { content: ""; position: absolute; inset: 0 0 0 60%; background: linear-gradient(90deg,#0d2b5c,rgba(13,43,92,.35)),url("img/barco.jpg") center 48% / cover no-repeat; opacity: .55; }
 .formulario-band-contenido { position: relative; z-index: 1; }
 .formulario-etiqueta { display: block; margin-bottom: 10px; color: #c4d9eb; font-size: 10px; letter-spacing: .15em; }
 .formulario-band h1 { margin: 0 0 10px; font-family: system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; font-size: clamp(28px,3vw,38px); font-weight: 600; letter-spacing: -.035em; }
@@ -265,7 +265,6 @@ button.cuenta-salir:active { background: var(--t); }
 }
 @media (max-width: 560px) {
   .formulario-band { padding-top: 24px; padding-bottom: 76px; }
-  .formulario-band::after { left: 35%; opacity: .2; }
   .formulario-page .tt { padding: 0 4px; }
   .formulario-page .tt button { flex-direction: column; padding: 16px 5px; gap: 8px; text-align: center; }
   .paso-texto strong { font-size: 10px; line-height: 1.5; }
@@ -283,6 +282,7 @@ button.cuenta-salir:active { background: var(--t); }
   .formulario-page .ft button { min-width: 0; }
   .formulario-resumen { padding: 16px; }
 }
+
 @media print {
   .formulario-band::after { display: none; }
 }

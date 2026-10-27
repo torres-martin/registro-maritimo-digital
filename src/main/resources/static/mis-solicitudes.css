@@ -8,7 +8,7 @@
 .solicitudes-hero {
   position: relative;
   overflow: hidden;
-  min-height: 265px;
+  min-height: 180px;
   background: #07365b;
   color: #fff;
 }
@@ -19,7 +19,7 @@
   width: 100%;
   max-width: none;
   margin: 0;
-  padding: 36px var(--lado) 64px;
+  padding: 24px var(--lado) 56px;
 }
 
 .hero-etiqueta,
@@ -62,15 +62,13 @@
 
 .hero-imagen {
   position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(
-      90deg,
-      rgba(4, 35, 67, .95),
-      rgba(4, 35, 67, .65) 42%,
-      rgba(4, 35, 67, .05)
-    ),
-    url("img/barco.jpg") center 45% / cover no-repeat;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(50%, 840px);
+  background: url("img/banner.jpg") center 48% / cover no-repeat;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 45%);
+  mask-image: linear-gradient(90deg, transparent 0, #000 45%);
 }
 
 /* Conteos y área de consulta. */
@@ -98,8 +96,8 @@
   justify-content: flex-end;
   align-items: center;
   gap: 16px;
-  padding: 19px 24px;
-  min-height: 91px;
+  padding: 14px 24px;
+  min-height: 72px;
   border: 1px solid #dde7ed;
   border-radius: 10px;
   background: #fff;
@@ -293,9 +291,9 @@
 
 .solicitudes-page td:nth-child(3),
 .solicitudes-page td:nth-child(6) {
-  color: #64788a;
+  color: #3d5266;
   white-space: nowrap;
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .solicitud-acciones {
@@ -563,10 +561,6 @@
   .hero-contenido p {
     max-width: 310px;
     font-size: 13px;
-  }
-
-  .hero-imagen {
-    background-position: center, 60% center;
   }
 
   .solicitudes-resumen {
