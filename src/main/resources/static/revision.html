@@ -5,12 +5,54 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Revisión · Registro Marítimo Digital</title>
   <link rel="stylesheet" href="estilos.css">
+  <link rel="stylesheet" href="revision.css">
 </head>
-<body class="interior-page revision-page">
+
+<body class="revision-page revision-workspace">
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
-    <symbol id="an" viewBox="0 0 24 24"><circle cx="12" cy="5" r="2.5"/><path d="M12 8v13M5 14a7 7 0 0 0 14 0M8 11H5M19 11h-3"/></symbol>
+    <symbol id="rv-nave" viewBox="0 0 24 24">
+      <path d="M4 17 2 12l10-4 10 4-2 5M6 10V5h12v5M10 5V2h4v3M2 20c2 2 4-2 6 0s4-2 6 0 4-2 8 0"/>
+    </symbol>
+
+    <symbol id="rv-documento" viewBox="0 0 24 24">
+      <path d="M14 2H5v20h14V7zM14 2v5h5M8 12h8M8 16h8"/>
+    </symbol>
+
+    <symbol id="rv-fecha" viewBox="0 0 24 24">
+      <path d="M4 5h16v16H4zM8 2v6M16 2v6M4 10h16"/>
+    </symbol>
+
+    <symbol id="rv-empresa" viewBox="0 0 24 24">
+      <path d="M3 21V7h6V3h8v18M17 11h4v10M1 21h22M6 10v2M6 15v2M12 6v2M12 11v2M12 16v5"/>
+    </symbol>
+
+    <symbol id="rv-persona" viewBox="0 0 24 24">
+      <circle cx="12" cy="7" r="4"/>
+      <path d="M4 22v-4a8 8 0 0 1 16 0v4z"/>
+    </symbol>
+
+    <symbol id="rv-chevron" viewBox="0 0 24 24">
+      <path d="m6 9 6 6 6-6"/>
+    </symbol>
+
+    <symbol id="rv-check" viewBox="0 0 24 24">
+      <path d="m5 12 4 4 10-10"/>
+    </symbol>
+
+    <symbol id="rv-x" viewBox="0 0 24 24">
+      <path d="m6 6 12 12M18 6 6 18"/>
+    </symbol>
+
+    <symbol id="rv-info" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="10"/>
+      <path d="M12 11v6M12 7h.01"/>
+    </symbol>
+
+    <symbol id="rv-externo" viewBox="0 0 24 24">
+      <path d="M14 3h7v7M21 3 10 14M10 3H3v18h18v-7"/>
+    </symbol>
   </defs>
 </svg>
 
@@ -31,119 +73,384 @@
       <span>Digital</span>
     </span>
   </a>
-  <nav>
-    <a href="bandeja.html">Bandeja</a>
-  </nav>
+
   <div class="cabecera-cuenta">
-  <div class="cuenta-usuario">
-    <span
-      class="cuenta-avatar"
-      id="usuario-iniciales"
-      aria-hidden="true"
-    >—</span>
+    <div class="cuenta-usuario">
+      <span
+        class="cuenta-avatar"
+        id="usuario-iniciales"
+        aria-hidden="true"
+      >—</span>
 
-    <div class="cuenta-datos">
-      <span id="usuario">Cargando…</span>
-      <span id="usuario-rol"></span>
+      <div class="cuenta-datos">
+        <span id="usuario">Cargando…</span>
+        <span id="usuario-rol"></span>
+      </div>
     </div>
-  </div>
 
-  <button type="button" class="cuenta-salir" id="salir">
-    <svg class="i" viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M9 4H4v16h5M9 12h12m-4-4 4 4-4 4"/>
-    </svg>
-    Cerrar sesión
-  </button>
-</div>
+    <button type="button" class="cuenta-salir" id="salir">
+      <svg class="i" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M9 4H4v16h5M9 12h12m-4-4 4 4-4 4"/>
+      </svg>
+      Cerrar sesión
+    </button>
+  </div>
 </header>
 
-<main class="interior-main">
-  <section class="band formulario-band" aria-labelledby="titulo-revision">
-    <div class="formulario-band-contenido">
-      <span class="formulario-etiqueta">PORTAL DEL FUNCIONARIO</span>
-      <h1 id="titulo-revision">Revisión de solicitud</h1>
-      <p>Consulta el expediente y sus documentos para registrar la decisión.</p>
-      <span class="formulario-referencia" id="sub"></span>
-    </div>
+<main class="revision-main">
+  <div class="revision-carga" id="revision-carga" role="status">
+    Cargando solicitud…
+  </div>
+
+  <section
+    class="revision-panel"
+    id="revision-error"
+    aria-labelledby="titulo-error"
+    hidden
+  >
+    <h1 id="titulo-error" tabindex="-1">
+      No se pudo abrir la solicitud
+    </h1>
+
+    <p id="revision-error-texto"></p>
+
+    <a class="btn o" href="bandeja.html">
+      Volver a la bandeja
+    </a>
+
+    <button class="btn o" type="button" id="reintentar-carga">
+      Reintentar
+    </button>
   </section>
 
-  <section class="tc interior-panel" aria-labelledby="titulo-expediente">
-    <div class="interior-encabezado">
-      <span class="portal-panel-etiqueta">EXPEDIENTE DE LA NAVE</span>
-      <h2 id="titulo-expediente">Datos y documentos</h2>
-      <p class="interior-ayuda">
-        Revisa la información presentada y el documento adjunto.
-      </p>
-    </div>
+  <section
+    class="revision-panel"
+    id="revision-panel"
+    aria-labelledby="titulo-revision"
+    hidden
+  >
+    <header class="revision-cabecera">
+      <a class="revision-volver" href="bandeja.html">← Bandeja</a>
 
-    <div class="interior-acciones">
-      <a class="btn o x" href="bandeja.html">← Volver a la bandeja</a>
-      <a class="btn o x" id="ver-doc" target="_blank" rel="noopener" hidden>
-        Abrir documento
-      </a>
-      <a class="btn o x" id="ver-cert" target="_blank" rel="noopener" hidden>
-        Ver certificado
-      </a>
-      <span id="estado"></span>
-    </div>
+      <h1 id="titulo-revision" tabindex="-1">
+        Revisión de solicitud
+      </h1>
 
-    <div id="obs"></div>
-    <div class="detalle" id="cuerpo"></div>
+      <div class="revision-contexto">
+        <span id="sub"></span>
+        <span id="estado"></span>
+      </div>
+    </header>
 
-    <section id="decision" aria-labelledby="titulo-decision" hidden>
-      <h3 id="titulo-decision">Evaluación de la solicitud</h3>
-      <p class="interior-ayuda">
-        Registra la liquidación y las observaciones de la revisión.
-        Para rechazar, indica el motivo.
-      </p>
+    <div class="revision-observacion" id="obs" hidden></div>
 
-      <div class="g2">
-        <div class="campo">
-          <label for="liquidacion">Número de liquidación</label>
-          <input id="liquidacion" maxlength="40">
-          <div class="err"></div>
+    <div class="revision-grid">
+      <article class="revision-datos" aria-labelledby="titulo-expediente">
+        <div class="revision-resumen">
+          <h2 id="titulo-expediente">Datos de la solicitud</h2>
+
+          <div class="revision-identidad">
+            <svg class="i revision-nave-icono" aria-hidden="true">
+              <use href="#rv-nave"/>
+            </svg>
+
+            <div>
+              <h3 id="nave-nombre"></h3>
+              <p id="nave-meta"></p>
+            </div>
+          </div>
+
+          <dl class="revision-datos-principales">
+            <div class="revision-dato revision-documento-base">
+              <dt>
+                <svg class="i" aria-hidden="true">
+                  <use href="#rv-documento"/>
+                </svg>
+                Documento base
+              </dt>
+              <dd id="dato-base"></dd>
+            </div>
+
+            <div class="revision-dato">
+              <dt>
+                <svg class="i" aria-hidden="true">
+                  <use href="#rv-fecha"/>
+                </svg>
+                Fecha del documento
+              </dt>
+              <dd id="dato-fecha"></dd>
+            </div>
+
+            <div class="revision-dato">
+              <dt>
+                <svg class="i" aria-hidden="true">
+                  <use href="#rv-empresa"/>
+                </svg>
+                Transmitente
+              </dt>
+              <dd id="dato-transmitente"></dd>
+            </div>
+
+            <div class="revision-dato">
+              <dt>
+                <svg class="i" aria-hidden="true">
+                  <use href="#rv-empresa"/>
+                </svg>
+                Propietario
+              </dt>
+              <dd id="dato-propietario"></dd>
+            </div>
+
+            <div class="revision-dato">
+              <dt>
+                <svg class="i" aria-hidden="true">
+                  <use href="#rv-persona"/>
+                </svg>
+                Solicitante
+              </dt>
+              <dd id="dato-solicitante"></dd>
+            </div>
+
+            <div class="revision-dato">
+              <dt>
+                <svg class="i" aria-hidden="true">
+                  <use href="#rv-persona"/>
+                </svg>
+                Abogado
+              </dt>
+              <dd id="dato-abogado"></dd>
+            </div>
+
+            <div class="revision-dato" id="precio-bloque" hidden>
+              <dt>Precio de venta</dt>
+              <dd id="dato-precio"></dd>
+            </div>
+          </dl>
+
+          <button
+            class="revision-toggle"
+            id="ficha-toggle"
+            type="button"
+            aria-expanded="false"
+            aria-controls="ficha-completa"
+          >
+            <svg class="i" aria-hidden="true">
+              <use href="#rv-documento"/>
+            </svg>
+
+            <span id="ficha-toggle-texto">Ver ficha completa</span>
+
+            <svg class="i revision-chevron" aria-hidden="true">
+              <use href="#rv-chevron"/>
+            </svg>
+          </button>
         </div>
 
-        <div class="campo full">
+        <section
+          class="revision-ficha"
+          id="ficha-completa"
+          aria-labelledby="titulo-ficha"
+          tabindex="0"
+          hidden
+        >
+          <h3 id="titulo-ficha">Información complementaria</h3>
+          <div id="cuerpo"></div>
+        </section>
+      </article>
+
+      <section
+        class="revision-documento"
+        aria-labelledby="titulo-documento"
+      >
+        <header class="revision-documento-cabecera">
+          <h2 id="titulo-documento">Documento adjunto</h2>
+
+          <a
+            class="btn o x"
+            id="ver-doc"
+            target="_blank"
+            rel="noopener"
+            hidden
+          >
+            Abrir PDF
+            <svg class="i" aria-hidden="true">
+              <use href="#rv-externo"/>
+            </svg>
+          </a>
+        </header>
+
+        <div
+          class="revision-preview"
+          id="documento-visor"
+          aria-busy="false"
+        >
+          <iframe
+            id="documento-preview"
+            title="Documento adjunto de la solicitud"
+            hidden
+          ></iframe>
+
+          <p
+            class="revision-documento-mensaje"
+            id="documento-mensaje"
+            role="status"
+          ></p>
+        </div>
+
+        <button
+          class="btn o x"
+          type="button"
+          id="reintentar-doc"
+          hidden
+        >
+          Reintentar vista previa
+        </button>
+
+        <p
+          class="revision-documento-ayuda"
+          id="documento-ayuda"
+          hidden
+        >
+          También puedes abrir el PDF en otra pestaña para ampliarlo
+          o descargarlo.
+        </p>
+      </section>
+    </div>
+
+    <section
+      class="revision-evaluacion"
+      id="decision"
+      aria-labelledby="titulo-decision"
+      hidden
+    >
+      <h2 id="titulo-decision">Evaluación de la solicitud</h2>
+
+      <div class="revision-evaluacion-campos">
+        <div class="campo">
+          <label for="liquidacion">Número de liquidación</label>
+          <input
+            id="liquidacion"
+            maxlength="40"
+            placeholder="Ingresa el número de liquidación"
+          >
+        </div>
+
+        <div class="campo">
           <label for="observacion">Observación</label>
           <textarea
             id="observacion"
             maxlength="1000"
-            aria-describedby="err-observacion"
+            rows="2"
+            placeholder="Escribe la observación de la revisión"
+            aria-describedby="ayuda-decision err-observacion"
           ></textarea>
+
           <div class="err" id="err-observacion"></div>
         </div>
       </div>
 
-      <div class="acciones">
-        <button type="button" class="btn v" id="aprobar">Aprobar</button>
-        <button type="button" class="btn r" id="rechazar">Rechazar</button>
+      <div class="revision-evaluacion-pie">
+        <p class="revision-ayuda" id="ayuda-decision">
+          <svg class="i" aria-hidden="true">
+            <use href="#rv-info"/>
+          </svg>
+          Para rechazar, indica el motivo.
+        </p>
+
+        <div class="revision-decision-botones">
+          <button type="button" class="btn" id="aprobar">
+            <svg class="i" aria-hidden="true">
+              <use href="#rv-check"/>
+            </svg>
+            Aprobar solicitud
+          </button>
+
+          <button type="button" class="btn o" id="rechazar">
+            <svg class="i" aria-hidden="true">
+              <use href="#rv-x"/>
+            </svg>
+            Rechazar
+          </button>
+        </div>
       </div>
     </section>
 
-    <section id="revocacion" aria-labelledby="titulo-revocacion" hidden>
-      <h3 id="titulo-revocacion">Revocación del certificado</h3>
-      <p class="interior-ayuda">
-        Indica el motivo antes de revocar el certificado.
-        Esta acción no se puede deshacer.
-      </p>
+    <section
+      class="revision-certificado"
+      id="certificado"
+      aria-labelledby="titulo-certificado"
+      hidden
+    >
+      <svg class="i revision-cert-icono" aria-hidden="true">
+        <use href="#rv-documento"/>
+      </svg>
 
-      <div class="campo full">
-        <label for="motivo-revocacion">Motivo de la revocación</label>
-        <textarea
-          id="motivo-revocacion"
-          maxlength="500"
-          aria-describedby="err-motivo"
-        ></textarea>
-        <div class="err" id="err-motivo"></div>
+      <div class="revision-cert-identidad">
+        <h2 id="titulo-certificado" tabindex="-1">
+          Certificado de registro
+        </h2>
+        <span id="cert-folio"></span>
       </div>
 
-      <div class="acciones">
-        <button type="button" class="btn r" id="revocar">
-          Revocar certificado
+      <div class="revision-cert-vigencia">
+        <span id="cert-vigencia"></span>
+      </div>
+
+      <div class="revision-cert-acciones">
+        <a
+          class="btn"
+          id="ver-cert"
+          target="_blank"
+          rel="noopener"
+          hidden
+        >
+          Ver certificado <span aria-hidden="true">→</span>
+        </a>
+
+        <button
+          type="button"
+          class="revision-enlace"
+          id="copiar-enlace"
+          hidden
+        >
+          Copiar enlace
         </button>
       </div>
     </section>
+
+    <details class="revision-gestion" id="revocacion" hidden>
+      <summary>Gestionar certificado</summary>
+
+      <div class="revision-revocacion-contenido">
+        <h3 id="titulo-revocacion">Revocación del certificado</h3>
+
+        <p>
+          Indica el motivo antes de revocar el certificado.
+          Esta acción no se puede deshacer.
+        </p>
+
+        <div class="campo">
+          <label for="motivo-revocacion">
+            Motivo de la revocación
+          </label>
+
+          <textarea
+            id="motivo-revocacion"
+            maxlength="500"
+            rows="2"
+            aria-describedby="err-motivo"
+          ></textarea>
+
+          <div class="err" id="err-motivo"></div>
+        </div>
+
+        <div class="acciones">
+          <button type="button" class="btn o" id="revocar">
+            Revocar certificado
+          </button>
+        </div>
+      </div>
+    </details>
 
     <div id="aviso" class="aviso" role="alert"></div>
   </section>
