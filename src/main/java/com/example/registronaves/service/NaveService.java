@@ -78,7 +78,7 @@ public class NaveService {
         if (!IMO_COMPLETO.matcher(imo).matches())
             throw new DatosInvalidosException("El IMO debe tener 7 dígitos (ejemplo: 1234567 o IMO1234567).");
         if (repo.existsByImoAndEstadoIn(imo, List.of("En revisión", "Aprobado")))
-            throw new IllegalArgumentException("Ya existe una solicitud en revisión o aprobada para el IMO " + imo + ".");
+            throw new DatosInvalidosException("Ya existe una solicitud en revisión o aprobada para el IMO " + imo + ".");
 
         // VALIDACIÓN DE DÍGITO DE CONTROL DESACTIVADA PARA PRUEBAS:
         // if (!imoValido(imo.substring(3)))
