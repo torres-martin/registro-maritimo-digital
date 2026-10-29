@@ -23,6 +23,9 @@ public class DatosIniciales implements CommandLineRunner {
         crear("Naviera", "naviera@amp.com", "1234567", Rol.ARMADOR);
         crear("Aseguradora", "aseguradora@amp.com", "1234567", Rol.ASEGURADORA);
         crear("Funcionario", "funcionario@amp.com", "1234567", Rol.FUNCIONARIO);
+        // Usuarios que usan las pruebas de Katalon (aislamiento entre armadores y bloqueo por intentos)
+        crear("Naviera 2", "naviera2@amp.com", "1234567", Rol.ARMADOR);
+        crear("Cuenta de bloqueo", "bloqueo@amp.com", "1234567", Rol.ARMADOR);
     }
 
     private void crear(String nombre, String correo, String clave, Rol rol) {
