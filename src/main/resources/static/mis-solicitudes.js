@@ -1,5 +1,5 @@
 const $ = (id) => document.getElementById(id);
-const CLASES = { "En revisión": "en-revision", "Aprobado": "aprobado", "Rechazado": "rechazado" };
+const CLASES = { "En revisión": "en-revision", "Aprobado": "aprobado", "Rechazado": "rechazado", "Revocado": "revocado" };
 let naves = [];
 let vencimientos = [];
 let cargandoVencimientos = false;
@@ -520,7 +520,8 @@ function pintarDetalle(d) {
       ["Fecha de resolución", d.fechaDecision, fechaDato], ["Liquidación", d.liquidacion],
       ["Certificado", d.certificadoFolio], ["Fecha de emisión", d.fechaEmision, fechaDato],
       ["Vigente hasta", d.fechaVencimiento, fechaDato], ["Estado del certificado", d.estadoCertificado],
-      ["Fecha de revocación", d.fechaRevocacion, fechaDato], ["Motivo de revocación", d.motivoRevocacion]
+      ["Fecha de revocación", d.fechaRevocacion, fechaDato], ["Motivo de revocación", d.motivoRevocacion],
+      ["Corrige la solicitud", d.tramiteOrigen]
     ])
   ].filter(Boolean);
   $("consulta-grupos").replaceChildren(...grupos);

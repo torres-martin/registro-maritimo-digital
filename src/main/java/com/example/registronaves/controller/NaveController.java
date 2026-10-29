@@ -66,13 +66,13 @@ public class NaveController {
     }
 
     @PutMapping("/naves/{id}/estado")
-    public Map<String, Object> decidir(@PathVariable("id") Long id, @RequestBody Decision d) {
-        return servicio.cambiarEstado(id, d.estado(), d.observacion(), d.liquidacion());
+    public Map<String, Object> decidir(@PathVariable("id") Long id, @RequestBody Decision d, Authentication auth) {
+        return servicio.cambiarEstado(id, d.estado(), d.observacion(), d.liquidacion(), auth.getName());
     }
 
     @PutMapping("/naves/{id}/revocar")
-    public Map<String, Object> revocar(@PathVariable("id") Long id, @RequestBody Revocacion r) {
-        return servicio.revocar(id, r.motivo());
+    public Map<String, Object> revocar(@PathVariable("id") Long id, @RequestBody Revocacion r, Authentication auth) {
+        return servicio.revocar(id, r.motivo(), auth.getName());
     }
 
     // Aseguradora

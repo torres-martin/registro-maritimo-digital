@@ -78,13 +78,15 @@ public class NaveService {
     private final CertificadoService certificados;
     private final BorradorRepository borradores;
     private final ObjectMapper json;
+    private final AuditoriaService auditoria;
 
     public NaveService(NaveRepository repo, CertificadoService certificados,
-                       BorradorRepository borradores, ObjectMapper json) {
+                       BorradorRepository borradores, ObjectMapper json, AuditoriaService auditoria) {
         this.repo = repo;
         this.certificados = certificados;
         this.borradores = borradores;
         this.json = json;
+        this.auditoria = auditoria;
     }
 
     // registro 
@@ -104,7 +106,7 @@ public class NaveService {
         String imo = normalizarImo(texto(c, "imo"));
         if (!IMO_COMPLETO.matcher(imo).matches())
             throw new DatosInvalidosException("El IMO debe tener 7 dígitos (ejemplo: 1234567 o IMO1234567).");
-        if (repo.existsByImoAndEstadoIn(imo, List.of("En revisión", "Aprobado")))
+        if (repo.existeSolicitudActiva(imo))
             throw new DatosInvalidosException("Ya existe una solicitud en revisión o aprobada para el IMO " + imo + ".");
 
         // DEF-01: el dígito de control del IMO vuelve a validarse.
@@ -126,14 +128,16 @@ public class NaveService {
         nave.setTramite("TMP-" + UUID.randomUUID().toString().replace("-", "").substring(0, 20));
         nave = repo.save(nave);
         nave.setTramite(String.format("TR-%d-%04d", Year.now().getValue(), nave.getId()));
-        return repo.save(nave);
+        nave = repo.save(nave);
+        auditoria.registrar(correoArmador, AuditoriaService.ENVIAR, nave, "IMO " + nave.getImo());
+        return nave;
     }
 
     // consultas 
 
     @Transactional(readOnly = true)
     public List<Map<String, Object>> mias(String correo) {
-        return repo.findByArmadorCorreoOrderByIdDesc(correo).stream().map(NaveService::lista).toList();
+        return repo.findByArmadorCorreoOrderByIdDesc(correo).stream().map(NaveService::fila).toList();
     }
 
     @Transactional(readOnly = true)
@@ -156,7 +160,7 @@ public class NaveService {
 
     @Transactional(readOnly = true)
     public List<Map<String, Object>> todas() {
-        return repo.findAllByOrderByIdDesc().stream().map(NaveService::lista).toList();
+        return repo.findAllByOrderByIdDesc().stream().map(NaveService::fila).toList();
     }
 
     @Transactional(readOnly = true)
@@ -198,7 +202,7 @@ public class NaveService {
     // decisión del funcionario 
 
     @Transactional
-    public Map<String, Object> cambiarEstado(Long id, String estadoTxt, String observacion, String liquidacion) {
+    public Map<String, Object> cambiarEstado(Long id, String estadoTxt, String observacion, String liquidacion, String usuario) {
         EstadoTramite estado = EstadoTramite.desdeEtiqueta(estadoTxt);
         if (estado == EstadoTramite.EN_REVISION)
            throw new DatosInvalidosException("La decisión debe ser Aprobado o Rechazado.");
@@ -225,7 +229,12 @@ public class NaveService {
 
         if (estado == EstadoTramite.APROBADO) emitirCertificado(nave);
 
-        return detalle(repo.save(nave));
+        nave = repo.save(nave);
+        if (estado == EstadoTramite.APROBADO)
+            auditoria.registrar(usuario, AuditoriaService.APROBAR, nave, "Certificado " + nave.getCertificadoFolio());
+        else
+            auditoria.registrar(usuario, AuditoriaService.RECHAZAR, nave, obs);
+        return detalle(nave);
     }
 
     private void emitirCertificado(Nave nave) {
@@ -247,7 +256,7 @@ public class NaveService {
     // revocación del certificado
 
     @Transactional
-    public Map<String, Object> revocar(Long id, String motivoTxt) {
+    public Map<String, Object> revocar(Long id, String motivoTxt, String usuario) {
         Nave nave = repo.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Solicitud no encontrada."));
         if (nave.getCertificadoFolio() == null)
@@ -264,7 +273,10 @@ public class NaveService {
         nave.setRevocado(true);
         nave.setMotivoRevocacion(motivo);
         nave.setFechaRevocacion(LocalDate.now());
-        return detalle(repo.save(nave));
+        nave.setRevocadoPor(usuario);
+        nave = repo.save(nave);
+        auditoria.registrar(usuario, AuditoriaService.REVOCAR, nave, motivo);
+        return detalle(nave);
     }
 
     // vistas 
@@ -284,6 +296,18 @@ public class NaveService {
         return m;
     }
 
+    // DEF-04: en las tablas, una solicitud con certificado revocado se muestra como "Revocado".
+    private static String estadoVisible(Nave n) {
+        return n.isRevocado() ? "Revocado" : n.getEstado();
+    }
+
+    private static Map<String, Object> fila(Nave n) {
+        Map<String, Object> m = lista(n);
+        m.put("estado", estadoVisible(n));
+        m.put("tramiteOrigen", n.getTramiteOrigen());
+        return m;
+    }
+
     private static Map<String, Object> consulta(Nave n) {
         Map<String, Object> m = new LinkedHashMap<>();
         m.put("tramite", n.getTramite());
@@ -291,7 +315,7 @@ public class NaveService {
         m.put("imo", n.getImo());
         m.put("tipoNave", n.getTipoNave());
         m.put("propietario", n.getPropietario());
-        m.put("estado", n.getEstado());
+        m.put("estado", estadoVisible(n));
         m.put("estadoCertificado", n.getCertificadoFolio() == null ? null : CertificadoService.estado(n));
         m.put("fechaVencimiento", n.getFechaVencimiento() == null ? null : n.getFechaVencimiento().toString());
         return m;
@@ -329,6 +353,9 @@ public class NaveService {
         m.put("revocado", n.isRevocado());
         m.put("motivoRevocacion", n.getMotivoRevocacion());
         m.put("fechaRevocacion", n.getFechaRevocacion() == null ? null : n.getFechaRevocacion().toString());
+        m.put("revocadoPor", n.getRevocadoPor());
+        m.put("solicitudOrigenId", n.getSolicitudOrigenId());
+        m.put("tramiteOrigen", n.getTramiteOrigen());
 
         return m;
     }
@@ -581,12 +608,22 @@ public class NaveService {
             adjunto = new DocumentoBorrador(borrador.getNombreDocumento(), borrador.getPdf());
 
         Nave nave = registrar(campos, adjunto, correo);
+        Long origenId = borrador.getOrigenSolicitudId();
+        if (origenId != null) {
+            // DEF-03: la corrección queda enlazada a la solicitud rechazada.
+            Nave origen = repo.findById(origenId).orElseThrow(() -> new NoSuchElementException("Solicitud de origen no encontrada."));
+            nave.setSolicitudOrigenId(origen.getId());
+            nave.setTramiteOrigen(origen.getTramite());
+            nave = repo.save(nave);
+            auditoria.registrar(correo, AuditoriaService.CORREGIR, nave, "Corrige " + origen.getTramite());
+        }
         borradores.delete(borrador);
         borradores.flush();
         Map<String, Object> r = new LinkedHashMap<>();
         r.put("tramite", nave.getTramite());
         r.put("estado", nave.getEstado());
         r.put("nombreNave", nave.getNombreNave());
+        r.put("tramiteOrigen", nave.getTramiteOrigen());
         return r;
     }
 

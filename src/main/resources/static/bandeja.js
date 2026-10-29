@@ -4,7 +4,8 @@ const CLASES = {
   "En calificación": "en-revision",
   "En revisión": "en-revision",
   "Aprobado": "aprobado",
-  "Rechazado": "rechazado"
+  "Rechazado": "rechazado",
+  "Revocado": "revocado"
 };
 
 let naves = [];
@@ -85,6 +86,14 @@ enlace.textContent = n.estado === "En revisión" ? "Revisar" : "Ver";
 tdAccion.appendChild(enlace);
 
 if (n.estado === "Aprobado") {
+  // DEF-06: acceso directo a la revocación desde la bandeja
+  const revocar = document.createElement("a");
+  revocar.className = "btn o x";
+  revocar.id = "revocar-" + n.id;
+  revocar.href = "revision.html?id=" + encodeURIComponent(n.id) + "#revocacion";
+  revocar.textContent = "Revocar";
+  tdAccion.appendChild(revocar);
+
   const certificado = document.createElement("a");
 
   certificado.className = "btn o x";
