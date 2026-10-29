@@ -34,10 +34,9 @@ import java.util.Random;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-/**
- * Pruebas de interfaz del Sprint 1 (HU-01 a HU-05).
- * Requiere el sistema corriendo en http://localhost:8080 y MySQL encendido.
- */
+// Pruebas de interfaz del Sprint 1 (HU-01 a HU-05).
+ // Requiere el sistema corriendo en http://localhost:8080 y MySQL encendido.
+
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class Sprint1SeleniumTest {
 
@@ -51,7 +50,7 @@ class Sprint1SeleniumTest {
     private static WebDriverWait espera;
     private static final Random AZAR = new Random();
 
-    // ---------- preparación ----------
+    // preparación 
 
     @BeforeAll
     static void preparar() throws Exception {
@@ -112,7 +111,7 @@ class Sprint1SeleniumTest {
         }
     }
 
-    // ---------- ayudas ----------
+    // ayudas
 
     private static void escribir(String id, String texto) {
         WebElement e = espera.until(ExpectedConditions.visibilityOfElementLocated(By.id(id)));
@@ -156,7 +155,15 @@ class Sprint1SeleniumTest {
 
     private static Path pdfValido() throws IOException {
         Path f = Files.createTempFile("solicitud", ".pdf");
-        Files.writeString(f, "%PDF-1.4\n%Documento de prueba\n%%EOF\n");
+        try (var out = Files.newOutputStream(f)) {
+            var doc = new com.lowagie.text.Document();
+            com.lowagie.text.pdf.PdfWriter.getInstance(doc, out);
+            doc.open();
+            doc.add(new com.lowagie.text.Paragraph("Documento de prueba"));
+            doc.close();
+        } catch (Exception e) {
+            throw new IOException("No se pudo crear el PDF de prueba", e);
+        }
         return f;
     }
 

@@ -20,13 +20,13 @@ public class DatosIniciales implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        if (usuarios.count() > 0) return;
-        crear("Naviera del Pacífico S.A.", "naviera@amp.com", "1234567", Rol.ARMADOR);
-        crear("Aseguradora del Istmo S.A.", "aseguradora@amp.com", "1234567", Rol.ASEGURADORA);
-        crear("Funcionario AMP", "funcionario@amp.com", "1234567", Rol.FUNCIONARIO);
+        crear("Naviera", "naviera@amp.com", "1234567", Rol.ARMADOR);
+        crear("Aseguradora", "aseguradora@amp.com", "1234567", Rol.ASEGURADORA);
+        crear("Funcionario", "funcionario@amp.com", "1234567", Rol.FUNCIONARIO);
     }
 
     private void crear(String nombre, String correo, String clave, Rol rol) {
+        if (usuarios.findByCorreo(correo).isPresent()) return;
         usuarios.save(new Usuario(correo, nombre, encoder.encode(clave), rol));
     }
 }

@@ -6,45 +6,173 @@
   <title>Nueva solicitud · Registro Marítimo Digital</title>
   <link rel="stylesheet" href="estilos.css">
 </head>
-<body>
+
+<body class="formulario-page">
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
     <symbol id="an" viewBox="0 0 24 24"><circle cx="12" cy="5" r="2.5"/><path d="M12 8v13M5 14a7 7 0 0 0 14 0M8 11H5M19 11h-3"/></symbol>
     <symbol id="ck" viewBox="0 0 24 24"><path d="m6 12 4 4 8-9"/></symbol>
     <symbol id="cl" viewBox="0 0 24 24"><path d="M9 12.5 15 6a3.5 3.5 0 0 1 5 5l-8 8a5 5 0 0 1-7-7l7-7"/></symbol>
+    <symbol id="rv-documento" viewBox="0 0 24 24"><path d="M5 3h9l5 5v13H5zM14 3v5h5M8 12h8M8 16h6"/></symbol>
+    <symbol id="rv-editar" viewBox="0 0 24 24"><path d="m14 5 5 5M4 20l5-1L21 7a2 2 0 0 0-5-5L4 14zM12 4H4v16h16v-8"/></symbol>
+    <symbol id="rv-nave" viewBox="0 0 24 24"><path d="M3 15 12 11l9 4-3 6H6zM7 13V6h10v7M10 6V3h4v3M2 22l4-1 6 1 6-1 4 1"/></symbol>
+    <symbol id="rv-tipo" viewBox="0 0 24 24"><path d="M4 7h16v14H4zM3 7l9-5 9 5M8 10v8M12 10v8M16 10v8"/></symbol>
+    <symbol id="rv-timon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2"/><path d="M12 1v9M12 14v9M1 12h9M14 12h9M4 4l6 6M14 14l6 6M4 20l6-6M14 10l6-6"/></symbol>
+    <symbol id="rv-patente" viewBox="0 0 24 24"><path d="M5 3h14v18H5zM8 17h8"/><circle cx="12" cy="9" r="2"/><path d="M8 15a4 4 0 0 1 8 0"/></symbol>
+    <symbol id="rv-tonelaje" viewBox="0 0 24 24"><path d="M8 7V5a4 4 0 0 1 8 0v2M6 7h12l3 14H3zM10 12h4M12 12v5"/></symbol>
+    <symbol id="rv-edificio" viewBox="0 0 24 24"><path d="M3 22V8h7V3h7v8h4v11M1 22h22M6 11v2M6 16v2M13 6v2M13 11v2M13 16v2M17 15h1M17 18h1"/></symbol>
+    <symbol id="rv-personas" viewBox="0 0 24 24"><circle cx="9" cy="7" r="4"/><path d="M2 22v-3a7 7 0 0 1 14 0v3zM17 4a4 4 0 0 1 0 8M18 15a6 6 0 0 1 4 6"/></symbol>
+    <symbol id="rv-calendario" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 2v6M17 2v6M3 11h18"/></symbol>
+    <symbol id="rv-precio" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v5c0 4 16 4 16 0V5M4 10v5c0 4 16 4 16 0v-5M4 15v4c0 4 16 4 16 0v-4"/></symbol>
+    <symbol id="rv-ver" viewBox="0 0 24 24"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></symbol>
+    <symbol id="rv-cambiar" viewBox="0 0 24 24"><path d="M4 8h15l-4-4M20 16H5l4 4M3 12a9 9 0 0 1 2-7M21 12a9 9 0 0 1-2 7"/></symbol>
+    <symbol id="rv-flecha" viewBox="0 0 24 24"><path d="M2 12h19m-6-6 6 6-6 6"/></symbol>
   </defs>
 </svg>
 
 <header class="bar">
-  <div class="logo"><svg class="i"><use href="#an"/></svg>Registro Marítimo Digital</div>
-  <nav>
-    <a href="nueva-solicitud.html" aria-current="page">Nueva solicitud</a>
-    <a href="mis-solicitudes.html">Mis solicitudes</a>
-  </nav>
-  <div class="who"><span id="usuario"></span><br><a href="#" id="salir">Cerrar sesión</a></div>
+  <a
+    class="logo marca-registro"
+    href="mis-solicitudes.html"
+    aria-label="Registro Marítimo Digital"
+  >
+    <img
+      class="marca-logo"
+      src="img/logo-amp.png"
+      alt="Autoridad Marítima de Panamá"
+    >
+
+    <span class="marca-texto">
+      <strong>Registro Marítimo</strong>
+      <span>Digital</span>
+    </span>
+  </a>
+ <nav aria-label="Navegación principal">
+  <a href="mis-solicitudes.html">Mis solicitudes</a>
+  <a href="nueva-solicitud.html" aria-current="page">Nueva solicitud</a>
+</nav>
+  <div class="cabecera-cuenta">
+  <div class="cuenta-usuario">
+    <span
+      class="cuenta-avatar"
+      id="usuario-iniciales"
+      aria-hidden="true"
+    >—</span>
+
+    <div class="cuenta-datos">
+      <span id="usuario">Cargando…</span>
+      <span id="usuario-rol"></span>
+    </div>
+  </div>
+
+  <button type="button" class="cuenta-salir" id="salir">
+    <svg class="i" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M9 4H4v16h5M9 12h12m-4-4 4 4-4 4"/>
+    </svg>
+    Cerrar sesión
+  </button>
+</div>
 </header>
 
-<div class="band">
-  <h1>Inscripción preliminar de título de propiedad</h1>
-  <span class="mu">Formulario F-270 (versión resumida)</span>
+<div class="band formulario-band">
+  <div class="formulario-band-contenido">
+    <span class="formulario-etiqueta">PORTAL DEL ARMADOR</span>
+
+    <h1>Nueva solicitud de registro</h1>
+
+    <p>
+      Completa los datos de la inscripción preliminar y adjunta
+      el documento de tu nave.
+    </p>
+
+    <span class="formulario-referencia">
+      Formulario F-270 · Versión resumida
+    </span>
+  </div>
 </div>
 
 <div class="tc" id="asistente">
   <div id="correccion" class="obs" style="margin:14px 18px 0" hidden></div>
-  <div class="tt" role="tablist" id="pestanas">
-    <button type="button" role="tab" aria-selected="true">1. Documento y partes</button>
-    <button type="button" role="tab" aria-selected="false">2. Nave</button>
-    <button type="button" role="tab" aria-selected="false">3. Documento y envío</button>
+  <div
+  class="tt"
+  role="tablist"
+  id="pestanas"
+  aria-label="Pasos de la solicitud"
+>
+  <button
+    type="button"
+    role="tab"
+    id="paso-tab-1"
+    aria-controls="paso-panel-1"
+    aria-selected="true"
+  >
+    <span class="paso-numero" aria-hidden="true">1</span>
+    <span class="paso-texto">
+      <strong>Documento y partes</strong>
+      <small>Datos de la inscripción</small>
+    </span>
+  </button>
+
+  <button
+    type="button"
+    role="tab"
+    id="paso-tab-2"
+    aria-controls="paso-panel-2"
+    aria-selected="false"
+    tabindex="-1"
+  >
+    <span class="paso-numero" aria-hidden="true">2</span>
+    <span class="paso-texto">
+      <strong>Nave</strong>
+      <small>Identificación y características</small>
+    </span>
+  </button>
+
+  <button
+    type="button"
+    role="tab"
+    id="paso-tab-3"
+    aria-controls="paso-panel-3"
+    aria-selected="false"
+    tabindex="-1"
+  >
+    <span class="paso-numero" aria-hidden="true">3</span>
+    <span class="paso-texto">
+      <strong>Documento y envío</strong>
+      <small>Adjunto y confirmación</small>
+    </span>
+  </button>
+</div>
+
+  <div class="borrador-barra">
+    <div class="borrador-textos">
+      <p id="borrador-estado" role="status" aria-live="polite">Borrador sin guardar</p>
+      <small class="borrador-ayuda">Aún no enviada</small>
+    </div>
+    <div class="borrador-acciones">
+      <button type="button" class="btn o x" id="guardar-borrador">Guardar borrador</button>
+      <button type="button" class="btn o x" id="guardar-copia" hidden>Guardar copia</button>
+      <a class="btn o x" id="borrador-login" href="/login.html" target="_blank" rel="noopener noreferrer" hidden>Iniciar sesión</a>
+      <button type="button" class="btn o x" id="borrador-reintentar" hidden>Reintentar</button>
+    </div>
   </div>
+  <p class="borrador-error" id="borrador-error" role="alert" hidden></p>
 
   <form id="form-solicitud" novalidate>
 
     <!-- 1. Documento y partes -->
-    <div class="pn on">
-      <h2>Documento y partes</h2>
+    <div
+    class="pn on"
+    role="tabpanel"
+    id="paso-panel-1"
+    aria-labelledby="paso-tab-1"
+>
 
-      <h3>Documento base</h3>
+      <h2>Documento y partes</h2>
+      <p class="formulario-intro">
+        Selecciona el documento base e identifica a las partes
+        que intervienen en la inscripción.</p>
       <div class="g2">
         <div class="campo">
           <label for="documentoBase">Documento base de la inscripción</label>
@@ -87,8 +215,18 @@
     </div>
 
     <!-- 2. Nave -->
-    <div class="pn">
-      <h2>Nave</h2>
+    <div
+    class="pn"
+    role="tabpanel"
+    id="paso-panel-2"
+    aria-labelledby="paso-tab-2"
+    aria-hidden="true"
+    >
+
+      <h2>Datos de la nave</h2>
+      <p class="formulario-intro">
+        Identifica la nave y completa sus características.
+        Los campos opcionales están indicados. </p>
       <div class="g">
         <div class="campo">
           <label for="nombreNave">Nombre de la nave</label>
@@ -131,8 +269,17 @@
     </div>
 
     <!-- 3. Documento y envío -->
-    <div class="pn">
+    <div
+    class="pn"
+    role="tabpanel"
+    id="paso-panel-3"
+    aria-labelledby="paso-tab-3"
+    aria-hidden="true"
+    >
       <h2>Documento y envío</h2>
+      <p class="formulario-intro">
+         Adjunta el PDF y comprueba el resumen antes de enviar tu solicitud.
+      </p>
       <div class="up" id="fila-pdf" style="margin-top:14px">
         <span class="cir"><svg class="i"><use id="pdf-icono" href="#cl"/></svg></span>
         <div>
@@ -157,27 +304,152 @@
         </div>
       </div>
 
-      <dl class="kv" style="margin-top:20px">
-        <dt>Documento base</dt><dd id="rs-base"></dd>
-        <dt>Nave</dt><dd id="rs-nave"></dd>
-        <dt>IMO</dt><dd id="rs-imo"></dd>
-        <dt>Propietario</dt><dd id="rs-propietario"></dd>
-        <dt>Documento PDF</dt><dd id="rs-pdf"></dd>
-      </dl>
+      <section class="formulario-resumen resumen-profesional" aria-labelledby="rp-vacio-titulo" data-ficha-abierta="false" data-vacio="true">
+        <div class="rp-vacio" id="resumen-vacio">
+          <svg class="i" aria-hidden="true"><use href="#rv-documento"/></svg>
+          <h3 id="rp-vacio-titulo">Resumen de la solicitud</h3>
+          <p>Completa los datos anteriores para revisar tu solicitud.</p>
+          <button type="button" class="btn o x" id="resumen-completar" data-editar-paso="0" data-editar-campo="documentoBase">Completar datos</button>
+        </div>
+        <article class="rp-principal" id="resumen-contenido" hidden>
+          <h3 id="titulo-resumen">Resumen de la solicitud</h3>
+
+          <header class="rp-identidad">
+            <svg class="i rp-nave-icono" aria-hidden="true"><use href="#rv-nave"/></svg>
+            <div class="rp-identidad-texto">
+              <h4 id="rs-nave">Nombre de la nave</h4>
+              <p class="rp-identidad-meta">
+                <span>IMO <strong id="rs-imo">No indicado</strong></span>
+                <span class="rp-tipo" id="rs-tipo">Tipo no indicado</span>
+              </p>
+            </div>
+            <button type="button" class="btn o x rp-editar" data-editar-paso="1" data-editar-campo="nombreNave" aria-label="Editar datos de la nave">
+              <svg class="i" aria-hidden="true"><use href="#rv-editar"/></svg>Editar
+            </button>
+          </header>
+
+          <button type="button" class="rp-toggle" id="resumen-ficha-toggle" aria-expanded="false" aria-controls="resumen-ficha">
+            <svg class="i" aria-hidden="true"><use href="#rv-documento"/></svg>
+            <span id="resumen-ficha-toggle-texto">Ver ficha completa</span>
+            <svg class="i rp-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 15 6-6 6 6"/></svg>
+          </button>
+
+          <div class="rp-documento">
+            <div class="rp-documento-base">
+              <span>Documento base</span>
+              <h4 id="rs-base">Documento base no indicado</h4>
+            </div>
+
+            <dl class="rp-meta">
+              <div class="rp-dato">
+                <dt><svg class="i" aria-hidden="true"><use href="#rv-calendario"/></svg>Fecha del documento</dt>
+                <dd id="rs-fecha">No indicada</dd>
+              </div>
+              <div class="rp-dato" id="rs-precio-bloque" hidden>
+                <dt><svg class="i" aria-hidden="true"><use href="#rv-precio"/></svg>Precio de venta</dt>
+                <dd id="rs-precio">No indicado</dd>
+              </div>
+            </dl>
+
+            <dl class="rp-partes">
+              <div class="rp-dato">
+                <dt><svg class="i" aria-hidden="true"><use href="#rv-edificio"/></svg>Transmitente</dt>
+                <dd id="rs-transmitente">No indicado</dd>
+              </div>
+              <div class="rp-dato">
+                <dt><svg class="i" aria-hidden="true"><use href="#rv-edificio"/></svg>Propietario</dt>
+                <dd id="rs-propietario">No indicado</dd>
+              </div>
+            </dl>
+            <button type="button" class="rp-editar rp-editar-documento" data-editar-paso="0" data-editar-campo="documentoBase" aria-label="Editar documento y partes">
+              <svg class="i" aria-hidden="true"><use href="#rv-editar"/></svg>Editar documento y partes
+            </button>
+          </div>
+
+          <section class="rp-adjunto" aria-labelledby="rp-adjunto-titulo">
+            <h4 id="rp-adjunto-titulo">Documento adjunto</h4>
+            <div class="rp-archivo">
+              <svg class="i rp-pdf-icono" aria-hidden="true"><use href="#rv-documento"/></svg>
+              <div class="rp-archivo-info">
+                <strong id="rs-pdf">Sin archivo adjunto</strong>
+                <p id="rs-pdf-meta">Adjunta un PDF de hasta 10 MB</p>
+              </div>
+              <div class="rp-archivo-acciones">
+                <button type="button" class="btn o x" id="rs-ver-pdf" disabled><svg class="i" aria-hidden="true"><use href="#rv-ver"/></svg>Ver PDF</button>
+                <button type="button" class="rp-cambiar" id="rs-cambiar-pdf"><svg class="i" aria-hidden="true"><use href="#rv-cambiar"/></svg><span id="rs-pdf-accion">Adjuntar</span></button>
+              </div>
+            </div>
+          </section>
+        </article>
+
+        <aside class="rp-ficha" id="resumen-ficha" aria-labelledby="resumen-ficha-titulo" hidden>
+          <header class="rp-ficha-cabecera">
+            <div>
+              <h4 id="resumen-ficha-titulo">Ficha completa</h4>
+              <p>Información complementaria</p>
+            </div>
+            <button type="button" class="rp-cerrar" id="resumen-ficha-cerrar" aria-label="Cerrar ficha completa"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
+          </header>
+
+          <section class="rp-ficha-grupo" aria-labelledby="rp-tecnicos-titulo">
+            <header class="rp-grupo-cabecera">
+              <h5 id="rp-tecnicos-titulo"><svg class="i" aria-hidden="true"><use href="#rv-patente"/></svg>Datos técnicos</h5>
+              <button type="button" class="rp-editar" data-editar-paso="1" data-editar-campo="distintivoLlamada" aria-label="Editar datos técnicos"><svg class="i" aria-hidden="true"><use href="#rv-editar"/></svg>Editar</button>
+            </header>
+            <dl class="rp-datos-simple">
+              <div><dt>Distintivo</dt><dd id="rs-distintivo">No indicado</dd></div>
+              <div><dt>Patente</dt><dd id="rs-patente">No indicada</dd></div>
+              <div><dt>Tonelaje bruto</dt><dd id="rs-arqueo">No indicado</dd></div>
+            </dl>
+          </section>
+
+          <section class="rp-ficha-grupo" aria-labelledby="rp-responsables-titulo">
+            <header class="rp-grupo-cabecera">
+              <h5 id="rp-responsables-titulo"><svg class="i" aria-hidden="true"><use href="#rv-personas"/></svg>Responsables</h5>
+              <button type="button" class="rp-editar" data-editar-paso="2" data-editar-campo="solicitante" aria-label="Editar solicitante y abogado"><svg class="i" aria-hidden="true"><use href="#rv-editar"/></svg>Editar</button>
+            </header>
+            <dl class="rp-datos-simple">
+              <div><dt>Solicitante</dt><dd id="rs-solicitante">No indicado</dd></div>
+              <div><dt>Abogado</dt><dd id="rs-abogado">No indicado</dd></div>
+            </dl>
+          </section>
+        </aside>
+      </section>
 
       <div id="resultado" class="aviso" role="alert"></div>
     </div>
   </form>
 
-  <div class="ft">
-    <button type="button" class="btn o" id="anterior" hidden>Anterior</button>
-    <button type="button" class="btn" id="siguiente" style="margin-left:auto">Siguiente</button>
-  </div>
+<div class="ft">
+  <span
+    class="formulario-posicion"
+    id="estado-paso"
+    role="status"
+    aria-live="polite"
+  >Paso 1 de 3</span>
+
+  <button type="button" class="btn o" id="anterior" hidden>
+    Anterior
+  </button>
+
+  <button
+    type="button"
+    class="btn"
+    id="siguiente"
+    style="margin-left:auto"
+  >
+    Siguiente
+  </button>
+</div>
+
 </div>
 
 <div class="tc" id="enviada" hidden>
   <div class="pad">
+    <span class="formulario-exito" aria-hidden="true">✓</span>
     <h2>Solicitud enviada</h2>
+    <p class="formulario-intro">
+       Tu solicitud fue recibida. Puedes consultar su estado desde Mis solicitudes.</p>
     <dl class="kv" style="margin-top:14px">
       <dt>Trámite</dt><dd id="ok-tramite"></dd>
       <dt>Nave</dt><dd id="ok-nave"></dd>

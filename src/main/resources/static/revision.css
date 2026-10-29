@@ -1,0 +1,876 @@
+/* Revisión del funcionario: datos, documento y evaluación. */
+
+.revision-workspace .revision-main {
+  width: min(1480px, calc(100% - 2 * clamp(16px, 3vw, 40px)));
+  margin: 18px auto 32px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.revision-workspace .revision-panel {
+  min-width: 0;
+  padding: 20px;
+  border: 1px solid #dce5ee;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.revision-workspace .revision-main h1,
+.revision-workspace .revision-main h2,
+.revision-workspace .revision-main h3,
+.revision-workspace .revision-main h4 {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  color: #193c60;
+  font-family: inherit;
+  font-weight: 600;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.revision-workspace .revision-main svg {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.revision-workspace .revision-main .btn,
+.revision-workspace .revision-main button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-width: 0;
+  min-height: 40px;
+  padding: 8px 12px;
+  border-radius: 5px;
+  font-size: 14px;
+  line-height: 1.4;
+  text-align: center;
+  text-decoration: none;
+  white-space: normal;
+}
+
+.revision-workspace .revision-main button:focus-visible,
+.revision-workspace .revision-main a:focus-visible,
+.revision-workspace .revision-main summary:focus-visible,
+.revision-workspace .revision-ficha:focus-visible {
+  outline: 3px solid #a15f00;
+  outline-offset: 3px;
+}
+
+.revision-workspace .revision-cabecera {
+  margin-bottom: 16px;
+}
+
+.revision-workspace .revision-main .revision-volver {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 36px;
+  padding: 4px 0;
+  border: 0;
+  background: transparent;
+  color: #365c81;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.revision-workspace .revision-volver:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.revision-workspace .revision-cabecera h1 {
+  margin: 3px 0 5px;
+  font-size: 26px;
+  letter-spacing: -.02em;
+}
+
+.revision-workspace .revision-contexto {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  color: #506c86;
+}
+
+.revision-workspace .revision-contexto #sub {
+  min-width: 0;
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+
+.revision-workspace .revision-contexto #estado {
+  margin-left: 0;
+}
+
+.revision-workspace .revision-contexto .estado {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 9px;
+  font-size: 12px;
+  white-space: normal;
+}
+
+.revision-workspace .revision-contexto .en-revision {
+  color: #23588d;
+  background: #e8f2ff;
+}
+
+.revision-workspace .revision-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.08fr) minmax(0, .92fr);
+  align-items: start;
+  gap: 16px;
+}
+
+.revision-workspace .revision-datos,
+.revision-workspace .revision-documento {
+  min-width: 0;
+  border: 1px solid #dce5ee;
+  border-radius: 7px;
+  background: #fff;
+  overflow: hidden;
+}
+
+.revision-workspace .revision-resumen {
+  padding: 18px;
+}
+
+.revision-workspace .revision-resumen > h2 {
+  font-size: 17px;
+}
+
+.revision-workspace .revision-identidad {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  margin: 13px 0 15px;
+}
+
+.revision-workspace .revision-identidad > div {
+  min-width: 0;
+}
+
+.revision-workspace .revision-main .revision-nave-icono {
+  width: 42px;
+  height: 42px;
+  padding: 5px;
+  border-radius: 6px;
+  background: #f0f5fa;
+  color: #254e76;
+}
+
+.revision-workspace .revision-identidad h3 {
+  font-size: 24px;
+  letter-spacing: -.02em;
+}
+
+.revision-workspace #nave-meta {
+  margin: 4px 0 0;
+  color: #607890;
+  font-size: 14px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.revision-workspace .revision-datos-principales {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px 16px;
+  margin: 0;
+}
+
+.revision-workspace .revision-dato {
+  min-width: 0;
+  padding-top: 9px;
+  border-top: 1px solid #e2e9f0;
+}
+
+.revision-workspace .revision-dato dt {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  color: #60758c;
+  font-size: 13px;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.revision-workspace .revision-dato dd {
+  margin: 4px 0 0 26px;
+  color: #29425e;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.revision-workspace .revision-main .revision-toggle {
+  gap: 7px;
+  margin-top: 13px;
+  padding: 7px 10px;
+  border: 1px solid #c7d4e1;
+  background: #fff;
+  color: #31577e;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.revision-workspace .revision-toggle:hover:not(:disabled) {
+  background: #eef4f9;
+  filter: none;
+}
+
+.revision-workspace .revision-main .revision-chevron {
+  width: 14px;
+  height: 14px;
+  transition: transform var(--mov, .15s ease);
+}
+
+.revision-workspace .revision-toggle[aria-expanded="true"] .revision-chevron {
+  transform: rotate(180deg);
+}
+
+.revision-workspace #precio-bloque dd {
+  margin-left: 0;
+}
+
+.revision-workspace .revision-ficha {
+  max-height: 280px;
+  padding: 16px 18px;
+  border-top: 1px solid #dce5ee;
+  background: #f3f7fb;
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+}
+
+.revision-workspace .revision-ficha > h3 {
+  margin-bottom: 13px;
+  font-size: 15px;
+}
+
+.revision-workspace #cuerpo {
+  display: block;
+  min-width: 0;
+}
+
+.revision-workspace .revision-grupo + .revision-grupo {
+  margin-top: 16px;
+  padding-top: 13px;
+  border-top: 1px solid #dce5ee;
+}
+
+.revision-workspace .revision-grupo > h4 {
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.revision-workspace .revision-kv {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 9px 14px;
+  margin: 0;
+}
+
+.revision-workspace .revision-kv > div {
+  display: grid;
+  grid-template-columns: minmax(90px, .9fr) minmax(0, 1.1fr);
+  align-items: start;
+  gap: 10px;
+  min-width: 0;
+}
+
+.revision-workspace .revision-kv dt {
+  margin: 0;
+  color: #667b91;
+  font-size: 13px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.revision-workspace .revision-kv dd {
+  margin: 0;
+  color: #304a65;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.revision-workspace .revision-documento-cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 11px 14px;
+  border-bottom: 1px solid #dce5ee;
+  background: #f8fafc;
+}
+
+.revision-workspace .revision-documento-cabecera h2 {
+  font-size: 16px;
+}
+
+.revision-workspace .revision-documento-cabecera .btn {
+  font-size: 13px;
+}
+
+.revision-workspace .revision-preview {
+  position: relative;
+  display: grid;
+  place-items: center;
+  height: clamp(380px, 50vh, 480px);
+  min-width: 0;
+  background: #edf1f5;
+}
+
+.revision-workspace #documento-preview {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  border: 0;
+  background: #fff;
+}
+
+.revision-workspace .revision-documento-mensaje {
+  max-width: 360px;
+  margin: 0;
+  padding: 22px;
+  color: #61758c;
+  font-size: 14px;
+  line-height: 1.65;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+.revision-workspace #reintentar-doc {
+  margin: 12px 14px 0;
+}
+
+.revision-workspace .revision-documento-ayuda {
+  margin: 0;
+  padding: 10px 14px;
+  color: #667d94;
+  font-size: 13px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.revision-workspace .revision-observacion {
+  margin: 0 0 16px;
+  padding: 14px 16px;
+  border: 1px solid #dce5ee;
+  border-left: 3px solid #365c81;
+  border-radius: 6px;
+  background: #f3f7fb;
+  color: #36516d;
+  font-size: 14px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.revision-workspace .revision-observacion-rechazo {
+  border-color: #efd5cf;
+  border-left-color: #b43a2f;
+  background: #fff6f3;
+  color: #8d3c32;
+}
+
+.revision-workspace .revision-observacion h2 {
+  font-size: 16px;
+}
+
+.revision-workspace .revision-observacion p {
+  margin: 5px 0 0;
+}
+
+.revision-workspace #decision.revision-evaluacion {
+  margin-top: 16px;
+  padding: 16px 18px;
+  border: 1px solid #dce5ee;
+  border-radius: 7px;
+  background: #fff;
+}
+
+.revision-workspace .revision-evaluacion > h2,
+.revision-workspace .revision-evaluacion > h3 {
+  margin-bottom: 12px;
+  font-size: 17px;
+}
+
+.revision-workspace .revision-evaluacion-campos {
+  display: grid;
+  grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr);
+  gap: 20px;
+}
+
+.revision-workspace .revision-evaluacion-campos > .campo {
+  min-width: 0;
+}
+
+.revision-workspace .revision-evaluacion-campos > .campo + .campo {
+  padding-left: 20px;
+  border-left: 1px solid #e0e7ef;
+}
+
+.revision-workspace .revision-evaluacion label,
+.revision-workspace .revision-revocacion-contenido label {
+  margin-bottom: 6px;
+  color: #566f87;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.revision-workspace .revision-evaluacion input,
+.revision-workspace .revision-evaluacion textarea,
+.revision-workspace .revision-revocacion-contenido textarea {
+  min-width: 0;
+  padding: 9px 11px;
+  border-color: #c6d4e2;
+  border-radius: 5px;
+  background: #fff;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.revision-workspace .revision-evaluacion input {
+  min-height: 40px;
+}
+
+.revision-workspace .revision-evaluacion textarea {
+  min-height: 62px;
+  resize: vertical;
+}
+
+.revision-workspace .revision-evaluacion .err {
+  font-size: 13px;
+}
+
+.revision-workspace .revision-evaluacion .campo-error input,
+.revision-workspace .revision-evaluacion .campo-error textarea {
+  border-color: var(--er, #b3261e);
+}
+
+.revision-workspace .revision-evaluacion-pie {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid #dce5ee;
+}
+
+.revision-workspace .revision-ayuda {
+  flex: 1 1 220px;
+  min-width: 0;
+  margin: 0;
+  color: #667c92;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.revision-workspace .revision-decision-botones {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-left: auto;
+}
+
+.revision-workspace .revision-decision-botones .btn {
+  min-height: 42px;
+  padding-right: 17px;
+  padding-left: 17px;
+}
+
+.revision-workspace #aprobar {
+  border-color: #173f6b;
+  background: #173f6b;
+  color: #fff;
+}
+
+.revision-workspace #aprobar:hover:not(:disabled) {
+  background: #0c2c50;
+  filter: none;
+}
+
+.revision-workspace #rechazar,
+.revision-workspace #revocar {
+  border-color: #b3261e;
+  background: #fff;
+  color: #b3261e;
+}
+
+.revision-workspace #rechazar:hover:not(:disabled),
+.revision-workspace #revocar:hover:not(:disabled) {
+  background: #fff1ef;
+  filter: none;
+}
+
+.revision-workspace .revision-certificado {
+  display: grid;
+  grid-template-columns: 38px minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 14px;
+  margin-top: 16px;
+  padding: 16px 18px;
+  border: 1px solid #d9e4ec;
+  border-radius: 7px;
+  background: #fff;
+}
+
+.revision-workspace .revision-main .revision-cert-icono {
+  width: 32px;
+  height: 36px;
+  color: #315b83;
+}
+
+.revision-workspace .revision-cert-identidad {
+  min-width: 0;
+}
+
+.revision-workspace .revision-cert-identidad h2 {
+  font-size: 16px;
+}
+
+.revision-workspace #cert-folio {
+  display: block;
+  margin-top: 4px;
+  color: #536d87;
+  font-size: 14px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.revision-workspace .revision-cert-vigencia {
+  min-width: 0;
+  color: #536e88;
+  font-size: 14px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.revision-workspace .revision-vigencia {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 99px;
+  background: #edf1f5;
+}
+
+.revision-workspace .revision-vigencia.vigente {
+  color: #26734f;
+  background: #e5f5e9;
+}
+
+.revision-workspace .revision-vigencia.vencido {
+  color: #87621e;
+  background: #fbf0d9;
+}
+
+.revision-workspace .revision-vigencia.revocado {
+  color: #a3342d;
+  background: #fbe7e5;
+}
+
+.revision-workspace .revision-cert-acciones {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.revision-workspace .revision-cert-acciones .btn {
+  border-color: #173f6b;
+  background: #173f6b;
+  color: #fff;
+  font-size: 13px;
+}
+
+.revision-workspace .revision-main .revision-enlace {
+  padding: 6px 4px;
+  border-color: transparent;
+  background: transparent;
+  color: #315b82;
+  font-size: 13px;
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.revision-workspace .revision-enlace:hover:not(:disabled) {
+  background: #edf3f8;
+  filter: none;
+}
+
+.revision-workspace #revocacion.revision-gestion {
+  margin-top: 14px;
+  padding: 0;
+  border: 1px solid #dce5ee;
+  border-radius: 6px;
+  background: #f8fafc;
+}
+
+.revision-workspace .revision-gestion > summary {
+  min-height: 40px;
+  padding: 12px 17px;
+  color: #516b84;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.revision-workspace .revision-gestion[open] > summary {
+  border-bottom: 1px solid #dce5ee;
+}
+
+.revision-workspace .revision-revocacion-contenido {
+  padding: 16px 18px;
+}
+
+.revision-workspace .revision-revocacion-contenido > h3 {
+  color: #923d35;
+  font-size: 16px;
+}
+
+.revision-workspace .revision-revocacion-contenido > p {
+  margin: 7px 0 0;
+  color: #697e92;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.revision-workspace #revocacion .campo {
+  min-width: 0;
+  margin-top: 12px;
+}
+
+.revision-workspace .revision-revocacion-contenido textarea {
+  min-height: 82px;
+}
+
+.revision-workspace .revision-revocacion-contenido .acciones {
+  justify-content: flex-end;
+  flex-direction: row;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.revision-workspace #aviso {
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 1100px) {
+  .revision-workspace .revision-kv {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .revision-workspace .revision-certificado {
+    grid-template-columns: 38px minmax(0, 1fr);
+  }
+
+  .revision-workspace .revision-cert-vigencia,
+  .revision-workspace .revision-cert-acciones {
+    grid-column: 2;
+  }
+
+  .revision-workspace .revision-cert-acciones {
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 900px) {
+  .revision-workspace .revision-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .revision-workspace .revision-ficha {
+    max-height: none;
+    overflow: visible;
+    scrollbar-gutter: auto;
+  }
+
+  .revision-workspace .revision-kv {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .revision-workspace .revision-preview {
+    height: 420px;
+  }
+}
+
+@media (max-width: 600px) {
+  .revision-workspace .revision-main {
+    margin-top: 12px;
+  }
+
+  .revision-workspace .revision-panel {
+    padding: 14px;
+  }
+
+  .revision-workspace .revision-cabecera h1 {
+    font-size: 24px;
+  }
+
+  .revision-workspace .revision-resumen,
+  .revision-workspace .revision-ficha {
+    padding: 15px;
+  }
+
+  .revision-workspace .revision-identidad {
+    gap: 10px;
+  }
+
+  .revision-workspace .revision-identidad h3 {
+    font-size: 22px;
+  }
+
+  .revision-workspace .revision-datos-principales,
+  .revision-workspace .revision-kv {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .revision-workspace .revision-kv > div {
+    grid-template-columns: minmax(90px, .85fr) minmax(0, 1.15fr);
+  }
+
+  .revision-workspace .revision-documento-cabecera {
+    align-items: flex-start;
+    padding: 11px 12px;
+  }
+
+  .revision-workspace .revision-preview {
+    height: 360px;
+  }
+
+  .revision-workspace #decision.revision-evaluacion {
+    padding: 15px;
+  }
+
+  .revision-workspace .revision-evaluacion-campos {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 14px;
+  }
+
+  .revision-workspace .revision-evaluacion-campos > .campo + .campo {
+    padding-left: 0;
+    border-left: 0;
+  }
+
+  .revision-workspace .revision-evaluacion-pie {
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .revision-workspace .revision-ayuda {
+    flex-basis: 100%;
+  }
+
+  .revision-workspace .revision-decision-botones {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .revision-workspace .revision-decision-botones .btn {
+    flex: 1 1 100%;
+  }
+
+  .revision-workspace .revision-certificado {
+    padding: 15px;
+    gap: 11px;
+  }
+
+  .revision-workspace .revision-cert-acciones {
+    width: 100%;
+  }
+
+  .revision-workspace .revision-cert-acciones .btn,
+  .revision-workspace .revision-cert-acciones .revision-enlace {
+    flex: 1 1 100%;
+  }
+
+  .revision-workspace .revision-revocacion-contenido {
+    padding: 15px;
+  }
+
+  .revision-workspace .revision-revocacion-contenido .acciones .btn {
+    width: 100%;
+  }
+}
+
+@media print {
+  .revision-workspace .revision-main {
+    width: 100%;
+    margin: 0;
+  }
+
+  .revision-workspace .revision-panel {
+    padding: 0;
+    border: 0;
+  }
+
+  .revision-workspace .revision-volver,
+  .revision-workspace .revision-toggle,
+  .revision-workspace .revision-documento,
+  .revision-workspace #decision,
+  .revision-workspace #revocacion,
+  .revision-workspace .revision-cert-acciones {
+    display: none !important;
+  }
+
+  .revision-workspace .revision-grid {
+    display: block;
+  }
+
+  .revision-workspace .revision-datos {
+    border: 0;
+    overflow: visible;
+  }
+
+  .revision-workspace .revision-resumen {
+    padding: 12px 0;
+  }
+
+  .revision-workspace .revision-ficha,
+  .revision-workspace .revision-ficha[hidden] {
+    display: block !important;
+    max-height: none;
+    padding: 14px 0;
+    background: #fff;
+    overflow: visible;
+    scrollbar-gutter: auto;
+  }
+
+  .revision-workspace .revision-grupo {
+    break-inside: avoid;
+  }
+
+  .revision-workspace .revision-certificado {
+    grid-template-columns: 32px minmax(0, 1fr);
+    border-color: #999;
+    background: #fff;
+    break-inside: avoid;
+  }
+
+  .revision-workspace .revision-cert-vigencia {
+    grid-column: 2;
+  }
+}

@@ -1,0 +1,1051 @@
+/* 1. Base y utilidades */
+.solicitudes-main {
+  max-width: none;
+  padding: 0;
+  margin: 0;
+}
+
+.solicitudes-hero {
+  position: relative;
+  overflow: hidden;
+  min-height: 180px;
+  background: #07365b;
+  color: #fff;
+}
+
+.hero-contenido {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 24px var(--lado) 56px;
+}
+
+.hero-etiqueta,
+.hero-pie {
+  display: none;
+}
+
+.solicitudes-page h1 {
+  max-width: 930px;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-size: clamp(30px, 3.6vw, 49px);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -.035em;
+  margin: 0 0 12px;
+}
+
+.hero-contenido p {
+  max-width: 540px;
+  color: #e0eaf5;
+  font-size: 14px;
+  line-height: 1.75;
+  margin: 0 0 20px;
+}
+
+.hero-boton {
+  background: #fff;
+  color: #102c56;
+  border-color: #fff;
+  border-radius: 6px;
+  font-size: 12px;
+  padding: 9px 18px;
+  box-shadow: 0 2px 8px #00152f18;
+}
+
+.hero-boton span {
+  margin-right: 6px;
+  font-size: 16px;
+}
+
+.hero-imagen {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(50%, 840px);
+  background: url("img/banner.jpg") center 48% / cover no-repeat;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 45%);
+  mask-image: linear-gradient(90deg, transparent 0, #000 45%);
+}
+
+/* 2. Hero y resumen */
+.solicitudes-resumen,
+.solicitudes-panel,
+.solicitudes-pie {
+  width: min(1376px, calc(100% - 2 * clamp(16px, 3vw, 40px)));
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.solicitudes-resumen {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: -28px;
+  margin-bottom: 20px;
+}
+
+.resumen-tarjeta {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 24px;
+  min-height: 72px;
+  border: 1px solid #dde7ed;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 5px 15px #193b6110;
+}
+
+.resumen-tarjeta > div {
+  display: flex;
+  flex-direction: column;
+}
+
+.resumen-tarjeta strong {
+  order: -1;
+  color: #102c56;
+  font-size: 25px;
+  font-weight: 600;
+  line-height: 1.15;
+  font-variant-numeric: tabular-nums;
+}
+
+.resumen-etiqueta {
+  color: #415978;
+  font-size: 12px;
+  font-weight: 500;
+  margin-top: 4px;
+}
+
+.resumen-ayuda {
+  display: none;
+}
+
+.resumen-icono {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 30px;
+  height: 32px;
+  color: #315b88;
+}
+
+.resumen-icono svg {
+  width: 26px;
+  height: 26px;
+  stroke-width: 1.5;
+}
+
+.resumen-revision .resumen-icono {
+  color: #ac751b;
+}
+
+.resumen-aprobado .resumen-icono {
+  color: #238572;
+}
+
+.resumen-rechazado .resumen-icono {
+  color: #bb514e;
+}
+
+.solicitudes-panel {
+  background: #fff;
+  border: 1px solid #dde7ed;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 4px 20px #123c5404;
+}
+
+.panel-encabezado {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.panel-etiqueta {
+  display: block;
+  color: #536e93;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .16em;
+  margin-bottom: 7px;
+}
+
+.solicitudes-page h2 {
+  color: #102c56;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-size: 26px;
+  font-weight: 600;
+  letter-spacing: -.025em;
+}
+
+.panel-encabezado p {
+  color: #64788a;
+  font-size: 12px;
+  margin: 7px 0 0;
+}
+
+.lista-cantidad {
+  flex: none;
+  font-size: 11px;
+  color: #516c7a;
+  background: #f0f5f7;
+  padding: 6px 11px;
+  border-radius: 20px;
+}
+
+/* 3. Filtros y tabla */
+.solicitudes-page .solicitudes-filtros {
+  display: flex;
+  gap: 16px;
+  padding: 18px;
+  border-radius: 10px;
+  background: #f6f8fc;
+  margin-bottom: 22px;
+}
+
+.campo-busqueda {
+  flex: 1;
+  min-width: 0;
+}
+
+.campo-estado {
+  flex: 0 0 220px;
+}
+
+.solicitudes-filtros label {
+  display: block;
+  margin: 0 0 7px;
+  color: #506779;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.solicitudes-page .solicitudes-filtros input,
+.solicitudes-page .solicitudes-filtros select {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+  background: #fff;
+  border-color: #d9e4eb;
+  font-size: 12px;
+  padding: 10px 12px;
+  min-height: 40px;
+}
+
+.solicitudes-page .tabla-wrap {
+  border: 1px solid #e3ebf0;
+  border-radius: 9px;
+}
+
+.solicitudes-page table {
+  font-size: 13px;
+}
+
+.solicitudes-page th {
+  background: #f0f4f9;
+  color: #4f6686;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 13px 14px;
+  white-space: nowrap;
+}
+
+.solicitudes-page td {
+  padding: 20px 14px;
+  vertical-align: middle;
+  border-color: #edf1f5;
+}
+
+.solicitudes-page tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.solicitudes-page tbody tr:hover {
+  background: #f7fbfc;
+}
+
+.solicitudes-page .codigo {
+  color: #365e74;
+  background: none;
+  padding: 0;
+  font-size: 12px;
+}
+
+.solicitudes-page td:nth-child(2) {
+  font-weight: 600;
+  color: #21475e;
+  min-width: 135px;
+}
+
+.solicitudes-page td:nth-child(3),
+.solicitudes-page td:nth-child(6) {
+  color: #3d5266;
+  white-space: nowrap;
+  font-size: 12px;
+}
+
+.solicitud-acciones {
+  white-space: nowrap;
+}
+
+.solicitudes-page .btn.x {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 7px 11px;
+  border-color: #d4e0e8;
+  border-radius: 6px;
+}
+
+.solicitudes-page .btn.o.x {
+  border-color: #1b3c6e;
+  color: #16345f;
+  background: #fff;
+}
+
+.solicitudes-page .btn.o.x:hover {
+  background: #edf3fb;
+}
+
+.solicitudes-page .solicitud-acciones a {
+  color: #306f9f;
+  border-color: #8aafd1;
+}
+
+.solicitud-acciones .btn {
+  min-width: 66px;
+  text-align: center;
+}
+
+.solicitudes-page .estado {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  padding: 5px 9px;
+}
+
+.solicitudes-page .estado::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.solicitudes-page .vacio {
+  padding: 48px 18px;
+  font-weight: 400;
+}
+
+.tabla-ayuda {
+  display: none;
+}
+
+/* 4. Detalle de la solicitud */
+.solicitudes-page.mostrando-detalle .solicitudes-hero { display: none; }
+.solicitudes-page.mostrando-detalle .solicitudes-panel { margin-top: 24px; padding: 0; border: 0; background: transparent; box-shadow: none; }
+.solicitudes-page #vista-detalle { min-width: 0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+/* Certificado, acciones y contexto del trámite. */
+.solicitudes-page .detalle-portada {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  align-items: center;
+  gap: 20px 28px;
+  padding: 24px;
+  border: 1px solid #d9e3ed;
+  border-radius: 10px;
+  background: #fff;
+}
+.solicitudes-page .detalle-portada > .detalle-volver { display: inline-flex; grid-column: 1 / -1; justify-self: start; align-items: center; gap: 8px; min-height: 48px; margin: 0; padding: 6px 0; border: 0; background: transparent; color: #244c76; font-size: 14px; font-weight: 500; }
+.solicitudes-page .detalle-portada > .detalle-volver:hover { background: transparent; text-decoration: underline; text-underline-offset: 4px; filter: none; }
+.solicitudes-page .detalle-principal { display: grid; grid-template-columns: 80px minmax(0, 1fr); align-items: start; gap: 20px; min-width: 0; }
+.solicitudes-page .detalle-icono { display: grid; place-items: center; width: 80px; height: 88px; border-radius: 8px; background: #f2f6fb; color: #153e68; }
+.solicitudes-page .detalle-icono svg { width: 48px; height: 52px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.solicitudes-page .detalle-identidad { min-width: 0; }
+.solicitudes-page .detalle-identidad h2 { margin: 0; color: #12375f; font-family: inherit; font-size: 36px; font-weight: 650; line-height: 1.15; letter-spacing: -.025em; overflow-wrap: anywhere; }
+.solicitudes-page .detalle-folio { margin: 6px 0 0; color: #1b416a; font-size: 24px; font-weight: 600; line-height: 1.35; overflow-wrap: anywhere; }
+.solicitudes-page .certificado-vigencia { display: inline-flex; align-items: center; gap: 8px; max-width: 100%; margin: 11px 0 0; padding: 6px 12px; border-radius: 24px; background: #e5f5e9; color: #18753f; font-size: 14px; font-weight: 500; line-height: 1.5; overflow-wrap: anywhere; }
+.solicitudes-page .certificado-vigencia::before { content: ""; flex: none; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+.solicitudes-page .certificado-vigencia[data-estado="vencido"] { background: #fff2db; color: #87601b; }
+.solicitudes-page .certificado-vigencia[data-estado="revocado"] { background: #fbe9e7; color: #a7332c; }
+.solicitudes-page .certificado-vigencia[data-estado="sin-datos"] { background: #edf1f5; color: #61758a; }
+.solicitudes-page .detalle-controles { display: flex; flex-direction: column; align-items: stretch; gap: 8px; min-width: 0; width: 100%; }
+.solicitudes-page .detalle-controles .btn { display: inline-flex; align-items: center; justify-content: center; gap: 9px; min-width: 0; min-height: 48px; padding: 12px 16px; border-radius: 6px; font-size: 14px; line-height: 1.45; text-align: center; white-space: normal; overflow-wrap: anywhere; }
+.solicitudes-page .detalle-controles .detalle-primaria { justify-content: center; border: 1px solid #113761; background: #113761; color: #fff; font-size: 15px; font-weight: 600; }
+.solicitudes-page .detalle-flecha { flex: none; margin-left: 12px; font-size: 22px; font-weight: 400; line-height: 1; }
+.solicitudes-page .detalle-controles .detalle-copiar { border: 0; background: transparent; color: #244f7c; font-weight: 500; }
+.solicitudes-page .detalle-copiar > span { text-decoration: underline; text-underline-offset: 3px; }
+.solicitudes-page .detalle-copiar svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.7; }
+.solicitudes-page .detalle-controles .detalle-copiar:hover { background: #f1f5fa; filter: none; }
+.solicitudes-page .detalle-portada button:focus-visible,
+.solicitudes-page .detalle-portada a:focus-visible { outline: 3px solid #a15f00; outline-offset: 3px; }
+.solicitudes-page .detalle-contexto { display: flex; grid-column: 1 / -1; align-items: center; flex-wrap: wrap; gap: 12px 20px; min-width: 0; padding-top: 16px; border-top: 1px solid #dce6ef; }
+.solicitudes-page .detalle-dato { display: flex; align-items: baseline; flex-wrap: wrap; gap: 5px; min-width: 0; margin: 0; color: #688099; font-size: 14px; line-height: 1.5; }
+.solicitudes-page .detalle-dato strong { color: #244c73; font-weight: 600; overflow-wrap: anywhere; }
+.solicitudes-page .detalle-dato + .detalle-dato,
+.solicitudes-page .detalle-contexto #det-estado { padding-left: 20px; border-left: 1px solid #dce6ef; }
+.solicitudes-page .detalle-contexto #det-estado { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; min-width: 0; margin: 0; }
+.solicitudes-page .detalle-contexto .estado { padding: 6px 11px; font-size: 14px; font-weight: 500; line-height: 1.5; white-space: normal; }
+@media (max-width: 760px) {
+  .solicitudes-page .detalle-portada { grid-template-columns: minmax(0, 1fr); gap: 18px; }
+  .solicitudes-page .detalle-controles { max-width: none; }
+  .solicitudes-page .detalle-contexto { gap: 10px 16px; }
+}
+@media (max-width: 560px) {
+  .solicitudes-page .detalle-portada { padding: 18px; }
+  .solicitudes-page .detalle-principal { grid-template-columns: 56px minmax(0, 1fr); gap: 14px; }
+  .solicitudes-page .detalle-icono { width: 56px; height: 64px; }
+  .solicitudes-page .detalle-icono svg { width: 34px; height: 40px; }
+  .solicitudes-page .detalle-identidad h2 { font-size: 26px; }
+  .solicitudes-page .detalle-folio { font-size: 20px; }
+  .solicitudes-page .detalle-contexto { align-items: flex-start; flex-direction: column; }
+  .solicitudes-page .detalle-dato + .detalle-dato,
+  .solicitudes-page .detalle-contexto #det-estado { padding-left: 0; border-left: 0; }
+}
+@media print {
+  .solicitudes-page .detalle-portada { display: block; padding: 16px; box-shadow: none; break-inside: avoid; }
+  .solicitudes-page .detalle-portada > .detalle-volver,
+  .solicitudes-page .detalle-controles { display: none !important; }
+  .solicitudes-page .detalle-contexto { margin-top: 18px; }
+}
+
+.solicitudes-page .detalle-contexto .en-revision { background: #ddebf7; color: #19476f; }
+
+.solicitudes-page #det-obs .obs { margin: 18px 0; padding: 16px 18px; border: 1px solid #efd4cf; border-left: 3px solid #b3261e; border-radius: 8px; background: #fff6f4; }
+.solicitudes-page #det-obs .obs > strong { display: block; color: #9e322a; font-size: 13px; }
+.solicitudes-page #det-obs .obs p { margin: 6px 0 0; font-size: 13px; line-height: 1.6; overflow-wrap: anywhere; }
+
+/* Recorrido de la solicitud: hitos conectados. */
+.solicitudes-page .recorrido { margin: 20px 0 24px; padding: 26px; border: 1px solid #d9e3ed; border-radius: 10px; background: #fff; }
+.solicitudes-page .recorrido-titulo { margin: 0 0 20px; padding: 0; border: 0; color: #102c56; font-family: inherit; font-size: 20px; font-weight: 650; line-height: 1.4; }
+.solicitudes-page .recorrido-lista { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin: 0; padding: 8px 0 0; list-style: none; }
+.solicitudes-page .recorrido-paso {
+  --conector: #c8d2df;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 0;
+  padding: 12px 14px 8px;
+  color: #102c56;
+  text-align: center;
+}
+.solicitudes-page .recorrido-paso::before {
+  content: "";
+  position: absolute;
+  top: 44px;
+  left: calc(50% + 42px);
+  width: calc(100% - 84px);
+  border-top: 2px dashed var(--conector);
+}
+.solicitudes-page .recorrido-paso::after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  top: 40px;
+  left: calc(100% - 4px);
+  width: 8px;
+  height: 8px;
+  border-top: 2px solid var(--conector);
+  border-right: 2px solid var(--conector);
+  background: #fff;
+  transform: rotate(45deg);
+}
+.solicitudes-page .recorrido-paso:last-child::before,
+.solicitudes-page .recorrido-paso:last-child::after,
+.solicitudes-page .recorrido-paso.rechazado::before,
+.solicitudes-page .recorrido-paso.rechazado::after { display: none; }
+.solicitudes-page .recorrido-paso.hecho { --conector: #3e82ed; }
+.solicitudes-page .recorrido-paso.hecho::before { border-top-style: solid; }
+.solicitudes-page .recorrido-icono {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 64px;
+  height: 64px;
+  border: 2px solid transparent;
+  border-radius: 50%;
+  background: #eef1f5;
+  color: #687c93;
+}
+.solicitudes-page .recorrido-icono svg { width: 31px; height: 31px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.solicitudes-page .recorrido-paso.hecho .recorrido-icono { background: #e3f5e8; color: #218044; }
+.solicitudes-page .recorrido-paso.hecho .recorrido-icono svg { stroke-width: 2.7; }
+.solicitudes-page .recorrido-paso.actual .recorrido-icono { background: #e8f2ff; color: #143f72; box-shadow: 0 0 0 4px #fff, 0 0 0 6px #bcd6fa; }
+.solicitudes-page .recorrido-paso.rechazado .recorrido-icono { background: #fceeed; color: #a3322c; }
+.solicitudes-page .recorrido-paso.no-aplica { color: #687c93; }
+.solicitudes-page .recorrido-texto { min-width: 0; margin-top: 16px; }
+.solicitudes-page .recorrido-nombre { display: block; margin-bottom: 5px; font-size: 16px; font-weight: 650; line-height: 1.4; overflow-wrap: anywhere; }
+.solicitudes-page .recorrido-nota,
+.solicitudes-page .recorrido-fecha { display: inline; color: #576f8e; font-size: 13px; line-height: 1.6; }
+.solicitudes-page .recorrido-nota + .recorrido-fecha::before { content: " · "; }
+.solicitudes-page .recorrido-fecha { font-variant-numeric: tabular-nums; }
+.solicitudes-page .recorrido-paso.rechazado .recorrido-nota { color: #a3322c; }
+.solicitudes-page .recorrido-disponible { display: table; margin: 9px auto 0; padding: 3px 11px; border-radius: 999px; background: #e0eeff; color: #175baf; font-size: 12px; font-weight: 600; line-height: 1.5; }
+.solicitudes-page .recorrido-disponible.vencido { background: #fff1d8; color: #805a17; }
+.solicitudes-page .recorrido-disponible.revocado { background: #fceeed; color: #a3322c; }
+.solicitudes-page .recorrido-ayuda { margin: 16px 0 0; color: #576f8e; font-size: 13px; line-height: 1.6; }
+@media (max-width: 820px) {
+  .solicitudes-page .recorrido-lista { grid-template-columns: minmax(0, 1fr); padding: 0; }
+  .solicitudes-page .recorrido-paso { display: grid; grid-template-columns: 52px minmax(0, 1fr); align-items: start; gap: 18px; min-height: 106px; padding: 12px 0 18px; text-align: left; }
+  .solicitudes-page .recorrido-icono { width: 52px; height: 52px; }
+  .solicitudes-page .recorrido-icono svg { width: 27px; height: 27px; }
+  .solicitudes-page .recorrido-texto { margin-top: 3px; }
+  .solicitudes-page .recorrido-paso::before { top: 76px; bottom: -2px; left: 26px; width: 0; border-top: 0; border-left: 2px dashed var(--conector); }
+  .solicitudes-page .recorrido-paso.hecho::before { border-left-style: solid; }
+  .solicitudes-page .recorrido-paso::after { top: auto; bottom: 0; left: 22px; transform: rotate(135deg); }
+  .solicitudes-page .recorrido-paso:last-child { min-height: 0; }
+  .solicitudes-page .recorrido-disponible { margin-left: 0; }
+}
+@media (max-width: 560px) {
+  .solicitudes-page .recorrido { padding: 20px 18px; }
+  .solicitudes-page .recorrido-titulo { font-size: 18px; }
+  .solicitudes-page .recorrido-nombre { font-size: 15px; }
+}
+@media print {
+  .solicitudes-page .recorrido { padding: 16px; box-shadow: none; }
+  .solicitudes-page .recorrido-lista { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .solicitudes-page .recorrido-paso { display: flex; padding: 10px; min-height: 0; break-inside: avoid; }
+  .solicitudes-page .recorrido-paso::before,
+  .solicitudes-page .recorrido-paso::after { display: none; }
+  .solicitudes-page .recorrido-icono { box-shadow: none !important; border-color: #777; }
+}
+
+.solicitudes-pie {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 25px 2px;
+  color: #627989;
+  font-size: 10px;
+}
+
+.solicitudes-pie span {
+  margin-left: auto;
+}
+
+@media (max-width: 1050px) {
+  .solicitudes-resumen {
+    gap: 10px;
+  }
+
+  .resumen-tarjeta {
+    padding: 17px;
+    gap: 10px;
+  }
+}
+
+@media (max-width: 700px) {
+  .solicitudes-hero {
+    min-height: 280px;
+  }
+
+  .hero-contenido {
+    padding: 30px var(--lado) 62px;
+  }
+
+  .hero-contenido p {
+    max-width: 310px;
+    font-size: 13px;
+  }
+
+  .solicitudes-resumen {
+    margin-top: -24px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .resumen-tarjeta {
+    padding: 15px 12px;
+    gap: 9px;
+    min-height: 82px;
+  }
+
+  .resumen-tarjeta strong {
+    font-size: 24px;
+  }
+
+  .resumen-etiqueta {
+    font-size: 11px;
+  }
+
+  .resumen-icono {
+    width: 25px;
+  }
+
+  .solicitudes-panel {
+    padding: 18px 14px;
+  }
+
+  .panel-encabezado {
+    align-items: flex-start;
+  }
+
+  .panel-encabezado p {
+    font-size: 11px;
+  }
+
+  .lista-cantidad {
+    font-size: 10px;
+    padding: 5px 8px;
+  }
+
+  .solicitudes-page h2 {
+    font-size: 22px;
+  }
+
+  .solicitudes-page .solicitudes-filtros {
+    flex-direction: column;
+    padding: 13px;
+    gap: 12px;
+  }
+
+  .campo-estado {
+    flex-basis: auto;
+  }
+
+  .tabla-ayuda {
+    display: block;
+    margin: 12px 0 0;
+    font-size: 11px;
+    color: #64788a;
+  }
+
+  .solicitudes-page .detalle {
+    grid-template-columns: 1fr;
+  }
+
+  .solicitudes-pie span {
+    display: none;
+  }
+}
+
+@media print {
+  .solicitudes-hero,
+  .solicitudes-resumen,
+  .solicitudes-pie {
+    display: none;
+  }
+
+  .solicitudes-main {
+    margin: 0;
+    padding: 0;
+  }
+
+  .solicitudes-panel {
+    width: 100%;
+    max-width: none;
+    border: 0;
+    padding: 0;
+    box-shadow: none;
+  }
+
+  .solicitudes-page .tabla-wrap {
+    overflow: visible;
+  }
+}
+
+/* 5. Consulta del expediente */
+.solicitudes-page .consulta-expediente {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 32%);
+  align-items: stretch;
+  min-width: 0;
+  margin-top: 20px;
+  border: 1px solid #dce3eb;
+  border-radius: 6px;
+  background: #fff;
+  overflow: hidden;
+}
+.solicitudes-page .consulta-expediente[data-ficha-abierta="false"] { grid-template-columns: minmax(0, 1fr); }
+.solicitudes-page .consulta-expediente .consulta-principal { min-width: 0; padding: 22px; }
+.solicitudes-page .consulta-expediente h3,
+.solicitudes-page .consulta-expediente h4,
+.solicitudes-page .consulta-expediente h5,
+.solicitudes-page .consulta-expediente dt,
+.solicitudes-page .consulta-expediente dd { margin: 0; 
+  font-family: inherit; }
+.solicitudes-page .consulta-expediente svg { flex: none; width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.solicitudes-page .consulta-expediente .consulta-titulo { margin: 0 0 18px; padding: 0; border: 0; color: #53677e; font-size: 14px; font-weight: 600; line-height: 1.4; }
+.solicitudes-page .consulta-expediente .consulta-identidad { display: grid; grid-template-columns: 32px minmax(0, 1fr); align-items: center; gap: 16px; }
+.solicitudes-page .consulta-expediente .consulta-nave-icono { width: 32px; height: 32px; color: #244c73; }
+.solicitudes-page .consulta-expediente .consulta-identidad > div { min-width: 0; padding-left: 16px; border-left: 1px solid #dce3eb; }
+.solicitudes-page .consulta-expediente .consulta-nave { color: #173b60; font-size: clamp(26px, 2.4vw, 32px); font-weight: 650; line-height: 1.2; letter-spacing: -.025em; overflow-wrap: anywhere; }
+.solicitudes-page .consulta-expediente .consulta-meta { display: flex; align-items: center; flex-wrap: wrap; gap: 9px 14px; margin: 8px 0 0; color: #65778c; font-size: 13px; line-height: 1.5; }
+.solicitudes-page .consulta-expediente .consulta-meta strong { margin-left: 6px; color: #2a4663; font-size: 14px; font-weight: 600; letter-spacing: .06em; }
+.solicitudes-page .consulta-expediente .consulta-tipo { padding: 3px 8px; border-radius: 3px; background: #edf0f4; color: #5b6d82; font-size: 12px; }
+.solicitudes-page .consulta-expediente button,
+.solicitudes-page .consulta-expediente .consulta-ver-doc {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-width: 0;
+  min-height: 40px;
+  padding: 8px 11px;
+  border: 1px solid #b8c6d5;
+  border-radius: 4px;
+  background: #fff;
+  color: #254b70;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.4;
+  text-align: center;
+  text-decoration: none;
+  white-space: normal;
+}
+.solicitudes-page .consulta-expediente button:hover:not(:disabled),
+.solicitudes-page .consulta-expediente .consulta-ver-doc:hover { background: #edf2f7; filter: none; }
+.solicitudes-page .consulta-expediente button:focus-visible,
+.solicitudes-page .consulta-expediente .consulta-ver-doc:focus-visible { outline: 3px solid #a15f00; outline-offset: 3px; }
+.solicitudes-page .consulta-expediente .consulta-toggle { margin-top: 13px; padding: 6px 0; border-color: transparent; background: transparent; }
+.solicitudes-page .consulta-expediente .consulta-toggle:hover:not(:disabled) { background: transparent; text-decoration: underline; text-underline-offset: 4px; }
+.solicitudes-page .consulta-expediente .consulta-chevron { display: inline-flex; width: 14px; height: 14px; margin-left: 4px; transform: rotate(180deg); transition: transform var(--mov, .15s ease); }
+.solicitudes-page .consulta-expediente .consulta-chevron svg { width: 14px; height: 14px; }
+.solicitudes-page .consulta-expediente .consulta-toggle[aria-expanded="true"] .consulta-chevron { transform: rotate(0); }
+.solicitudes-page .consulta-expediente .consulta-documento { margin-top: 13px; padding-top: 16px; border-top: 1px solid #dce3eb; }
+.solicitudes-page .consulta-expediente .consulta-etiqueta { display: block; padding: 0 0 5px 12px; border-left: 3px solid #234c76; color: #63768c; font-size: 13px; line-height: 1.5; }
+.solicitudes-page .consulta-expediente .consulta-base { padding-left: 12px; border-left: 3px solid #234c76; color: #203f60; font-size: 20px; font-weight: 600; line-height: 1.35; overflow-wrap: anywhere; }
+.solicitudes-page .consulta-expediente .consulta-meta-documento,
+.solicitudes-page .consulta-expediente .consulta-partes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin: 16px 0 0; }
+.solicitudes-page .consulta-expediente .consulta-dato { min-width: 0; }
+.solicitudes-page .consulta-expediente .consulta-dato dt { display: flex; align-items: center; gap: 8px; color: #63768c; font-size: 13px; line-height: 1.5; overflow-wrap: anywhere; }
+.solicitudes-page .consulta-expediente .consulta-dato dd { margin: 5px 0 0; color: #2a435d; font-size: 14px; font-weight: 500; line-height: 1.5; overflow-wrap: anywhere; }
+.solicitudes-page .consulta-expediente .consulta-meta-documento .consulta-dato + .consulta-dato,
+.solicitudes-page .consulta-expediente .consulta-partes .consulta-dato + .consulta-dato { padding-left: 16px; border-left: 1px solid #e0e6ed; }
+.solicitudes-page .consulta-expediente .consulta-partes { padding-top: 15px; border-top: 1px solid #dce3eb; }
+.solicitudes-page .consulta-expediente .consulta-adjunto { margin-top: 18px; padding-top: 15px; border-top: 1px solid #dce3eb; }
+.solicitudes-page .consulta-expediente .consulta-adjunto > h4 { margin-bottom: 9px; color: #3e556f; font-size: 14px; font-weight: 500; }
+.solicitudes-page .consulta-expediente .consulta-archivo { display: flex; align-items: center; gap: 12px; min-width: 0; padding: 12px; border: 1px solid #dde5ed; border-radius: 5px; }
+.solicitudes-page .consulta-expediente .consulta-archivo-texto { flex: 1; min-width: 0; color: #48617a; font-size: 13px; line-height: 1.5; overflow-wrap: anywhere; }
+.solicitudes-page .consulta-expediente .consulta-ver-doc { flex: none; max-width: 100%; }
+.solicitudes-page .consulta-expediente .consulta-ficha { min-width: 0; padding: 22px; border-left: 1px solid #dce3eb; background: #f4f6f8; box-shadow: -4px 0 12px #17375208; }
+.solicitudes-page .consulta-expediente .consulta-ficha-cabecera { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; margin-bottom: 22px; }
+.solicitudes-page .consulta-expediente #consulta-ficha-titulo { color: #1e3d5d; font-size: 20px; font-weight: 650; line-height: 1.35; }
+.solicitudes-page .consulta-expediente .consulta-ficha-cabecera p { margin: 5px 0 0; color: #6a7d93; font-size: 13px; line-height: 1.5; }
+.solicitudes-page .consulta-expediente .consulta-cerrar { flex: none; width: 40px; padding: 8px; border-color: transparent; background: transparent; color: #60778f; }
+.solicitudes-page .consulta-expediente .consulta-grupo + .consulta-grupo { margin-top: 20px; padding-top: 18px; border-top: 1px solid #dce3eb; }
+.solicitudes-page .consulta-expediente .consulta-grupo > h5 { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; padding-bottom: 13px; border-bottom: 1px solid #dce3eb; color: #23496f; font-size: 15px; font-weight: 600; line-height: 1.4; }
+.solicitudes-page .consulta-expediente dl.consulta-kv { display: grid; gap: 14px; margin: 0; }
+.solicitudes-page .consulta-expediente .consulta-kv > .consulta-dato { display: grid; grid-template-columns: minmax(90px, .9fr) minmax(0, 1.1fr); align-items: start; gap: 10px; }
+.solicitudes-page .consulta-expediente .consulta-kv dt { color: #687e94; font-size: 12px; }
+.solicitudes-page .consulta-expediente .consulta-kv dd { margin: 0; }
+@media (max-width: 850px) {
+  .solicitudes-page .consulta-expediente { grid-template-columns: minmax(0, 1fr); }
+  .solicitudes-page .consulta-expediente .consulta-ficha { border-top: 1px solid #dce3eb; border-left: 0; box-shadow: none; }
+}
+@media (max-width: 560px) {
+  .solicitudes-page .consulta-expediente .consulta-principal,
+  .solicitudes-page .consulta-expediente .consulta-ficha { padding: 18px; }
+  .solicitudes-page .consulta-expediente .consulta-identidad { grid-template-columns: 28px minmax(0, 1fr); gap: 12px; }
+  .solicitudes-page .consulta-expediente .consulta-nave-icono { width: 28px; height: 28px; }
+  .solicitudes-page .consulta-expediente .consulta-identidad > div { padding-left: 12px; }
+  .solicitudes-page .consulta-expediente .consulta-nave { font-size: 27px; }
+  .solicitudes-page .consulta-expediente .consulta-base { font-size: 18px; }
+  .solicitudes-page .consulta-expediente .consulta-meta-documento,
+  .solicitudes-page .consulta-expediente .consulta-partes { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+  .solicitudes-page .consulta-expediente .consulta-meta-documento .consulta-dato + .consulta-dato,
+  .solicitudes-page .consulta-expediente .consulta-partes .consulta-dato + .consulta-dato { padding-left: 0; border-left: 0; }
+  .solicitudes-page .consulta-expediente .consulta-archivo { flex-wrap: wrap; }
+  .solicitudes-page .consulta-expediente .consulta-ver-doc { flex: 1 1 100%; }
+}
+@media print {
+  .solicitudes-page .consulta-expediente { display: block; overflow: visible; border-color: #999; }
+  .solicitudes-page .consulta-expediente .consulta-ficha,
+  .solicitudes-page .consulta-expediente .consulta-ficha[hidden] { display: block !important; border-top: 1px solid #999; border-left: 0; background: #fff; box-shadow: none; }
+  .solicitudes-page .consulta-expediente .consulta-principal,
+  .solicitudes-page .consulta-expediente .consulta-ficha { padding: 16px; }
+  .solicitudes-page .consulta-expediente .consulta-grupo,
+  .solicitudes-page .consulta-expediente .consulta-adjunto { break-inside: avoid; }
+}
+
+@media (min-width: 851px) {
+  .solicitudes-page .consulta-expediente .consulta-ficha {
+    max-height: 720px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+}
+@media print {
+  .solicitudes-page .consulta-expediente .consulta-ficha {
+    max-height: none;
+    overflow: visible;
+  }
+}
+
+/* 6. Avisos de vencimiento */
+.solicitudes-page .vencimientos {
+  min-width: 0;
+  margin: 0 0 22px;
+  border: 1px solid #dce5ed;
+  border-radius: 8px;
+  background: #f6f9fc;
+}
+
+.solicitudes-page .vencimientos .vencimientos-cabecera {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 70px;
+  padding: 12px 16px;
+}
+
+.solicitudes-page .vencimientos .vencimientos-icono {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  color: #315b80;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.solicitudes-page .vencimientos .vencimientos-textos {
+  flex: 1;
+  min-width: 0;
+}
+
+.solicitudes-page .vencimientos h3 {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  color: #24496d;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.4;
+  text-wrap: wrap;
+  overflow-wrap: anywhere;
+}
+
+.solicitudes-page .vencimientos .vencimientos-cantidad {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 21px;
+  min-height: 20px;
+  padding: 1px 6px;
+  border-radius: 10px;
+  background: #e1ebf4;
+  color: #31577c;
+  font-size: 11px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.4;
+}
+
+.solicitudes-page .vencimientos #vencimientos-resumen {
+  margin: 3px 0 0;
+  color: #60768a;
+  font-size: 12px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.solicitudes-page .vencimientos .vencimientos-toggle,
+.solicitudes-page .vencimientos .btn.o.x.vencimiento-ver {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  flex: none;
+  min-width: 0;
+  min-height: 36px;
+  max-width: 100%;
+  padding: 7px 11px;
+  border: 1px solid #b8c9d9;
+  border-radius: 5px;
+  background: #fff;
+  color: #2b5176;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.5;
+  text-align: center;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.solicitudes-page .vencimientos .vencimientos-toggle {
+  border-color: transparent;
+  background: transparent;
+}
+
+.solicitudes-page .vencimientos .vencimientos-toggle:hover:not(:disabled),
+.solicitudes-page .vencimientos .btn.o.x.vencimiento-ver:hover:not(:disabled) {
+  background: #eaf1f7;
+  filter: none;
+}
+
+.solicitudes-page .vencimientos button:focus-visible {
+  outline: 3px solid #507ea8;
+  outline-offset: 3px;
+}
+
+.solicitudes-page .vencimientos .vencimientos-toggle svg {
+  flex: none;
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.solicitudes-page .vencimientos .vencimientos-toggle[aria-expanded="true"] svg {
+  transform: rotate(180deg);
+}
+
+.solicitudes-page .vencimientos .vencimientos-lista {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid #dce5ed;
+  background: #fff;
+  border-radius: 0 0 8px 8px;
+}
+
+.solicitudes-page .vencimientos .vencimiento {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(112px, .4fr) auto auto;
+  align-items: center;
+  gap: 16px;
+  min-width: 0;
+  padding: 13px 16px;
+}
+
+.solicitudes-page .vencimientos .vencimiento + .vencimiento {
+  border-top: 1px solid #e5ebf1;
+}
+
+.solicitudes-page .vencimientos .vencimiento-identidad,
+.solicitudes-page .vencimientos .vencimiento-fecha {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.solicitudes-page .vencimientos .vencimiento-identidad strong {
+  display: block;
+  color: #284766;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.solicitudes-page .vencimientos .vencimiento-identidad span {
+  display: block;
+  margin-top: 3px;
+  color: #687c8e;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.solicitudes-page .vencimientos .vencimiento-fecha > span {
+  display: block;
+  color: #687c8e;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.solicitudes-page .vencimientos .vencimiento-fecha time {
+  display: block;
+  margin-top: 2px;
+  color: #3b556d;
+  font-size: 12px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.5;
+}
+
+.solicitudes-page .vencimientos .vencimiento-plazo {
+  justify-self: start;
+  max-width: 100%;
+  padding: 4px 8px;
+  border: 1px solid #dce6ee;
+  border-radius: 4px;
+  background: #edf3f8;
+  color: #45627e;
+  font-size: 11px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.solicitudes-page .vencimientos .vencimiento-plazo[data-urgencia="hoy"],
+.solicitudes-page .vencimientos .vencimiento-plazo[data-urgencia="proximo"] {
+  border-color: #edd4b6;
+  background: #fff3e4;
+  color: #925514;
+}
+
+@media (max-width: 700px) {
+  .solicitudes-page .vencimientos .vencimientos-cabecera {
+    flex-wrap: wrap;
+    gap: 8px 10px;
+    padding: 12px;
+  }
+
+  .solicitudes-page .vencimientos .vencimientos-textos {
+    flex-basis: calc(100% - 34px);
+  }
+
+  .solicitudes-page .vencimientos .vencimientos-toggle {
+    margin-left: 34px;
+  }
+
+  .solicitudes-page .vencimientos .vencimiento {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 10px 14px;
+    padding: 13px 12px;
+  }
+
+  .solicitudes-page .vencimientos .vencimiento-identidad,
+  .solicitudes-page .vencimientos .vencimiento-ver {
+    grid-column: 1 / -1;
+  }
+
+  .solicitudes-page .vencimientos .vencimiento-plazo {
+    justify-self: end;
+  }
+
+  .solicitudes-page .vencimientos .vencimiento-ver {
+    justify-self: start;
+  }
+}
+
+@media (max-width: 480px) {
+  .solicitudes-page .vencimientos .vencimiento {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .solicitudes-page .vencimientos .vencimiento-plazo {
+    justify-self: start;
+  }
+}
+
+@media print {
+  .solicitudes-page .vencimientos {
+    display: none !important;
+  }
+}

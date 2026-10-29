@@ -6,7 +6,7 @@
   <title>Consulta de naves · Registro Marítimo Digital</title>
   <link rel="stylesheet" href="estilos.css">
 </head>
-<body>
+<body class="consulta-page">
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
@@ -15,56 +15,174 @@
 </svg>
 
 <header class="bar">
-  <div class="logo"><svg class="i"><use href="#an"/></svg>Registro Marítimo Digital</div>
-  <nav>
-    <a href="consulta.html" aria-current="page">Consulta de naves</a>
-  </nav>
-  <div class="who"><span id="usuario"></span><br><a href="#" id="salir">Cerrar sesión</a></div>
-</header>
+  <a
+    class="logo marca-registro"
+    href="consulta.html"
+    aria-label="Registro Marítimo Digital"
+  >
+    <img
+      class="marca-logo"
+      src="img/logo-amp.png"
+      alt="Autoridad Marítima de Panamá"
+    >
 
-<div class="band">
-  <h1>Consulta de naves</h1>
+    <span class="marca-texto">
+      <strong>Registro Marítimo</strong>
+      <span>Digital</span>
+    </span>
+  </a>
+  <div class="cabecera-cuenta">
+  <div class="cuenta-usuario">
+    <span
+      class="cuenta-avatar"
+      id="usuario-iniciales"
+      aria-hidden="true"
+    >—</span>
+
+    <div class="cuenta-datos">
+      <span id="usuario">Cargando…</span>
+      <span id="usuario-rol"></span>
+    </div>
+  </div>
+
+  <button type="button" class="cuenta-salir" id="salir">
+    <svg class="i" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M9 4H4v16h5M9 12h12m-4-4 4 4-4 4"/>
+    </svg>
+    Cerrar sesión
+  </button>
 </div>
 
-<div class="tc">
-  <div class="pad">
+</header>
 
-    <section class="resumen">
-      <div class="dato"><span id="n-total">0</span><small>Total</small></div>
-      <div class="dato"><span id="n-revision">0</span><small>En revisión</small></div>
-      <div class="dato"><span id="n-aprobado">0</span><small>Aprobadas</small></div>
-      <div class="dato"><span id="n-rechazado">0</span><small>Rechazadas</small></div>
-    </section>
+<main class="portal-main">
+  <section class="portal-hero" aria-labelledby="titulo-consulta-naves">
+    <div class="portal-hero-contenido">
+      <h1 id="titulo-consulta-naves">Portal de la aseguradora</h1>
 
-    <div class="filtros">
-      <input id="buscar" type="search" placeholder="Buscar" aria-label="Buscar por trámite, nave, IMO o propietario">
-      <select id="filtro-estado" aria-label="Filtrar por estado">
-        <option value="">Todos los estados</option>
-        <option>En revisión</option>
-        <option>Aprobado</option>
-        <option>Rechazado</option>
-      </select>
+      <p>
+        Consulta las naves registradas, el estado y el vencimiento
+        de sus certificados.
+      </p>
+
+      <a href="#registro-naves" class="btn portal-boton">
+        Consultar registro
+        <span aria-hidden="true">↓</span>
+      </a>
+    </div>
+  </section>
+
+  <section class="portal-resumen" aria-label="Resumen de solicitudes">
+    <article class="portal-tarjeta">
+      <svg class="i" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M6 3h9l4 4v14H5V3zM14 3v5h5M8 12h8M8 16h6"/>
+      </svg>
+      <div>
+        <strong id="n-total">—</strong>
+        <span>Total de solicitudes</span>
+      </div>
+    </article>
+
+    <article class="portal-tarjeta portal-revision">
+      <svg class="i" viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="12" cy="12" r="9"/>
+        <path d="M12 7v5l3 2"/>
+      </svg>
+      <div>
+        <strong id="n-revision">—</strong>
+        <span>En revisión</span>
+      </div>
+    </article>
+
+    <article class="portal-tarjeta portal-aprobado">
+      <svg class="i" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="m5 12 4 4L19 6"/>
+      </svg>
+      <div>
+        <strong id="n-aprobado">—</strong>
+        <span>Aprobadas</span>
+      </div>
+    </article>
+
+    <article class="portal-tarjeta portal-rechazado">
+      <svg class="i" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M8 7H4V3M4 7a8 8 0 1 1-1 9"/>
+      </svg>
+      <div>
+        <strong id="n-rechazado">—</strong>
+        <span>Rechazadas</span>
+      </div>
+    </article>
+  </section>
+
+  <section
+    class="portal-panel"
+    id="registro-naves"
+    aria-labelledby="titulo-registro"
+  >
+    <div class="portal-panel-encabezado">
+      <span class="portal-panel-etiqueta">REGISTRO MARÍTIMO</span>
+      <h2 id="titulo-registro">Naves y certificados</h2>
+      <p>
+        Busca por trámite, nave, IMO o propietario y comprueba
+        la situación del certificado.
+      </p>
     </div>
 
-    <div class="tabla-wrap">
+    <div class="filtros portal-filtros">
+      <div class="portal-busqueda">
+        <label for="buscar">Buscar nave</label>
+        <input
+          id="buscar"
+          type="search"
+          placeholder="Trámite, nave, IMO o propietario"
+        >
+      </div>
+
+      <div class="portal-filtro-estado">
+        <label for="filtro-estado">Estado del trámite</label>
+        <select id="filtro-estado">
+          <option value="">Todos los estados</option>
+          <option>En revisión</option>
+          <option>Aprobado</option>
+          <option>Rechazado</option>
+        </select>
+      </div>
+    </div>
+
+    <div
+      class="tabla-wrap"
+      role="region"
+      aria-label="Naves y certificados, tabla desplazable"
+      tabindex="0"
+    >
       <table>
         <thead>
           <tr>
-            <th>Trámite</th>
-            <th>Nave</th>
-            <th>IMO</th>
-            <th>Tipo</th>
-            <th>Propietario</th>
-            <th>Estado</th>
-            <th>Certificado</th>
-            <th>Vence</th>
+            <th scope="col">Trámite</th>
+            <th scope="col">Nave</th>
+            <th scope="col">IMO</th>
+            <th scope="col">Tipo</th>
+            <th scope="col">Propietario</th>
+            <th scope="col">Estado</th>
+            <th scope="col">Certificado</th>
+            <th scope="col">Vence</th>
           </tr>
         </thead>
         <tbody id="tabla-body"></tbody>
       </table>
     </div>
-  </div>
-</div>
+
+    <p class="portal-tabla-ayuda">
+      Desliza la tabla para consultar todas las columnas.
+    </p>
+  </section>
+
+  <footer class="portal-pie">
+    <span>Registro Marítimo Digital</span>
+    <span>Portal de la aseguradora</span>
+  </footer>
+</main>
 
 <script src="sesion.js"></script>
 <script src="consulta.js"></script>
