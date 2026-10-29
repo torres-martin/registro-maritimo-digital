@@ -107,9 +107,9 @@ public class NaveService {
         if (repo.existsByImoAndEstadoIn(imo, List.of("En revisión", "Aprobado")))
             throw new DatosInvalidosException("Ya existe una solicitud en revisión o aprobada para el IMO " + imo + ".");
 
-        // VALIDACIÓN DE DÍGITO DE CONTROL DESACTIVADA PARA PRUEBAS:
-        // if (!imoValido(imo.substring(3)))
-        //     throw new DatosInvalidosException("El número IMO no es válido: el dígito de control no coincide. Revise el certificado de arqueo.");
+        // DEF-01: el dígito de control del IMO vuelve a validarse.
+        if (!imoValido(imo.substring(3)))
+            throw new DatosInvalidosException("El número IMO no es válido: el dígito de control no coincide. Revise el certificado de arqueo.");
 
         nave.setImo(imo);
         nave.setTipoNave(opcion(c, "tipoNave", TIPOS, "un tipo de nave"));
