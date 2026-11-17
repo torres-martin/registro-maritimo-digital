@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebElementEntity>
+   <description></description>
+   <name>textarea_Motivo de la revocacin</name>
+   <tag></tag>
+   <elementGuidId>c7f44727-ca6e-4567-9cf9-d0d97943de4e</elementGuidId>
+   <selectorCollection>
+      <entry>
+         <key>CSS</key>
+         <value>#motivo-revocacion</value>
+      </entry>
+      <entry>
+         <key>XPATH</key>
+         <value>//*[@id = 'motivo-revocacion']</value>
+      </entry>
+   </selectorCollection>
+   <selectorMethod>XPATH</selectorMethod>
+   <smartLocatorCollection>
+      <entry>
+         <key>SMART_LOCATOR</key>
+         <value>internal:label=&quot;Motivo de la revocación&quot;i</value>
+      </entry>
+   </smartLocatorCollection>
+   <smartLocatorEnabled>false</smartLocatorEnabled>
+   <useRalativeImagePath>true</useRalativeImagePath>
+   <webElementProperties>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>tag</name>
+      <type>Main</type>
+      <value>textarea</value>
+      <webElementGuid>feacd43a-2f5d-49f7-a397-56692156893d</webElementGuid>
+   </webElementProperties>
+   <webElementProperties>
+      <isSelected>true</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>id</name>
+      <type>Main</type>
+      <value>motivo-revocacion</value>
+      <webElementGuid>06583256-27d2-43d2-92d7-24b7f332aa9c</webElementGuid>
+   </webElementProperties>
+   <webElementProperties>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>maxlength</name>
+      <type>Main</type>
+      <value>500</value>
+      <webElementGuid>ceb97bd7-cd2d-4d8d-a15f-29a2771a01cb</webElementGuid>
+   </webElementProperties>
+   <webElementProperties>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>parent</name>
+      <type>Main</type>
+      <value>md5.v1-c1014b485d1687ee531e14f2256fe7c6</value>
+      <webElementGuid>9cb7cb59-77f8-4a75-bf81-648d3f1ea26f</webElementGuid>
+   </webElementProperties>
+   <webElementProperties>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>xpath</name>
+      <type>Main</type>
+      <value>//*[@id = 'motivo-revocacion']</value>
+      <webElementGuid>31446b13-46e3-40dd-9ed6-5225e5225427</webElementGuid>
+   </webElementProperties>
+   <webElementXpaths>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>xpath:attributes</name>
+      <type>Main</type>
+      <value>//*[@id = 'motivo-revocacion']</value>
+      <webElementGuid>decdff06-4d5b-4100-b3ff-ca02b8d96e75</webElementGuid>
+   </webElementXpaths>
+   <webElementXpaths>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>xpath:customAttributes</name>
+      <type>Main</type>
+      <value>//textarea[@id = 'motivo-revocacion']</value>
+      <webElementGuid>768876e3-a884-441d-8b50-99266de29120</webElementGuid>
+   </webElementXpaths>
+</WebElementEntity>

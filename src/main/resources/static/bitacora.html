@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Bitácora · Registro Marítimo Digital</title>
+  <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="an" viewBox="0 0 24 24"><circle cx="12" cy="5" r="2.5"/><path d="M12 8v13M5 14a7 7 0 0 0 14 0M8 11H5M19 11h-3"/></symbol>
+  </defs>
+</svg>
+
+<header class="bar">
+  <a
+    class="logo marca-registro"
+    href="bandeja.html"
+    aria-label="Registro Marítimo Digital"
+  >
+    <img
+      class="marca-logo"
+      src="img/logo-amp.png"
+      alt="Autoridad Marítima de Panamá"
+    >
+
+    <span class="marca-texto">
+      <strong>Registro Marítimo</strong>
+      <span>Digital</span>
+    </span>
+  </a>
+  <div class="cabecera-cuenta">
+  <div class="cuenta-usuario">
+    <span
+      class="cuenta-avatar"
+      id="usuario-iniciales"
+      aria-hidden="true"
+    >—</span>
+
+    <div class="cuenta-datos">
+      <span id="usuario">Cargando…</span>
+      <span id="usuario-rol"></span>
+    </div>
+  </div>
+
+  <button type="button" class="cuenta-salir" id="salir">
+    <svg class="i" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M9 4H4v16h5M9 12h12m-4-4 4 4-4 4"/>
+    </svg>
+    Cerrar sesión
+  </button>
+</div>
+</header>
+
+<main class="portal-main">
+  <section class="portal-panel" aria-labelledby="titulo-bitacora">
+    <div class="portal-panel-encabezado">
+      <span class="portal-panel-etiqueta">AUDITORÍA · HU-21</span>
+      <h2 id="titulo-bitacora">Bitácora de auditoría</h2>
+      <p>
+        Cada envío, aprobación, rechazo, corrección y revocación queda registrado
+        con su responsable, fecha y hora. La bitácora es de solo lectura.
+      </p>
+      <a href="bandeja.html" class="btn o x" id="volver-bandeja">← Volver a la bandeja</a>
+    </div>
+
+    <div class="filtros portal-filtros">
+      <div class="portal-busqueda">
+        <label for="buscar">Buscar en la bitácora</label>
+        <input id="buscar" type="search" placeholder="Trámite, nave, usuario o acción">
+      </div>
+      <div class="portal-filtro-estado">
+        <label for="filtro-accion">Acción</label>
+        <select id="filtro-accion">
+          <option value="">Todas las acciones</option>
+          <option>Enviar solicitud</option>
+          <option>Reenviar corrección</option>
+          <option>Aprobar</option>
+          <option>Rechazar</option>
+          <option>Revocar</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="tabla-wrap" role="region" aria-label="Bitácora de auditoría, tabla desplazable" tabindex="0">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Fecha y hora</th>
+            <th scope="col">Usuario</th>
+            <th scope="col">Acción</th>
+            <th scope="col">Trámite</th>
+            <th scope="col">Nave</th>
+            <th scope="col">Detalle</th>
+          </tr>
+        </thead>
+        <tbody id="bitacora-body"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer class="portal-pie">
+    <span>Registro Marítimo Digital</span>
+    <span>Portal del funcionario</span>
+  </footer>
+</main>
+<script src="sesion.js"></script>
+<script src="bitacora.js"></script>
+</body>
+</html>

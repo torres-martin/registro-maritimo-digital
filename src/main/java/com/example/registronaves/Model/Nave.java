@@ -132,6 +132,17 @@ public class Nave {
     @Column(name = "fecha_revocacion")
     private LocalDate fechaRevocacion;
 
+    // DEF-02: funcionario que revocó el certificado
+    @Column(name = "revocado_por", length = 120)
+    private String revocadoPor;
+
+    // DEF-03: solicitud rechazada que esta corrige
+    @Column(name = "solicitud_origen_id")
+    private Long solicitudOrigenId;
+
+    @Column(name = "tramite_origen", length = 30)
+    private String tramiteOrigen;
+
     public Nave() {}
 
     public Long getId() { return id; }
@@ -253,4 +264,13 @@ public class Nave {
 
     public LocalDate getFechaRevocacion() { return fechaRevocacion; }
     public void setFechaRevocacion(LocalDate fechaRevocacion) { this.fechaRevocacion = fechaRevocacion; }
+
+    public String getRevocadoPor() { return revocadoPor; }
+    public void setRevocadoPor(String revocadoPor) { this.revocadoPor = revocadoPor; }
+
+    public Long getSolicitudOrigenId() { return solicitudOrigenId; }
+    public void setSolicitudOrigenId(Long solicitudOrigenId) { this.solicitudOrigenId = solicitudOrigenId; }
+
+    public String getTramiteOrigen() { return tramiteOrigen; }
+    public void setTramiteOrigen(String tramiteOrigen) { this.tramiteOrigen = tramiteOrigen; }
 }

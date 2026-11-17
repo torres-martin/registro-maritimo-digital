@@ -207,7 +207,9 @@ function pintarFicha(d) {
       ["Vigente hasta", d.fechaVencimiento, fechaDato],
       ["Estado del certificado", d.estadoCertificado],
       ["Fecha de revocación", d.fechaRevocacion, fechaDato],
-      ["Motivo de revocación", d.motivoRevocacion]
+      ["Motivo de revocación", d.motivoRevocacion],
+      ["Revocado por", d.revocadoPor],
+      ["Corrige la solicitud", d.tramiteOrigen]
     ])
   ].filter(Boolean);
 
@@ -399,6 +401,10 @@ function pintarCertificado(d) {
 
   if ($("revocacion").hidden) {
     $("revocacion").open = false;
+  } else if (location.hash === "#revocacion") {
+    // DEF-06: llegada desde el botón Revocar de la bandeja
+    $("revocacion").open = true;
+    $("revocacion").scrollIntoView({ block: "start" });
   }
 }
 

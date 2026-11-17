@@ -150,7 +150,14 @@ class Sprint1SeleniumTest {
     }
 
     private static String imoNuevo() {
-        return String.format("%07d", 1000000 + AZAR.nextInt(8999999));
+        // Seis dígitos al azar + dígito de control del IMO (pesos 7 a 2).
+        int[] d = new int[6];
+        d[0] = 1 + AZAR.nextInt(9);
+        for (int i = 1; i < 6; i++) d[i] = AZAR.nextInt(10);
+        int suma = 0;
+        StringBuilder imo = new StringBuilder();
+        for (int i = 0; i < 6; i++) { suma += d[i] * (7 - i); imo.append(d[i]); }
+        return imo.append(suma % 10).toString();
     }
 
     private static Path pdfValido() throws IOException {

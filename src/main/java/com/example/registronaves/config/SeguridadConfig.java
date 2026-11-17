@@ -46,7 +46,8 @@ public class SeguridadConfig {
                 // Pantallas por rol
                 .requestMatchers("/nueva-solicitud.html", "/nueva-solicitud.js",
                         "/mis-solicitudes.html", "/mis-solicitudes.js").hasRole("ARMADOR")
-                .requestMatchers("/bandeja.html", "/bandeja.js", "/revision.html", "/revision.js").hasRole("FUNCIONARIO")
+                .requestMatchers("/bandeja.html", "/bandeja.js", "/revision.html", "/revision.js",
+                        "/bitacora.html", "/bitacora.js").hasRole("FUNCIONARIO")
                 .requestMatchers("/consulta.html", "/consulta.js").hasRole("ASEGURADORA")
                 // API por rol (las rutas fijas van antes que /api/naves/*)
                 .requestMatchers(HttpMethod.POST, "/api/naves").hasRole("ARMADOR")
@@ -57,6 +58,9 @@ public class SeguridadConfig {
                 .requestMatchers(HttpMethod.GET, "/api/naves/consulta").hasRole("ASEGURADORA")
                 .requestMatchers(HttpMethod.PUT, "/api/naves/*/estado").hasRole("FUNCIONARIO")
                 .requestMatchers(HttpMethod.PUT, "/api/naves/*/revocar").hasRole("FUNCIONARIO")
+                // HU-21: la bitácora solo la consulta el funcionario y no tiene escritura por API
+                .requestMatchers(HttpMethod.GET, "/api/auditoria").hasRole("FUNCIONARIO")
+                .requestMatchers("/api/auditoria", "/api/auditoria/**").denyAll()
                 .requestMatchers(HttpMethod.GET, "/api/naves/*", "/api/naves/*/documento", "/api/naves/*/certificado").hasAnyRole("ARMADOR", "FUNCIONARIO")
                 .anyRequest().authenticated())
             .exceptionHandling(e -> e

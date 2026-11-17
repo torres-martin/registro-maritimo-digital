@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseEntity>
+   <description></description>
+   <name>Plantilla</name>
+   <tag></tag>
+   <integratedEntity>
+      <productName>TESTOPS</productName>
+      <properties>
+         <entry>
+            <key>createdByName</key>
+            <value>NeishanyL</value>
+         </entry>
+         <entry>
+            <key>lastModifiedByName</key>
+            <value>NeishanyL</value>
+         </entry>
+         <entry>
+            <key>createdByUuid</key>
+            <value>8546aaf0-1ac8-4edf-93c4-65e63265c438</value>
+         </entry>
+         <entry>
+            <key>lastModifiedByUuid</key>
+            <value>8546aaf0-1ac8-4edf-93c4-65e63265c438</value>
+         </entry>
+      </properties>
+      <type>TESTCASE</type>
+   </integratedEntity>
+   <comment></comment>
+   <recordOption>OTHER</recordOption>
+   <testCaseGuid>dce58c0a-7106-4728-8874-187f87722cc9</testCaseGuid>
+</TestCaseEntity>

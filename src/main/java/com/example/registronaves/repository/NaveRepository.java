@@ -17,6 +17,15 @@ public interface NaveRepository extends JpaRepository<Nave, Long> {
     boolean existsByImo(String imo);
     boolean existsByImoAndEstadoIn(String imo, Collection<String> estados);
     Optional<Nave> findByTramite(String tramite);
+
+    // DEF-04: una solicitud en revisión, o aprobada con certificado no revocado, bloquea repetir el IMO.
+    @Query("""
+            select case when count(n) > 0 then true else false end from Nave n
+            where n.imo = :imo
+              and (n.estado = 'En revisión'
+                   or (n.estado = 'Aprobado' and (n.revocado = false or n.revocado is null)))
+            """)
+    boolean existeSolicitudActiva(@Param("imo") String imo);
     Optional<Nave> findByCodigoVerificacion(String codigoVerificacion);
     List<Nave> findAllByOrderByIdDesc();
     List<Nave> findByArmadorCorreoOrderByIdDesc(String armadorCorreo);
