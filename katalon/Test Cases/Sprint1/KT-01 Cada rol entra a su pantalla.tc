@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseEntity>
+   <description></description>
+   <name>KT-01 Cada rol entra a su pantalla</name>
+   <tag></tag>
+   <integratedEntity>
+      <productName>TESTOPS</productName>
+      <properties>
+         <entry>
+            <key>lastModifiedByName</key>
+            <value>NeishanyL</value>
+         </entry>
+         <entry>
+            <key>lastModifiedByUuid</key>
+            <value>8546aaf0-1ac8-4edf-93c4-65e63265c438</value>
+         </entry>
+      </properties>
+      <type>TESTCASE</type>
+   </integratedEntity>
+   <comment></comment>
+   <recordOption>OTHER</recordOption>
+   <testCaseGuid>998e3550-ca7e-4204-b31c-8155fb88fc1d</testCaseGuid>
+</TestCaseEntity>

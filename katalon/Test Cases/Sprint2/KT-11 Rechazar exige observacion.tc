@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseEntity>
+   <description></description>
+   <name>KT-11 Rechazar exige observacion</name>
+   <tag></tag>
+   <integratedEntity>
+      <productName>TESTOPS</productName>
+      <properties>
+         <entry>
+            <key>lastModifiedByName</key>
+            <value>NeishanyL</value>
+         </entry>
+         <entry>
+            <key>lastModifiedByUuid</key>
+            <value>8546aaf0-1ac8-4edf-93c4-65e63265c438</value>
+         </entry>
+      </properties>
+      <type>TESTCASE</type>
+   </integratedEntity>
+   <comment></comment>
+   <recordOption>OTHER</recordOption>
+   <testCaseGuid>680f6ebd-9f12-4ff1-b770-9a44b045bae0</testCaseGuid>
+</TestCaseEntity>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebElementEntity>
+   <description></description>
+   <name>button_revocar</name>
+   <tag></tag>
+   <elementGuidId>5de91605-1b6f-4829-b096-30e3cc8a2f19</elementGuidId>
+   <selectorCollection>
+      <entry>
+         <key>CSS</key>
+         <value>#revocar</value>
+      </entry>
+      <entry>
+         <key>XPATH</key>
+         <value>//*[@id = 'revocar']</value>
+      </entry>
+   </selectorCollection>
+   <selectorMethod>XPATH</selectorMethod>
+   <smartLocatorCollection>
+      <entry>
+         <key>SMART_LOCATOR</key>
+         <value>internal:role=button[name=&quot;Revocar certificado&quot;i]</value>
+      </entry>
+   </smartLocatorCollection>
+   <smartLocatorEnabled>false</smartLocatorEnabled>
+   <useRalativeImagePath>true</useRalativeImagePath>
+   <webElementProperties>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>tag</name>
+      <type>Main</type>
+      <value>button</value>
+      <webElementGuid>51ce402c-934d-4bb6-8f45-fd182c54277e</webElementGuid>
+   </webElementProperties>
+   <webElementProperties>
+      <isSelected>true</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>type</name>
+      <type>Main</type>
+      <value>button</value>
+      <webElementGuid>a87cc4ab-66ee-431b-8eeb-d7c3eeb20689</webElementGuid>
+   </webElementProperties>
+   <webElementProperties>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>class</name>
+      <type>Main</type>
+      <value>btn r</value>
+      <webElementGuid>386162f7-18d3-41c5-bee9-3530bb24c99f</webElementGuid>
+   </webElementProperties>
+   <webElementProperties>
+      <isSelected>true</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>id</name>
+      <type>Main</type>
+      <value>revocar</value>
+      <webElementGuid>2bdc24c5-12b2-4b99-844e-b310d6425809</webElementGuid>
+   </webElementProperties>
+   <webElementProperties>
+      <isSelected>true</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>text</name>
+      <type>Main</type>
+      <value>Revocar certificado</value>
+      <webElementGuid>5b6904ff-9c26-4885-9e02-7d02cd537c25</webElementGuid>
+   </webElementProperties>
+   <webElementProperties>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>parent</name>
+      <type>Main</type>
+      <value>md5.v1-ff6fa9502a62be8756416ddf2bcbb731</value>
+      <webElementGuid>d95a1aa9-e0b8-48e1-8baf-06bd34c1357c</webElementGuid>
+   </webElementProperties>
+   <webElementProperties>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>xpath</name>
+      <type>Main</type>
+      <value>//*[@id = 'revocar']</value>
+      <webElementGuid>8e341c2f-0fd7-407c-bbc3-c2954fa9b363</webElementGuid>
+   </webElementProperties>
+   <webElementXpaths>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>xpath:attributes</name>
+      <type>Main</type>
+      <value>//*[@id = 'revocar']</value>
+      <webElementGuid>584d6f72-d017-440d-b197-671469ae70c1</webElementGuid>
+   </webElementXpaths>
+   <webElementXpaths>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>xpath:customAttributes</name>
+      <type>Main</type>
+      <value>//button[@type = 'button' and @id = 'revocar' and (text() = 'Revocar certificado' or . = 'Revocar certificado')]</value>
+      <webElementGuid>59c6841a-a43f-4696-a95f-17966a434b3a</webElementGuid>
+   </webElementXpaths>
+</WebElementEntity>

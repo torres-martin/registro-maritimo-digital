@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseEntity>
+   <description></description>
+   <name>KT-31 Nave sin certificado</name>
+   <tag></tag>
+   <integratedEntity>
+      <productName>TESTOPS</productName>
+      <properties>
+         <entry>
+            <key>lastModifiedByName</key>
+            <value>NeishanyL</value>
+         </entry>
+         <entry>
+            <key>lastModifiedByUuid</key>
+            <value>8546aaf0-1ac8-4edf-93c4-65e63265c438</value>
+         </entry>
+      </properties>
+      <type>TESTCASE</type>
+   </integratedEntity>
+   <comment></comment>
+   <recordOption>OTHER</recordOption>
+   <testCaseGuid>87b77577-c0ec-4ab6-84ce-d8282fd42b40</testCaseGuid>
+</TestCaseEntity>
