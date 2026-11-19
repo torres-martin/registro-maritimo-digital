@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseEntity>
+   <description>HU-21 bitácora de auditoría (validada en el Sprint 7)</description>
+   <name>KT-32 El funcionario abre la bitacora desde la bandeja</name>
+   <tag>Sprint7</tag>
+   <comment></comment>
+   <recordOption>OTHER</recordOption>
+   <testCaseGuid>53b0cafa-08cc-47b5-9871-b8bbcfb91f86</testCaseGuid>
+</TestCaseEntity>

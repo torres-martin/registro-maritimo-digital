@@ -1,44 +1,42 @@
-import static com.kms.katalon.core.checkpoint.CheckpointFactory.findCheckpoint
 import static com.kms.katalon.core.testcase.TestCaseFactory.findTestCase
-import static com.kms.katalon.core.testdata.TestDataFactory.findTestData
-import static com.kms.katalon.core.testobject.ObjectRepository.findTestObject
-import static com.kms.katalon.core.testobject.ObjectRepository.findWindowsObject
-import com.kms.katalon.core.checkpoint.Checkpoint as Checkpoint
-import com.kms.katalon.core.cucumber.keyword.CucumberBuiltinKeywords as CucumberKW
-import com.kms.katalon.core.llm.keyword.LlmKeywords as LLM
-import com.kms.katalon.core.mobile.keyword.MobileBuiltInKeywords as Mobile
-import com.kms.katalon.core.model.FailureHandling as FailureHandling
-import com.kms.katalon.core.testcase.TestCase as TestCase
-import com.kms.katalon.core.testdata.TestData as TestData
-import com.kms.katalon.core.testng.keyword.TestNGBuiltinKeywords as TestNGKW
-import com.kms.katalon.core.testobject.TestObject as TestObject
-import com.kms.katalon.core.webservice.keyword.WSBuiltInKeywords as WS
+import com.kms.katalon.core.testobject.ConditionType
+import com.kms.katalon.core.testobject.TestObject
 import com.kms.katalon.core.webui.keyword.WebUiBuiltInKeywords as WebUI
-import com.kms.katalon.core.windows.keyword.WindowsBuiltinKeywords as Windows
-import internal.GlobalVariable as GlobalVariable
-import org.openqa.selenium.Keys as Keys
 
-WebUI.openBrowser(null)
+TestObject campo(String valor) {
+    TestObject o = new TestObject(valor)
+    o.addProperty('xpath', ConditionType.EQUALS, "//*[@id='" + valor + "']")
+    return o
+}
 
-WebUI.maximizeWindow()
+TestObject ruta(String xpath) {
+    TestObject o = new TestObject(xpath)
+    o.addProperty('xpath', ConditionType.EQUALS, xpath)
+    return o
+}
 
-WebUI.navigateToUrl('http://localhost:8080/login.html')
-
-WebUI.setText(findTestObject('Page_Iniciar sesin Registro Martimo Digital/input_Correo electronico'), 'naviera@amp.com')
-
-WebUI.setEncryptedText(findTestObject('Page_Iniciar sesin Registro Martimo Digital/input_Contrasena'), 'qeJ0sjJnwEs=')
-
-WebUI.click(findTestObject('Page_Iniciar sesin Registro Martimo Digital/button_entrar'))
-
-WebUI.delay(2)
-
-WebUI.click(findTestObject('Page_Mis solicitudes Registro Martimo Digital/button_Ver_NaveA'))
-
-WebUI.delay(2)
-
-WebUI.verifyTextPresent('disponible para descargar', false)
-
-WebUI.takeScreenshot()
-
+WebUI.callTestCase(findTestCase('Comunes/Login'), [('correo') : 'naviera@amp.com'])
+String imo = WebUI.callTestCase(findTestCase('Comunes/Crear solicitud'), [('nombreNave') : 'Nave KT24'])
 WebUI.closeBrowser()
 
+WebUI.callTestCase(findTestCase('Comunes/Login'), [('correo') : 'funcionario@amp.com'])
+WebUI.click(ruta("//tr[contains(., 'IMO" + imo + "')]//a[text()='Revisar']"))
+WebUI.delay(2)
+WebUI.click(campo('aprobar'))
+WebUI.acceptAlert()
+WebUI.delay(2)
+WebUI.closeBrowser()
+
+// Sprint 7: con el certificado emitido no quedan etapas pendientes
+WebUI.callTestCase(findTestCase('Comunes/Login'), [('correo') : 'naviera@amp.com'])
+WebUI.setText(campo('buscar'), imo)
+WebUI.delay(1)
+WebUI.click(ruta("//tbody[@id='tabla-body']//tr[contains(., 'Nave KT24')]//button"))
+WebUI.delay(2)
+WebUI.verifyElementText(campo('det-nave'), 'Nave KT24')
+for (String texto : ['Aprobada', 'Certificado emitido', 'Disponible']) {
+    WebUI.verifyElementPresent(ruta("//section[@id='det-historial'][contains(., '" + texto + "')]"), 5)
+}
+WebUI.verifyElementNotPresent(ruta("//section[@id='det-historial'][contains(., 'Pendiente')]"), 2)
+WebUI.takeScreenshot()
+WebUI.closeBrowser()

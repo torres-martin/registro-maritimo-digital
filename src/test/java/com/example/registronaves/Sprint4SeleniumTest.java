@@ -127,7 +127,15 @@ class Sprint4SeleniumTest {
     }
 
     private static String imoNuevo() {
-        return String.format("%07d", 1000000 + AZAR.nextInt(8999999));
+        // DEF-01: seis dígitos al azar + dígito de control del IMO (pesos 7 a 2).
+        int suma = 0;
+        StringBuilder imo = new StringBuilder();
+        for (int i = 0; i < 6; i++) {
+            int d = i == 0 ? 9 : AZAR.nextInt(10);
+            suma += d * (7 - i);
+            imo.append(d);
+        }
+        return imo.append(suma % 10).toString();
     }
 
     private static Path pdfValido() throws IOException {
@@ -208,7 +216,7 @@ class Sprint4SeleniumTest {
         escribir("buscar", imo);
         espera.until(ExpectedConditions.textToBePresentInElementLocated(By.id("tabla-body"), nombreNave));
         driver.findElement(By.cssSelector("#tabla-body button")).click(); // botón "Ver"
-        espera.until(ExpectedConditions.textToBePresentInElementLocated(By.id("det-titulo"), nombreNave));
+        espera.until(ExpectedConditions.textToBePresentInElementLocated(By.id("det-nave"), nombreNave));
     }
 
     // ayudas del funcionario
@@ -259,14 +267,14 @@ class Sprint4SeleniumTest {
         abrirDetalleComoArmador(nave, imo);
         String seguimiento = texto("det-historial");
 
-        assertTrue(seguimiento.contains("Estado actual: en revisión"), "Seguimiento: " + seguimiento);
-        for (String etapa : List.of("Recibida", "Digitalización y control de calidad", "En revisión",
-                "Inscrita o devuelta", "Documento entregado")) {
+        // Sprint 7: el recorrido tiene 4 etapas desde el Sprint 5 (Recibida, Revisión, Resolución, Certificado)
+        for (String etapa : List.of("Recibida", "Revisión", "Resolución", "Certificado")) {
             assertTrue(seguimiento.contains(etapa), "Falta la etapa: " + etapa);
         }
-        assertTrue(seguimiento.contains("En curso"), "No se marca la etapa actual");
+        assertTrue(seguimiento.contains("En curso"), "No se marca la etapa actual: " + seguimiento);
         assertTrue(seguimiento.contains("Pendiente"), "No se marcan las etapas pendientes");
-        assertTrue(seguimiento.contains(LocalDate.now().format(FECHA)), "No se muestra la fecha de recepción");
+        assertTrue(seguimiento.contains("Si se aprueba"), "No avisa cuándo se emite el certificado");
+        assertTrue(seguimiento.contains(String.valueOf(LocalDate.now().getYear())), "No se muestra la fecha de recepción");
         captura("CP-23a-seguimiento-en-revision");
     }
 
@@ -281,10 +289,9 @@ class Sprint4SeleniumTest {
         abrirDetalleComoArmador(nave, imo);
         String seguimiento = texto("det-historial");
 
-        assertTrue(seguimiento.contains("Estado actual: aprobado"), "Seguimiento: " + seguimiento);
-        assertTrue(seguimiento.contains("Inscrita"), "Falta la etapa Inscrita");
-        assertTrue(seguimiento.contains("Documento entregado"), "Falta la etapa Documento entregado");
-        assertTrue(seguimiento.contains("disponible para descargar"), "No indica que el certificado está listo");
+        assertTrue(seguimiento.contains("Aprobada"), "La resolución no dice Aprobada: " + seguimiento);
+        assertTrue(seguimiento.contains("Certificado emitido"), "Falta la etapa Certificado emitido");
+        assertTrue(seguimiento.contains("Disponible"), "No indica que el certificado está listo");
         assertFalse(seguimiento.contains("Pendiente"), "Quedan etapas pendientes en una solicitud aprobada");
         captura("CP-24-seguimiento-aprobada");
     }
@@ -310,8 +317,8 @@ class Sprint4SeleniumTest {
 
         // En el detalle se ve la etapa Devuelta y el botón para corregir
         driver.findElement(By.cssSelector("#tabla-body button")).click();
-        espera.until(ExpectedConditions.textToBePresentInElementLocated(By.id("det-titulo"), nave));
-        assertTrue(texto("det-historial").contains("Devuelta"), "El seguimiento no muestra la etapa Devuelta");
+        espera.until(ExpectedConditions.textToBePresentInElementLocated(By.id("det-nave"), nave));
+        assertTrue(texto("det-historial").contains("Rechazada"), "El seguimiento no muestra la resolución Rechazada");
         clic("corregir");
 
         // El formulario abre con los datos cargados y la observación visible
@@ -371,6 +378,8 @@ class Sprint4SeleniumTest {
         abrirRevision(nave, imo);
         aprobarDesdeRevision();
         espera.until(ExpectedConditions.visibilityOfElementLocated(By.id("revocacion")));
+        // Desde el Sprint 5 la revocación está dentro de "Gestionar certificado" (plegado)
+        espera.until(ExpectedConditions.elementToBeClickable(By.cssSelector("#revocacion > summary"))).click();
 
         // Sin motivo no se revoca
         clic("revocar");

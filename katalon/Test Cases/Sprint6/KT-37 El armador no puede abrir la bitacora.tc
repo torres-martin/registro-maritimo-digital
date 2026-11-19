@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseEntity>
+   <description>HU-21 bitácora de auditoría (validada en el Sprint 7)</description>
+   <name>KT-37 El armador no puede abrir la bitacora</name>
+   <tag>Sprint7</tag>
+   <comment></comment>
+   <recordOption>OTHER</recordOption>
+   <testCaseGuid>b40e72e2-253f-417f-ade6-69e8f5baaf69</testCaseGuid>
+</TestCaseEntity>

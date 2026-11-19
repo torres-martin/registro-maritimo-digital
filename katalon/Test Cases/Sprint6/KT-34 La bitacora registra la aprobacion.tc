@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseEntity>
+   <description>HU-21 bitácora de auditoría (validada en el Sprint 7)</description>
+   <name>KT-34 La bitacora registra la aprobacion</name>
+   <tag>Sprint7</tag>
+   <comment></comment>
+   <recordOption>OTHER</recordOption>
+   <testCaseGuid>f072aaa9-2d2e-4579-a880-c829d85ecb60</testCaseGuid>
+</TestCaseEntity>

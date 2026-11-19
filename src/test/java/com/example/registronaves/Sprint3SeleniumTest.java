@@ -137,7 +137,15 @@ class Sprint3SeleniumTest {
     }
 
     private static String imoNuevo() {
-        return String.format("%07d", 1000000 + AZAR.nextInt(8999999));
+        // DEF-01: seis dígitos al azar + dígito de control del IMO (pesos 7 a 2).
+        int suma = 0;
+        StringBuilder imo = new StringBuilder();
+        for (int i = 0; i < 6; i++) {
+            int d = i == 0 ? 9 : AZAR.nextInt(10);
+            suma += d * (7 - i);
+            imo.append(d);
+        }
+        return imo.append(suma % 10).toString();
     }
 
     private static Path pdfValido() throws IOException {
@@ -428,9 +436,11 @@ class Sprint3SeleniumTest {
 
         // El armador ve el vencimiento en el detalle de su solicitud
         driver.findElement(By.cssSelector("#tabla-body button")).click(); // botón "Ver"
-        espera.until(ExpectedConditions.textToBePresentInElementLocated(By.id("det-titulo"), naveCert));
-        String detalle = texto("det-cuerpo");
-        assertTrue(detalle.contains("Vigente hasta") && detalle.contains(vence.toString()),
+        espera.until(ExpectedConditions.textToBePresentInElementLocated(By.id("det-nave"), naveCert));
+        // Desde el Sprint 5 la vigencia se muestra en la portada del detalle ("Vigente hasta 19 may 2027")
+        String detalle = texto("det-vigencia");
+        assertTrue(detalle.contains("Vigente hasta") && detalle.contains(String.valueOf(vence.getYear()))
+                        && detalle.contains(String.format("%02d", vence.getDayOfMonth())),
                 "El detalle no muestra el vencimiento: " + detalle);
         captura("CP-18a-vigencia-en-el-detalle");
 
