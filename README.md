@@ -59,15 +59,7 @@ cd registro-maritimo-digital
 
 2. Abrir XAMPP y presionar Start en MySQL. Apache solo hace falta para usar phpMyAdmin; si phpMyAdmin no abre (localhost rechazó la conexión), es porque Apache está apagado.
 
-3. Crear la base de datos vacía. Se puede hacer desde phpMyAdmin o con este comando:
-
-```sql
-CREATE DATABASE amp_registro_db;
-```
-
-Las tablas no se crean a mano porque la aplicación las genera sola al iniciar.
-
-Si la base ya existía desde antes del Sprint 6, ejecutar una sola vez en phpMyAdmin el script docs/sprint6-columnas.sql (DEF-09: la MariaDB de XAMPP no crea sola esas columnas). En una base nueva no hace falta y daría error de columna duplicada.
+3. No hace falta crear la base ni correr scripts. Al iniciar, la aplicación crea la base `amp_registro_db` si no existe y Flyway aplica las migraciones de `src/main/resources/db/migration` (ver la sección Migraciones de base de datos).
 
 4. Revisar en src/main/resources/application.properties que el usuario y la contraseña coincidan con los de MySQL. En XAMPP por defecto es root sin contraseña.
 
@@ -86,6 +78,21 @@ http://localhost:8080/login.html
 ```
 
 La primera ejecución tarda más porque descarga las dependencias, así que se necesita conexión a internet.
+
+## Migraciones de base de datos (Flyway)
+
+Desde el Sprint 7 el esquema lo maneja Flyway (DEF-09). Hibernate ya no crea ni modifica tablas; solo valida que coincidan con las entidades (`ddl-auto=validate`).
+
+* Los scripts están en `src/main/resources/db/migration` y se aplican solos al arrancar, en orden de versión.
+* Flyway registra lo aplicado en la tabla `flyway_schema_history`.
+* Las bases creadas antes del Sprint 7 se adoptan automáticamente (`baseline-on-migrate`); no hay que borrarlas.
+
+Reglas para el equipo:
+
+1. Nunca editar un script que ya está en `main`. Cualquier cambio de tablas va en un archivo nuevo: `V3__descripcion.sql`, `V4__...`, con dos guiones bajos.
+2. Si se agrega o cambia un campo en una entidad, en el mismo commit va la migración. Si falta, la aplicación no arranca y el error dice qué columna no coincide.
+3. Avisar en el equipo el número de versión antes de crearla, para que dos personas no hagan el mismo `V3`.
+4. Los scripts usan sintaxis de MariaDB (la de XAMPP). El CI también usa MariaDB 10.4.
 
 ## Usuarios de prueba
 
@@ -156,9 +163,10 @@ registronaves/
         main/
             java/        controladores, servicios, modelos y seguridad
             resources/   pantallas HTML, estilos, scripts y application.properties
+                db/migration/  migraciones de Flyway (V1, V2...)
         test/            pruebas (backend y Sprint1SeleniumTest)
     katalon/             proyecto de Katalon con las suites de los Sprints 2 a 4
-    docs/                scripts de apoyo (sprint6-columnas.sql)
+    docs/                documentos, facturas y presentaciones de cada sprint
     docs-sprint1/        documentación y wireframes del Sprint 1
     pom.xml              dependencias y configuración de Maven
 ```
