@@ -153,7 +153,11 @@ La base nueva no trae solicitudes; hay que crearlas con este flujo.
 3. En Katalon Studio: File > Open Project y elegir la carpeta katalon (RegistroNaves-QA.prj).
 4. Ejecutar las suites Sprint2, Sprint3 y Sprint4 desde Test Suites.
 
-El CI de GitHub Actions solo ejecuta Sprint1SeleniumTest; Katalon no corre en el pipeline.
+El CI de GitHub Actions ejecuta las pruebas backend del Sprint 7 (`Sprint7*Test`) y la regresión Selenium de los Sprints 1 a 4. Katalon no corre en el pipeline (DEF-05); la suite Sprint6 (KT-32 a KT-38, bitácora) se ejecuta en local.
+
+## Protección CSRF (DEF-07)
+
+Desde el Sprint 7 CSRF está activo. El servidor entrega el token en la cookie `XSRF-TOKEN` y `static/csrf.js` lo agrega en la cabecera `X-XSRF-TOKEN` a toda petición POST, PUT o DELETE. Toda pantalla nueva debe cargar `csrf.js` antes que sus otros scripts. Una llamada sin token responde 403.
 
 ## Estructura del proyecto
 
@@ -179,7 +183,6 @@ registronaves/
 
 ## Limitaciones conocidas
 
-* La protección CSRF está desactivada (DEF-07).
 * Las columnas nuevas se agregan con un script manual en bases existentes (DEF-09); falta usar migraciones.
 * Los usuarios de prueba usan una contraseña simple y solo sirven para desarrollo.
 * Los PDFs se guardan en la carpeta uploads del equipo donde corre la aplicación.
