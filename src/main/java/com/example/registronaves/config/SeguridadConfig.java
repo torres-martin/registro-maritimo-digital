@@ -12,6 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 @Configuration
 @EnableWebSecurity
@@ -35,14 +36,18 @@ public class SeguridadConfig {
     @Bean
     public SecurityFilterChain filtros(HttpSecurity http) throws Exception {
         http
-            // CSRF desactivado a propósito por ahora (se documenta como pendiente)
-            .csrf(csrf -> csrf.disable())
+            // DEF-07 (Sprint 7): CSRF activo. El token viaja en la cookie XSRF-TOKEN y el
+            // frontend lo devuelve en la cabecera X-XSRF-TOKEN (ver static/csrf.js).
+            .csrf(csrf -> csrf
+                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                .csrfTokenRequestHandler(new SpaCsrfTokenRequestHandler()))
             .authorizeHttpRequests(a -> a
                 // Públicas
-                .requestMatchers("/login.html", "/login.js", "/estilos.css", "/img/**", "/verificar.html", "/verificar.js",
+                .requestMatchers("/login.html", "/login.js", "/csrf.js", "/estilos.css", "/img/**", "/verificar.html", "/verificar.js",
         "/favicon.ico", "/error").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/publico/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/csrf").permitAll()
                 // Pantallas por rol
                 .requestMatchers("/nueva-solicitud.html", "/nueva-solicitud.js",
                         "/mis-solicitudes.html", "/mis-solicitudes.js").hasRole("ARMADOR")
