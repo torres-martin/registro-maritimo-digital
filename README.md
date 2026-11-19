@@ -151,13 +151,48 @@ La base nueva no trae solicitudes; hay que crearlas con este flujo.
 1. Tener la aplicación corriendo en http://localhost:8080 (el perfil default de Katalon apunta ahí).
 2. Crear los usuarios adicionales (ver arriba).
 3. En Katalon Studio: File > Open Project y elegir la carpeta katalon (RegistroNaves-QA.prj).
-4. Ejecutar las suites Sprint2, Sprint3 y Sprint4 desde Test Suites.
+4. Ejecutar las suites Sprint2, Sprint3, Sprint4 y Sprint6 desde Test Suites. Sprint6 (KT-32 a KT-38) valida la bitácora; KT-23, KT-24 y KT-27 de Sprint4 se ajustaron en el Sprint 7 al recorrido de 4 etapas y a la revocación en «Gestionar certificado».
 
 El CI de GitHub Actions ejecuta las pruebas backend del Sprint 7 (`Sprint7*Test`) y la regresión Selenium de los Sprints 1 a 4. Katalon no corre en el pipeline (DEF-05); la suite Sprint6 (KT-32 a KT-38, bitácora) se ejecuta en local.
 
 ## Protección CSRF (DEF-07)
 
 Desde el Sprint 7 CSRF está activo. El servidor entrega el token en la cookie `XSRF-TOKEN` y `static/csrf.js` lo agrega en la cabecera `X-XSRF-TOKEN` a toda petición POST, PUT o DELETE. Toda pantalla nueva debe cargar `csrf.js` antes que sus otros scripts. Una llamada sin token responde 403.
+
+## Estado del Sprint 7 y traspaso al Sprint 8
+
+El Sprint 7 entregó los 7 trabajos (15 puntos) que dejó el Sprint 6:
+
+| Prioridad | Trabajo | Evidencia |
+| --- | --- | --- |
+| P0 | Validar HU-21 (bitácora) | `Sprint7BitacoraTest` 4/4 · Katalon KT-32 a KT-38 |
+| P0 | 6 pruebas de seguridad sobre bitácora y revocación | `Sprint7SeguridadTest` (automatizadas en lugar de Burp manual) |
+| P0 | DEF-03 corrección vinculada a la rechazada | `Sprint7CorreccionTest` 3/3 |
+| P1 | DEF-07 protección CSRF | `Sprint7CsrfTest` 3/3 y S7-CSRF-02 |
+| P1 | DEF-09 migraciones con Flyway | V1 y V2 validadas en MariaDB 10.4 |
+| P1 | KT-23/24 a 4 etapas y regresión completa | Selenium 33/33 |
+| P1 | Pruebas backend en el CI | `.github/workflows/ci.yml` |
+
+En el sprint se registró y cerró **DEF-10**: la regresión Selenium de los Sprints 2 a 4 estaba rota desde el Sprint 6 (IMO sin dígito de control y selectores anteriores al rediseño). Queda abierto **DEF-05** (Katalon en el pipeline).
+
+Pendientes al cerrar el Sprint 7:
+
+* Abrir el pull request de `sprint7-cierre` a `main`. El CI de GitHub todavía no se ha ejecutado con estos cambios; las 50 pruebas se corrieron en local.
+* Ejecutar en Katalon las suites Sprint6 (KT-32 a KT-38) y Sprint4 (KT-23, KT-24, KT-27): están escritas, pero no ejecutadas.
+
+Backlog propuesto para el Sprint 8 (15 puntos):
+
+| Prioridad | Trabajo | Puntos |
+| --- | --- | --- |
+| P0 | PR de `sprint7-cierre` a `main` con el CI en verde | 1 |
+| P0 | Ejecutar las suites Katalon Sprint6 y Sprint4 y guardar el reporte | 2 |
+| P1 | Dividir `NaveService` (30 % del backend) en servicios de solicitud, revisión y certificado | 5 |
+| P1 | Límite de consultas en la verificación pública (429) | 2 |
+| P1 | DEF-05: Katalon en el pipeline (Katalon Runtime Engine) | 2 |
+| P2 | Prueba de usabilidad con usuarios reales | 2 |
+| P2 | Análisis estático del código (SpotBugs o SonarCloud) | 1 |
+
+El informe completo (pruebas, métricas, registro de defectos, factura, traspaso y evidencias) está en `docs/Sprint7-RegistroNaves.docx` de la rama `sprint7`, junto con la presentación, las facturas y el guion de la charla.
 
 ## Estructura del proyecto
 
@@ -168,8 +203,8 @@ registronaves/
             java/        controladores, servicios, modelos y seguridad
             resources/   pantallas HTML, estilos, scripts y application.properties
                 db/migration/  migraciones de Flyway (V1, V2...)
-        test/            pruebas (backend y Sprint1SeleniumTest)
-    katalon/             proyecto de Katalon con las suites de los Sprints 2 a 4
+        test/            pruebas: sprint7/ (backend) y Sprint1 a Sprint4SeleniumTest
+    katalon/             proyecto de Katalon con las suites Sprint2, Sprint3, Sprint4 y Sprint6
     docs/                documentos, facturas y presentaciones de cada sprint
     docs-sprint1/        documentación y wireframes del Sprint 1
     pom.xml              dependencias y configuración de Maven
@@ -183,7 +218,7 @@ registronaves/
 
 ## Limitaciones conocidas
 
-* Las columnas nuevas se agregan con un script manual en bases existentes (DEF-09); falta usar migraciones.
+* Katalon no corre en el pipeline (DEF-05); se ejecuta en local.
 * Los usuarios de prueba usan una contraseña simple y solo sirven para desarrollo.
 * Los PDFs se guardan en la carpeta uploads del equipo donde corre la aplicación.
 
