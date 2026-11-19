@@ -122,7 +122,15 @@ class Sprint2SeleniumTest {
     }
 
     private static String imoNuevo() {
-        return String.format("%07d", 1000000 + AZAR.nextInt(8999999));
+        // DEF-01: seis dígitos al azar + dígito de control del IMO (pesos 7 a 2).
+        int suma = 0;
+        StringBuilder imo = new StringBuilder();
+        for (int i = 0; i < 6; i++) {
+            int d = i == 0 ? 9 : AZAR.nextInt(10);
+            suma += d * (7 - i);
+            imo.append(d);
+        }
+        return imo.append(suma % 10).toString();
     }
 
     private static Path pdfValido() throws IOException {
@@ -229,7 +237,7 @@ class Sprint2SeleniumTest {
         espera.until(ExpectedConditions.textToBePresentInElementLocated(By.id("tabla-body"), nave));
         driver.findElement(By.cssSelector("#tabla-body a[href^='revision.html']")).click();
         espera.until(ExpectedConditions.textToBePresentInElementLocated(By.id("sub"), nave));
-        assertTrue(texto("cuerpo").contains(imo), "El detalle no muestra el IMO");
+        assertTrue(texto("nave-meta").contains(imo), "El detalle no muestra el IMO");
         assertTrue(texto("estado").contains("En revisión"));
         captura("CP-08b-detalle-solicitud");
     }
@@ -325,7 +333,7 @@ class Sprint2SeleniumTest {
         espera.until(ExpectedConditions.textToBePresentInElementLocated(By.id("tabla-body"), nave));
         driver.findElement(By.cssSelector("#tabla-body button")).click(); // botón "Ver"
         espera.until(ExpectedConditions.textToBePresentInElementLocated(By.id("det-obs"), observacion));
-        assertTrue(texto("det-estado").contains("Rechazado"));
+        assertTrue(texto("det-estado").contains("rechazada"), "Estado: " + texto("det-estado"));
         captura("CP-12b-armador-ve-observacion");
     }
 

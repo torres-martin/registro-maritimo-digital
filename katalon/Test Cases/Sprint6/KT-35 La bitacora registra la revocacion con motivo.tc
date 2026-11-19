@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseEntity>
+   <description>HU-21 bitácora de auditoría (validada en el Sprint 7)</description>
+   <name>KT-35 La bitacora registra la revocacion con motivo</name>
+   <tag>Sprint7</tag>
+   <comment></comment>
+   <recordOption>OTHER</recordOption>
+   <testCaseGuid>425c0f12-b992-412b-b632-861160f02b6f</testCaseGuid>
+</TestCaseEntity>

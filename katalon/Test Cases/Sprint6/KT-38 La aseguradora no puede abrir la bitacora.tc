@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseEntity>
+   <description>HU-21 bitácora de auditoría (validada en el Sprint 7)</description>
+   <name>KT-38 La aseguradora no puede abrir la bitacora</name>
+   <tag>Sprint7</tag>
+   <comment></comment>
+   <recordOption>OTHER</recordOption>
+   <testCaseGuid>1246f4dc-f7bb-400a-8551-56204332898f</testCaseGuid>
+</TestCaseEntity>

@@ -10,11 +10,12 @@ jobs:
     runs-on: ubuntu-latest
 
     services:
+      # DEF-09: misma base que XAMPP (MariaDB 10.4), para probar las migraciones igual que en local
       mysql:
-        image: mysql:8.0
+        image: mariadb:10.4
         env:
-          MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
-          MYSQL_DATABASE: amp_registro_db
+          MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: "yes"
+          MARIADB_DATABASE: amp_registro_db
         ports:
           - 3306:3306
         options: >-
@@ -40,6 +41,9 @@ jobs:
       - name: Compilar
         run: ./mvnw -B -DskipTests package
 
+      - name: Pruebas backend del Sprint 7 (HU-21, DEF-03, DEF-07 y seguridad)
+        run: ./mvnw -B test -Dtest='Sprint7*Test'
+
       - name: Arrancar el sistema
         run: |
           nohup java -jar target/registronaves-0.0.1-SNAPSHOT.jar > app.log 2>&1 &
@@ -49,8 +53,8 @@ jobs:
           done
           echo "El sistema no arrancó"; cat app.log; exit 1
 
-      - name: Pruebas de interfaz (Selenium)
-        run: ./mvnw -B test -Dtest=Sprint1SeleniumTest
+      - name: Pruebas de interfaz (Selenium, regresión de los Sprints 1 a 4)
+        run: ./mvnw -B test -Dtest='Sprint1SeleniumTest,Sprint2SeleniumTest,Sprint3SeleniumTest,Sprint4SeleniumTest'
 
       - name: Guardar capturas de evidencia
         if: always()
