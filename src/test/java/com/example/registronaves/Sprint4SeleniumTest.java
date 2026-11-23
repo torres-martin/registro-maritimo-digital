@@ -59,6 +59,10 @@ class Sprint4SeleniumTest {
         ChromeOptions opciones = new ChromeOptions();
         opciones.addArguments("--window-size=1366,900");
 
+        if (System.getenv("CI") != null) {
+            opciones.addArguments("--headless=new", "--no-sandbox", "--disable-dev-shm-usage");
+        }
+
         Map<String, Object> prefs = new HashMap<>();
         prefs.put("credentials_enable_service", false);
         prefs.put("profile.password_manager_enabled", false);
