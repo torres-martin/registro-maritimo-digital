@@ -207,6 +207,7 @@ registronaves/
     katalon/             proyecto de Katalon con las suites Sprint2, Sprint3, Sprint4 y Sprint6
     docs/                documentos, facturas y presentaciones de cada sprint
     docs-sprint1/        documentación y wireframes del Sprint 1
+    docs/                presentaciones, facturas y backlog por sprint (ver docs/README.md)
     pom.xml              dependencias y configuración de Maven
 ```
 
