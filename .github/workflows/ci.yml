@@ -69,3 +69,36 @@ jobs:
         with:
           name: app-log
           path: app.log
+
+  # Sprint 8: análisis estático con SonarQube Community (bugs, vulnerabilidades y duplicación).
+  # Corre en paralelo a las pruebas; el reporte queda en el resumen de la ejecución y como artefacto.
+  analisis-estatico:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Descargar el código
+        uses: actions/checkout@v4
+
+      - name: Instalar Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+          cache: maven
+
+      - name: Dar permiso de ejecución
+        run: chmod +x mvnw scripts/analisis-estatico.sh
+
+      - name: Análisis estático con SonarQube
+        run: ./scripts/analisis-estatico.sh
+
+      - name: Publicar el reporte en el resumen
+        if: always()
+        run: if [ -f sonar-reporte.md ]; then cat sonar-reporte.md >> "$GITHUB_STEP_SUMMARY"; fi
+
+      - name: Guardar el reporte de SonarQube
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reporte-sonarqube
+          path: sonar-reporte.md
