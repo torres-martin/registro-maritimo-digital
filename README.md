@@ -192,6 +192,8 @@ Backlog propuesto para el Sprint 8 (15 puntos):
 | P2 | Prueba de usabilidad con usuarios reales | 2 |
 | P2 | Análisis estático del código (SpotBugs o SonarCloud) | 1 |
 
+El backlog que se adoptó para el Sprint 8 cambia puntos y prioridades frente a esta propuesta; está en `docs/Backlog-Sprint8-RegistroNaves.xlsx` y se explica en `docs/README.md`.
+
 El informe completo (pruebas, métricas, registro de defectos, factura, traspaso y evidencias) está en `docs/Sprint7-RegistroNaves.docx` de la rama `sprint7`, junto con la presentación, las facturas y el guion de la charla.
 
 ## Estructura del proyecto
@@ -205,9 +207,8 @@ registronaves/
                 db/migration/  migraciones de Flyway (V1, V2...)
         test/            pruebas: sprint7/ (backend) y Sprint1 a Sprint4SeleniumTest
     katalon/             proyecto de Katalon con las suites Sprint2, Sprint3, Sprint4 y Sprint6
-    docs/                documentos, facturas y presentaciones de cada sprint
+    docs/                documentos, facturas y presentaciones de cada sprint (ver docs/README.md)
     docs-sprint1/        documentación y wireframes del Sprint 1
-    docs/                presentaciones, facturas y backlog por sprint (ver docs/README.md)
     pom.xml              dependencias y configuración de Maven
 ```
 

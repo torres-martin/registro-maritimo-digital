@@ -1,54 +1,59 @@
-# Documentación por sprint
+# Sprint 8: backlog, factura y plan de cierre
 
-Entregables de gestión del proyecto: presentaciones, facturas, informes y backlog.
-
-| Sprint | Archivos |
+| Archivo | Contenido |
 | --- | --- |
-| Sprint 0 | Sprint0-amp.pdf |
-| Sprint 2 | sprint2-amp.pdf, Factura-Sprint2-RegistroNaves.xlsx |
-| Sprint 3 | sprint3-amp.pdf, Factura-Sprint3-RegistroNaves.xlsx |
-| Sprint 4 | Sprint4-amp.pdf |
-| Sprint 5 | Factura-Sprint5-RegistroNaves.xlsx |
-| Sprint 6 | Sprint6-RegistroNaves.pptx, Sprint6-RegistroNaves.docx, Factura-Sprint6-RegistroNaves.xlsx |
-| Sprint 8 | Backlog-Sprint8-RegistroNaves.xlsx, Sprint8-RegistroNaves.pptx |
+| `Backlog-Sprint8-RegistroNaves.xlsx` | Backlog del Sprint 8 y plan de los Sprints 9 y 10 |
+| `Sprint8-RegistroNaves.pptx` | Presentación con alcance, triple restricción, presupuesto, factura y plan de cierre |
 
-La documentación y los wireframes del Sprint 1 están en `docs-sprint1/`.
+Los documentos de los Sprints 0 a 6 están en `docs/` de la rama `main`, y los del Sprint 7 en la rama `sprint7`. La documentación del Sprint 1 está en `docs-sprint1/`.
 
-## Sprint 8
-
-### Backlog
+## Backlog adoptado
 
 15 puntos en 48 horas (4 roles × 12 h), a B/. 98,40 por punto.
 
-| Prioridad | Trabajo | Puntos | B/. |
-| --- | --- | --- | --- |
-| P1 | Límite de consultas en la verificación pública | 3 | 295,20 |
-| P1 | Dividir NaveService | 4 | 393,60 |
-| P1 | Análisis estático (SonarQube o SonarCloud en el CI) | 2 | 196,80 |
-| P1 | DEF-05 Katalon en el pipeline | 1 | 98,40 |
-| P2 | Prueba de usabilidad | 3 | 295,20 |
-| P2 | Regresión completa | 2 | 196,80 |
-| | **Total** | **15** | **1.476,00** |
+| Prioridad | Trabajo | Puntos | B/. | Estado en `s8-cambios` |
+| --- | --- | --- | --- | --- |
+| P1 | Límite de consultas en la verificación pública | 3 | 295,20 | Hecho (`fd42cf6`); falta la prueba con Burp |
+| P1 | Dividir NaveService | 4 | 393,60 | Pendiente |
+| P1 | Análisis estático (SonarQube o SonarCloud en el CI) | 2 | 196,80 | Pendiente |
+| P1 | DEF-05 Katalon en el pipeline | 1 | 98,40 | Pendiente |
+| P2 | Prueba de usabilidad | 3 | 295,20 | Pendiente |
+| P2 | Regresión completa (Katalon y Selenium) | 2 | 196,80 | Pendiente; va después de dividir NaveService |
+| | **Total** | **15** | **1.476,00** | |
 
-### Cambio de prioridad
+### Límite de consultas (P1, hecho)
+
+* `config/LimiteConsultasFilter.java` limita `/api/publico/verificar/` a 10 consultas por IP y por minuto (`app.verificacion.max-por-minuto`).
+* Pasado el límite responde **429** con la cabecera `Retry-After` y el mensaje «Demasiadas consultas».
+* `sprint8/Sprint8LimiteConsultasTest` lo prueba con un límite de 5: S8-LIM-01 (429 y `Retry-After`) y S8-LIM-02 (el límite es por IP).
+* El backlog pide además probarlo con Burp. Esa evidencia todavía no está.
+
+### DEF-05 pasa a P1
 
 DEF-05 (Katalon en el pipeline) pasa de P2 a P1. Sin Katalon en el CI, la regresión depende de que alguien la corra en local.
 
 Necesita la licencia de Katalon Runtime Engine. Si no se consigue, el defecto se documenta y se cierra como «No se corrige».
 
-### Presentación
+### Diferencias con la propuesta del Sprint 7
 
-`Sprint8-RegistroNaves.pptx` usa el formato del Sprint 6. Tiene 6 diapositivas: portada, alcance, triple restricción, presupuesto, factura y plan de cierre.
+El README propuso un backlog al cerrar el Sprint 7. El adoptado cambia esto:
 
-La factura queda **por aceptar** por el Product Owner (Martin Torres). Las evidencias y métricas que lista son las previstas para el sprint, no resultados medidos.
+* Salen los dos P0: el PR de `sprint7-cierre` a `main` y ejecutar las suites Katalon Sprint6 y Sprint4.
+* Cambian los puntos: dividir NaveService pasa de 5 a 4, el límite de consultas de 2 a 3, DEF-05 de 2 a 1 y la usabilidad de 2 a 3.
+* El análisis estático sube de P2 (1 punto) a P1 (2 puntos).
+* Entra la regresión completa (P2, 2 puntos).
+
+## Factura
+
+La factura del Sprint 8 está en la diapositiva 5 de la presentación: B/. 1.476 en Neuronix, **por aceptar** por el Product Owner (Martin Torres). Las evidencias y métricas que lista son las previstas para el sprint; solo el límite de consultas tiene ya código y prueba.
 
 ### Supuestos del presupuesto
 
 * Las tarifas y las horas son las mismas del Sprint 6: PO 35, SM 30, Calidad 28 y Seguridad 30 B/./h, 12 h cada rol.
-* El acumulado de B/. 11.709,60 (119 puntos) supone que el Sprint 7 fue de 15 puntos, según su backlog. Si cambió, hay que corregir el acumulado en las diapositivas 4 y 5.
+* El acumulado es de B/. 11.709,60 (119 puntos): 89 puntos hasta el Sprint 6, más 15 del Sprint 7 (según el README) y 15 del Sprint 8.
 * La diferencia del Sprint 2 (B/. 338,40) no aparece en la presentación porque está pendiente de decisión del PO.
 
-### Plan de cierre
+## Plan de cierre
 
 * **Sprint 9, preparación para producción:** HTTPS, configuración por ambiente (contraseñas fuera de application.properties), copias de respaldo de la base, manual de usuario corto y defectos que salgan del Sprint 8.
 * **Sprint 10, entrega final:** demo completa del ciclo, presupuesto final, lecciones aprendidas y entrega del código y la documentación a la AMP.
