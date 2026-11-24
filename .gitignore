@@ -38,3 +38,8 @@ uploads/
 
 # Registros locales
 *.log
+
+# Análisis estático local (scripts/analisis-estatico.sh)
+.sonar/
+.scannerwork/
+/sonar-reporte.md
