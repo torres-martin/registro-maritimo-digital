@@ -153,7 +153,25 @@ La base nueva no trae solicitudes; hay que crearlas con este flujo.
 3. En Katalon Studio: File > Open Project y elegir la carpeta katalon (RegistroNaves-QA.prj).
 4. Ejecutar las suites Sprint2, Sprint3, Sprint4 y Sprint6 desde Test Suites. Sprint6 (KT-32 a KT-38) valida la bitácora; KT-23, KT-24 y KT-27 de Sprint4 se ajustaron en el Sprint 7 al recorrido de 4 etapas y a la revocación en «Gestionar certificado».
 
-El CI de GitHub Actions ejecuta las pruebas backend del Sprint 7 (`Sprint7*Test`) y la regresión Selenium de los Sprints 1 a 4. Katalon no corre en el pipeline (DEF-05); la suite Sprint6 (KT-32 a KT-38, bitácora) se ejecuta en local.
+El CI de GitHub Actions ejecuta las pruebas backend de los Sprints 7 y 8 (`Sprint7*Test` y `Sprint8*Test`) y la regresión Selenium de los Sprints 1 a 4. Katalon no corre en el pipeline (DEF-05); la suite Sprint6 (KT-32 a KT-38, bitácora) se ejecuta en local.
+
+## Análisis estático con SonarQube (Sprint 8)
+
+El trabajo `analisis-estatico` del CI levanta SonarQube Community en Docker, analiza el código y publica el reporte (bugs, vulnerabilidades, code smells y duplicación) en el resumen de la ejecución y como artefacto `reporte-sonarqube`. No necesita cuentas.
+
+Para correrlo en local, con Docker abierto:
+
+```bash
+./scripts/analisis-estatico.sh
+# En Windows (Git Bash):
+MVN=./mvnw.cmd bash scripts/analisis-estatico.sh
+```
+
+El reporte queda en `sonar-reporte.md`. El primer resultado y su revisión están en `docs/README.md`.
+
+## Servicios del backend (Sprint 8)
+
+Desde el Sprint 8, NaveService está dividido por responsabilidad: `RegistroService` (registro de la solicitud), `BorradorService` (borradores), `RevisionService` (aprobar o rechazar y emitir el certificado), `RevocacionService` (revocación) y `NaveService` (solo consultas). Las rutas de la API no cambiaron.
 
 ## Protección CSRF (DEF-07)
 
@@ -205,7 +223,8 @@ registronaves/
             java/        controladores, servicios, modelos y seguridad
             resources/   pantallas HTML, estilos, scripts y application.properties
                 db/migration/  migraciones de Flyway (V1, V2...)
-        test/            pruebas: sprint7/ (backend) y Sprint1 a Sprint4SeleniumTest
+        test/            pruebas: sprint7/ y sprint8/ (backend) y Sprint1 a Sprint4SeleniumTest
+    scripts/             analisis-estatico.sh (SonarQube en Docker)
     katalon/             proyecto de Katalon con las suites Sprint2, Sprint3, Sprint4 y Sprint6
     docs/                documentos, facturas y presentaciones de cada sprint (ver docs/README.md)
     docs-sprint1/        documentación y wireframes del Sprint 1
