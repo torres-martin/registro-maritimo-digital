@@ -9,17 +9,17 @@ Los documentos de los Sprints 0 a 6 están en `docs/` de la rama `main`, y los d
 
 ## Backlog adoptado
 
-15 puntos en 48 horas (4 roles × 12 h), a B/. 98,40 por punto.
+15 puntos en 48 horas, a B/. 100,00 por punto. El equipo es Martin Torres (Product Owner) y Tamara Vega, Diego López y Joseph Urriola (Developers), 12 h cada uno.
 
 | Prioridad | Trabajo | Puntos | B/. | Estado en `s8-cambios` |
 | --- | --- | --- | --- | --- |
-| P1 | Límite de consultas en la verificación pública | 3 | 295,20 | Hecho (`fd42cf6`); falta la prueba con Burp |
-| P1 | Dividir NaveService | 4 | 393,60 | Pendiente |
-| P1 | Análisis estático (SonarQube o SonarCloud en el CI) | 2 | 196,80 | Pendiente |
-| P1 | DEF-05 Katalon en el pipeline | 1 | 98,40 | Pendiente |
-| P2 | Prueba de usabilidad | 3 | 295,20 | Pendiente |
-| P2 | Regresión completa (Katalon y Selenium) | 2 | 196,80 | Pendiente; va después de dividir NaveService |
-| | **Total** | **15** | **1.476,00** | |
+| P1 | Límite de consultas en la verificación pública | 3 | 300,00 | Hecho (`fd42cf6`); falta la prueba con Burp |
+| P1 | Dividir NaveService | 4 | 400,00 | Pendiente |
+| P1 | Análisis estático (SonarQube o SonarCloud en el CI) | 2 | 200,00 | Pendiente |
+| P1 | DEF-05 Katalon en el pipeline | 1 | 100,00 | Pendiente |
+| P2 | Prueba de usabilidad | 3 | 300,00 | Pendiente |
+| P2 | Regresión completa (Katalon y Selenium) | 2 | 200,00 | Pendiente; va después de dividir NaveService |
+| | **Total** | **15** | **1.500,00** | |
 
 ### Límite de consultas (P1, hecho)
 
@@ -45,12 +45,21 @@ El README propuso un backlog al cerrar el Sprint 7. El adoptado cambia esto:
 
 ## Factura
 
-La factura del Sprint 8 está en la diapositiva 5 de la presentación: B/. 1.476 en Neuronix, **por aceptar** por el Product Owner (Martin Torres). Las evidencias y métricas que lista son las previstas para el sprint; solo el límite de consultas tiene ya código y prueba.
+La factura del Sprint 8 está en la diapositiva 5 de la presentación: B/. 1.500 en Neuronix, **por aceptar** por el Product Owner (Martin Torres). Las evidencias y métricas que lista son las previstas para el sprint; solo el límite de consultas tiene ya código y prueba.
 
-### Supuestos del presupuesto
+### Cálculo (mismo método que la factura del Sprint 7)
 
-* Las tarifas y las horas son las mismas del Sprint 6: PO 35, SM 30, Calidad 28 y Seguridad 30 B/./h, 12 h cada rol.
-* El acumulado es de B/. 11.709,60 (119 puntos): 89 puntos hasta el Sprint 6, más 15 del Sprint 7 (según el README) y 15 del Sprint 8.
+| Integrante | Rol | Tarifa (B/./h) | Horas | B/. |
+| --- | --- | --- | --- | --- |
+| Martin Torres | Product Owner | 35 | 12 | 420,00 |
+| Tamara Vega | Developer | 30 | 12 | 360,00 |
+| Diego López | Developer | 30 | 12 | 360,00 |
+| Joseph Urriola | Developer | 30 | 12 | 360,00 |
+| | **Total** | | **48** | **1.500,00** |
+
+* Costo por punto: B/. 1.500,00 ÷ 15 puntos = B/. 100,00 (3,2 h por punto). Cada actividad cuesta sus puntos × 100.
+* Acumulado del MVP: B/. 10.953,60 hasta el Sprint 7 (factura S7-001, 104 puntos) + B/. 1.500,00 = **B/. 12.453,60 por 119 puntos**.
+* Frente al Sprint 7 (6 personas, 72 h, B/. 2.196) el sprint vale menos porque el equipo queda en 4: salen el Scrum Master y QA.
 * La diferencia del Sprint 2 (B/. 338,40) no aparece en la presentación porque está pendiente de decisión del PO.
 
 ## Plan de cierre
