@@ -1,7 +1,11 @@
 package com.example.registronaves.controller;
 
 import com.example.registronaves.Model.Nave;
+import com.example.registronaves.service.BorradorService;
 import com.example.registronaves.service.NaveService;
+import com.example.registronaves.service.RegistroService;
+import com.example.registronaves.service.RevisionService;
+import com.example.registronaves.service.RevocacionService;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -27,9 +31,18 @@ public class NaveController {
     public record Revocacion(String motivo) {}
 
     private final NaveService servicio;
+    private final RegistroService registro;
+    private final BorradorService borradores;
+    private final RevisionService revision;
+    private final RevocacionService revocacion;
 
-    public NaveController(NaveService servicio) {
+    public NaveController(NaveService servicio, RegistroService registro, BorradorService borradores,
+                          RevisionService revision, RevocacionService revocacion) {
         this.servicio = servicio;
+        this.registro = registro;
+        this.borradores = borradores;
+        this.revision = revision;
+        this.revocacion = revocacion;
     }
 
     private static boolean esFuncionario(Authentication auth) {
@@ -41,7 +54,7 @@ public class NaveController {
     public ResponseEntity<Map<String, Object>> registrar(@RequestParam Map<String, String> campos,
                                                          @RequestParam(value = "documento", required = false) MultipartFile documento,
                                                          Authentication auth) throws IOException {
-        Nave n = servicio.registrar(campos, documento, auth.getName());
+        Nave n = registro.registrar(campos, documento, auth.getName());
         Map<String, Object> r = new LinkedHashMap<>();
         r.put("tramite", n.getTramite());
         r.put("estado", n.getEstado());
@@ -67,12 +80,12 @@ public class NaveController {
 
     @PutMapping("/naves/{id}/estado")
     public Map<String, Object> decidir(@PathVariable("id") Long id, @RequestBody Decision d, Authentication auth) {
-        return servicio.cambiarEstado(id, d.estado(), d.observacion(), d.liquidacion(), auth.getName());
+        return revision.cambiarEstado(id, d.estado(), d.observacion(), d.liquidacion(), auth.getName());
     }
 
     @PutMapping("/naves/{id}/revocar")
     public Map<String, Object> revocar(@PathVariable("id") Long id, @RequestBody Revocacion r, Authentication auth) {
-        return servicio.revocar(id, r.motivo(), auth.getName());
+        return revocacion.revocar(id, r.motivo(), auth.getName());
     }
 
     // Aseguradora
@@ -115,12 +128,12 @@ public class NaveController {
 
     @GetMapping("/borradores")
     public List<Map<String, Object>> listarBorradores(Authentication auth) {
-        return servicio.listarBorradores(auth.getName());
+        return borradores.listarBorradores(auth.getName());
     }
 
     @GetMapping("/borradores/{id}")
     public Map<String, Object> detalleBorrador(@PathVariable("id") String id, Authentication auth) {
-        return servicio.detalleBorrador(id, auth.getName());
+        return borradores.detalleBorrador(id, auth.getName());
     }
 
     @PutMapping(value = "/borradores/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -132,7 +145,7 @@ public class NaveController {
                                        @RequestParam(value = "quitarDocumento", defaultValue = "false") boolean quitarDocumento,
                                        @RequestParam(value = "documento", required = false) MultipartFile documento,
                                        Authentication auth) throws IOException {
-        return servicio.guardarBorrador(id, datos, paso, version, origenSolicitudId, quitarDocumento, documento, auth.getName());
+        return borradores.guardarBorrador(id, datos, paso, version, origenSolicitudId, quitarDocumento, documento, auth.getName());
     }
 
     @GetMapping("/borradores/{id}/documento")
@@ -140,13 +153,13 @@ public class NaveController {
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_PDF)
                 .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"documento-borrador.pdf\"")
                 .header(HttpHeaders.CACHE_CONTROL, "no-store")
-                .body(servicio.documentoBorrador(id, auth.getName()));
+                .body(borradores.documentoBorrador(id, auth.getName()));
     }
 
     @DeleteMapping("/borradores/{id}")
     public ResponseEntity<Void> eliminarBorrador(@PathVariable("id") String id,
                                         @RequestParam("version") long version, Authentication auth) {
-        servicio.eliminarBorrador(id, version, auth.getName());
+        borradores.eliminarBorrador(id, version, auth.getName());
         return ResponseEntity.noContent().build();
     }
 
@@ -157,6 +170,6 @@ public class NaveController {
                                                      @RequestParam(value = "documento", required = false) MultipartFile documento,
                                                      Authentication auth) throws IOException {
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(servicio.enviarBorrador(id, campos, version, documento, auth.getName()));
+                .body(borradores.enviarBorrador(id, campos, version, documento, auth.getName()));
     }
 }
