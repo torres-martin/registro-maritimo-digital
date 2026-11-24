@@ -41,8 +41,8 @@ jobs:
       - name: Compilar
         run: ./mvnw -B -DskipTests package
 
-      - name: Pruebas backend del Sprint 7 (HU-21, DEF-03, DEF-07 y seguridad)
-        run: ./mvnw -B test -Dtest='Sprint7*Test'
+      - name: Pruebas backend de los Sprints 7 y 8 (HU-21, DEF-03, DEF-07, seguridad y límite de consultas)
+        run: ./mvnw -B test -Dtest='Sprint7*Test,Sprint8*Test'
 
       - name: Arrancar el sistema
         run: |
